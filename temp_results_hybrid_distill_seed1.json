@@ -1,8 +1,0 @@
-{
-  "seed": 1,
-  "condition": "hybrid_distill",
-  "avg_performance": 257.75,
-  "final_memory_mb": 0.19073486328125,
-  "compression_ratio": 1.2,
-  "timestamp": "2025-11-19 09:30:14"
-}

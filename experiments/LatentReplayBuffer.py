@@ -287,11 +287,20 @@ class LatentReplayBuffer:
                 noise = torch.randn_like(next_state_mean) * noise_scale
                 next_state = next_state_mean + noise
                 
-                # FIXED: Better done prediction with CartPole-specific bounds
+                # FIXED: Better done prediction with environment-specific bounds
                 next_state_np = next_state.cpu().numpy()[0]
-                # CartPole specific bounds: position ±2.4, angle ±0.2 rad
-                out_of_bounds = (abs(next_state_np[0]) > 2.4 or abs(next_state_np[2]) > 0.2)
-                done = out_of_bounds
+                
+                # Check state dimension to determine environment logic
+                if len(next_state_np) == 4: # CartPole (x, x_dot, theta, theta_dot)
+                    # CartPole bounds: position ±2.4, angle ±0.2 rad
+                    out_of_bounds = (abs(next_state_np[0]) > 2.4 or abs(next_state_np[2]) > 0.2)
+                    done = out_of_bounds
+                elif len(next_state_np) == 2: # MountainCar (position, velocity)
+                    # MountainCar done: position >= 0.5 (goal reached)
+                    done = (next_state_np[0] >= 0.5)
+                else:
+                    # Generic fallback
+                    done = False
                 
                 # Store synthetic transition
                 synthetic_sample = (
@@ -723,7 +732,11 @@ class LatentReplayBuffer:
             
             # Physical constraint violations (CartPole specific)
             position_errors = torch.abs(next_states_pred[:, 0] - next_states_real[:, 0]).mean().item()
-            angle_errors = torch.abs(next_states_pred[:, 2] - next_states_real[:, 2]).mean().item()
+            
+            # Only check angle for CartPole (dim > 2)
+            angle_errors = 0.0
+            if states.shape[1] >= 4:
+                angle_errors = torch.abs(next_states_pred[:, 2] - next_states_real[:, 2]).mean().item()
         
         quality_metrics = {
             'state_prediction_mse': state_mse,

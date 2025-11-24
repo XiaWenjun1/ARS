@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-RQ3 Experimental Framework: Complete Hybrid Latent-Space Replay with World Models - FIXED VERSION
+RQ3 Experimental Framework: Complete Hybrid Latent-Space Replay with World Models - MountainCar Version
 """
 
 from __future__ import annotations
@@ -18,8 +18,8 @@ import time
 sys.path.append(os.path.dirname(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from configs.cartpole_config import CartPoleConfig
-from environments.cartpole_cl import CartPoleCL
+from configs.mountaincar_config import MountainCarConfig
+from environments.mountaincar_cl import MountainCarCL
 from LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
 # Import the new visualization module
 from RQ3metrics import create_comprehensive_analysis
@@ -79,7 +79,7 @@ class RQ3Agent:
         self.distill_loss = None
         if 'distill' in condition:
             self.teacher_net = PolicyNetwork(state_dim, action_dim, hidden_dim).to(device)
-            self.distill_loss = KnowledgeDistillationLoss(temperature=2.0, alpha=0.7)
+            self.distill_loss = KnowledgeDistillationLoss(temperature=2.0, alpha=0.2)
         
         # Optimizer
         self.optimizer = torch.optim.Adam(
@@ -91,7 +91,9 @@ class RQ3Agent:
         self._setup_replay(condition)
         
         # Training parameters
-        self.epsilon = 0.1
+        self.epsilon = 1.0
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
         self.gamma = 0.99
         self.batch_size = 64
         self.update_target_every = 200
@@ -120,7 +122,7 @@ class RQ3Agent:
         buffer_config = {
             'state_dim': self.state_dim,
             'action_dim': self.action_dim,
-            'latent_dim': 3,  # FIXED: Reduced from 8 to 3 for real compression
+            'latent_dim': 2,  # For MountainCar, state_dim is 2, so latent_dim should be small.
             'max_latent_samples': 2000,
             'max_raw_samples': 2000,
             'device': self.device
@@ -200,12 +202,12 @@ class RQ3Agent:
         
         elif self.condition == "hybrid_uncertainty":
             self.force_latent_ratio = 0.1  # FIXED: Reduced from 0.2 to 0.1
-            self.synthetic_ratio = 0.05    # FIXED: Reduced from 0.1 to 0.05
+            self.synthetic_ratio = 0.02    # FIXED: Reduced from 0.1 to 0.05
             self.uncertainty_guided = True
         
         elif self.condition == "hybrid_distill":
             self.force_latent_ratio = 0.1  # FIXED: Reduced from 0.2 to 0.1
-            self.synthetic_ratio = 0.05    # FIXED: Reduced from 0.1 to 0.05
+            self.synthetic_ratio = 0.02    # FIXED: Reduced from 0.1 to 0.05
             self.uncertainty_guided = True
             self.use_distillation = True
     
@@ -218,6 +220,11 @@ class RQ3Agent:
             state_t = torch.FloatTensor(state).unsqueeze(0).to(self.device)
             q_values = self.policy_net(state_t)
             return int(q_values.argmax().item())
+
+    def update_epsilon(self):
+        """Anneal epsilon after each episode"""
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
     
     def store_transition(
         self,
@@ -256,12 +263,12 @@ class RQ3Agent:
                 if self.debug_counter % 1000 == 0 and loss > 0:
                     print(f"🔧 Encoder training: loss={loss:.4f}")
             
-            # NEW: Validate world model quality periodically
-            if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
-                if self.debug_counter % 500 == 0:
-                    quality_metrics = self.replay_buffer.validate_world_model_quality()
-                    if quality_metrics:
-                        self.world_model_errors.append(quality_metrics)
+            # # NEW: Validate world model quality periodically
+            # if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
+            #     if self.debug_counter % 500 == 0:
+            #         quality_metrics = self.replay_buffer.validate_world_model_quality()
+            #         if quality_metrics:
+            #             self.world_model_errors.append(quality_metrics)
         else:
             self.replay_buffer.push(state, action, reward, next_state, done)
     
@@ -466,11 +473,11 @@ class RQ3Agent:
             print(f"  Uncertainty guided: {self.uncertainty_guided}")
             print(f"  Distillation: {self.use_distillation}")
             
-            # NEW: World model quality info
-            if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
-                quality = self.replay_buffer.validate_world_model_quality()
-                if quality:
-                    print(f"  World Model Quality: state_mse={quality.get('state_prediction_mse', 0):.4f}")
+            # # NEW: World model quality info
+            # if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
+            #     quality = self.replay_buffer.validate_world_model_quality()
+            #     if quality:
+            #         print(f"  World Model Quality: state_mse={quality.get('state_prediction_mse', 0):.4f}")
         
         health = self.check_training_health()
         if not health['healthy']:
@@ -517,11 +524,15 @@ class RQ3Agent:
         if isinstance(self.replay_buffer, LatentReplayBuffer):
             if len(self.replay_buffer.raw_buffer) < 20:
                 health_status['issues'].append("Raw buffer too small")
-            if (self.force_latent_ratio > 0 and 
-                len(self.replay_buffer.latent_buffer) == 0):
+            if (
+                self.force_latent_ratio > 0 and 
+                len(self.replay_buffer.latent_buffer) == 0
+            ):
                 health_status['issues'].append("Latent buffer empty but sampling enabled")
-            if (self.synthetic_ratio > 0 and 
-                len(self.replay_buffer.synthetic_buffer) == 0):
+            if (
+                self.synthetic_ratio > 0 and 
+                len(self.replay_buffer.synthetic_buffer) == 0
+            ):
                 health_status['issues'].append("Synthetic buffer empty but sampling enabled")
         
         return health_status
@@ -555,8 +566,8 @@ class SimpleReplayBuffer:
         return len(self.buffer)
 
 
-def run_rq3_experiment(
-    cfg: CartPoleConfig,
+def run_mountaincar_experiment(
+    cfg: MountainCarConfig,
     condition: str,
     seed: int,
     episodes_per_task: int = 100,
@@ -569,7 +580,7 @@ def run_rq3_experiment(
     
     set_global_seed(seed)
     
-    env = CartPoleCL(cfg.TASKS)
+    env = MountainCarCL(cfg.TASKS)
     env.reset(seed=seed)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
@@ -577,7 +588,7 @@ def run_rq3_experiment(
     # Create agent
     agent_config = {
         'policy_hidden': 64,
-        'learning_rate': 1e-3,
+        'learning_rate': 5e-4, # Lower learning rate for MountainCar
     }
     agent = RQ3Agent(state_dim, action_dim, condition, config=agent_config)
     
@@ -628,8 +639,29 @@ def run_rq3_experiment(
             next_state, reward, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
             
-            # Store transition
-            agent.store_transition(state, action, reward, next_state, done, current_task)
+            # === IMPROVED Reward Shaping for MountainCar ===
+            # Original Logic (FLAWED): height_reward = (pos + 0.5) * 10.0
+            # Why flawed? It penalizes going left (backswing), which is necessary for momentum.
+            
+            pos = next_state[0]
+            vel = next_state[1]
+            
+            # New Logic: Encourage being AWAY from the bottom (-0.5) in EITHER direction
+            # This rewards the swinging motion required to climb the hill.
+            dist_from_bottom = abs(pos - (-0.5))
+            
+            # Combine: Base(-1) + Distance Bonus + Velocity Bonus
+            # 1. dist_from_bottom * 10.0: Max approx 1.0 (at top) -> +10 reward
+            # 2. abs(vel) * 10.0: Max approx 0.07 -> +0.7 reward
+            # This creates a dense positive signal for swinging.
+            modified_reward = reward + (dist_from_bottom * 10.0) + (abs(vel) * 10.0)
+            
+            # Huge bonus for reaching goal (overwrites everything)
+            if pos >= 0.5:
+                modified_reward = 100.0
+
+            # Store the SHAPED reward for learning
+            agent.store_transition(state, action, modified_reward, next_state, done, current_task)
             
             # Update policy
             loss = agent.update()
@@ -637,6 +669,9 @@ def run_rq3_experiment(
             episode_reward += reward
             state = next_state
         
+        # End of episode: decay epsilon for exploration-exploitation trade-off
+        agent.update_epsilon()
+
         episode_rewards.append(episode_reward)
         episodes_completed += 1
         
@@ -686,7 +721,7 @@ def run_rq3_experiment(
     }
 
 
-def evaluate_all_tasks(agent: RQ3Agent, env: CartPoleCL, cfg: CartPoleConfig, n_episodes: int = 10) -> Dict:
+def evaluate_all_tasks(agent: RQ3Agent, env: MountainCarCL, cfg: MountainCarConfig, n_episodes: int = 10) -> Dict:
     """Evaluate agent on all tasks"""
     original_epsilon = agent.epsilon
     agent.epsilon = 0.0
@@ -756,18 +791,18 @@ def compute_backward_transfer(task_performances: Dict) -> float:
     return float(np.mean(forgetting_scores)) if forgetting_scores else 0.0
 
 
-def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int = 2):
+def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 250, cycles: int = 2):
     """Complete RQ3 experiment with all conditions - FIXED: Ensure independence"""
     print(f"🔬 Experimental configuration: seeds={seeds}, episodes_per_task={episodes_per_task}, cycles={cycles}")
     print(f"🔬 Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     # === 📂 1. 设置路径管理 (New Path Management) ===
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    # 结果 JSON 保存位置: experiments/results/rq3_cartpole/
-    results_dir = os.path.join(base_dir, "results", "rq3_cartpole")
-    # 可视化图表保存位置: visualizations/rq3_cartpole/
+    # 结果 JSON 保存位置: experiments/results/rq3_mountaincar/
+    results_dir = os.path.join(base_dir, "results", "rq3_mountaincar")
+    # 可视化图表保存位置: visualizations/rq3_mountaincar/
     # 注意：这里假设 visualizations 文件夹在 experiments 的上一级，根据你的文件列表调整
-    vis_dir = os.path.join(os.path.dirname(base_dir), "visualizations", "rq3_cartpole")
+    vis_dir = os.path.join(os.path.dirname(base_dir), "visualizations", "rq3_mountaincar")
     
     os.makedirs(results_dir, exist_ok=True)
     os.makedirs(vis_dir, exist_ok=True)
@@ -775,10 +810,10 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     print(f"📊 Visualizations will be saved to: {vis_dir}")
     # ==================================================
 
-    cfg = CartPoleConfig()
+    cfg = MountainCarConfig()
     
     # Validate environment setup
-    env = CartPoleCL(cfg.TASKS)
+    env = MountainCarCL(cfg.TASKS)
     env.reset(seed=seeds[0])
     print(f"🔬 Environment validation: state_dim={env.observation_space.shape[0]}, action_dim={env.action_space.n}, tasks={env.total_tasks}")
     
@@ -795,7 +830,7 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     ]
     
     print("=" * 80)
-    print("COMPLETE RQ3 EXPERIMENT: All Hybrid Conditions - FIXED VERSION")
+    print("COMPLETE RQ3 EXPERIMENT: All Hybrid Conditions - MountainCar Version")
     print("=" * 80)
     
     all_results = {}
@@ -811,7 +846,7 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
             # Set different global seeds for each run
             set_global_seed(seed)
             
-            result = run_rq3_experiment(cfg, condition, seed, episodes_per_task, cycles)
+            result = run_mountaincar_experiment(cfg, condition, seed, episodes_per_task, cycles)
             condition_results.append(result)
             
 # === 💾 2. 保存到新路径 (Save to new path) ===
@@ -834,9 +869,9 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     
     # Comprehensive results analysis
     print("\n" + "=" * 80)
-    print("RQ3 COMPLETE RESULTS SUMMARY - FIXED VERSION")
+    print("RQ3 COMPLETE RESULTS SUMMARY - MountainCar VERSION")
     print("=" * 80)
-    print(f"{'Condition':<25} {'Perf':<8} {'Memory':<10} {'Eff':<8} {'Comp':<8} {'FT':<8} {'BT':<8}")
+    print(f"{ 'Condition':<25} {'Perf':<8} {'Memory':<10} {'Eff':<8} {'Comp':<8} {'FT':<8} {'BT':<8}")
     print("-" * 80)
     
     for condition in conditions:
@@ -892,7 +927,7 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     
     if best_eff_condition:
         print(f"💾 Most memory efficient: {best_eff_condition} ({best_efficiency:.1f} perf/MB)")
-    
+
 # === 📊 3. 生成可视化到新路径 (Generate viz to new path) ===
     print(f"\n📊 Generating comprehensive visualizations in {vis_dir}...")
     create_comprehensive_analysis(all_results, save_dir=vis_dir)
@@ -904,10 +939,10 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='RQ3: Complete Hybrid Experiments - Fixed Version')
+    parser = argparse.ArgumentParser(description='RQ3: Complete Hybrid Experiments - MountainCar Version')
     parser.add_argument('--seeds', nargs='+', type=int, default=[1, 2, 3],
                         help='Random seeds for experiments')
-    parser.add_argument('--episodes-per-task', type=int, default=100,
+    parser.add_argument('--episodes-per-task', type=int, default=250,
                         help='Episodes per task')
     parser.add_argument('--cycles', type=int, default=2,
                         help='Number of cycles through all tasks')
@@ -917,7 +952,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     if args.quick_test:
-        print("🚀 QUICK TEST MODE - FIXED VERSION")
+        print("🚀 QUICK TEST MODE - MountainCar VERSION")
         main(seeds=[1], episodes_per_task=50, cycles=1)
     else:
         main(seeds=args.seeds, episodes_per_task=args.episodes_per_task, cycles=args.cycles)
