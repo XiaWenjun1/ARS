@@ -1,0 +1,17 @@
+{
+  "seed": 1,
+  "detector": "reward+latent",
+  "avg_train": -200.0,
+  "avg_eval": -174.575,
+  "n_detections": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "eval_rewards": {
+    "0": -131.2,
+    "1": -169.1,
+    "2": -198.0,
+    "3": -200.0
+  },
+  "detections": [],
+  "timestamp": "2025-11-26 17:26:21"
+}

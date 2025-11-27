@@ -1,0 +1,17 @@
+{
+  "seed": 5,
+  "detector": "all_three_MAJORITY",
+  "avg_train": -197.61,
+  "avg_eval": -184.775,
+  "n_detections": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "eval_rewards": {
+    "0": -150.5,
+    "1": -191.6,
+    "2": -200.0,
+    "3": -197.0
+  },
+  "detections": [],
+  "timestamp": "2025-11-27 12:19:39"
+}

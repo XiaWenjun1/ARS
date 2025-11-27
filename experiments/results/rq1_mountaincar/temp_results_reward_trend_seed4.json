@@ -1,0 +1,17 @@
+{
+  "seed": 4,
+  "detector": "reward_trend",
+  "avg_train": -198.99,
+  "avg_eval": -173.475,
+  "n_detections": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "eval_rewards": {
+    "0": -153.8,
+    "1": -159.8,
+    "2": -183.2,
+    "3": -197.1
+  },
+  "detections": [],
+  "timestamp": "2025-11-27 10:40:27"
+}

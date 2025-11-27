@@ -282,8 +282,11 @@ class LatentReplayBuffer:
                     state_t, action_t
                 )
                 
-                # FIXED: Reduced noise and added CartPole-specific constraints
-                noise_scale = 0.05  # FIXED: Reduced from 0.1 to 0.05
+                # FIX: Drastically reduce noise for MountainCar's sensitive physics
+                if self.state_dim == 2: # MountainCar
+                    noise_scale = 0.001
+                else: # CartPole
+                    noise_scale = 0.01
                 noise = torch.randn_like(next_state_mean) * noise_scale
                 next_state = next_state_mean + noise
                 
@@ -386,9 +389,9 @@ class LatentReplayBuffer:
                 latent = self.encoder.encode(state_t, action_t)
                 latent_np = latent.cpu().numpy()[0]
             
-            # FIXED: Only store latent vector, not the full next_state
-            # This is true compression - we reconstruct next_state from world model when needed
-            latent_sample = (latent_np, action, reward, done, task_id)  # Removed next_state
+            # FIX: Store next_state to enable latent replay without a world model.
+            # This is a compromise on compression to ensure the mode is functional.
+            latent_sample = (latent_np, action, reward, next_state.copy(), done, task_id)
             
             if len(self.latent_buffer) < self.max_latent_samples:
                 self.latent_buffer.append(latent_sample)
@@ -565,7 +568,7 @@ class LatentReplayBuffer:
         decoded_samples = []
         for idx in indices:
             latent_sample = buffer_to_sample[idx]
-            latent_vec, action, reward, done, sample_task_id = latent_sample  # FIXED: removed next_state
+            latent_vec, action, reward, stored_next_state, done, sample_task_id = latent_sample
             
             try:
                 # FIXED: Use world model to predict next_state
@@ -592,12 +595,13 @@ class LatentReplayBuffer:
         return decoded_samples
     
     def _sample_latent_with_decoding(self, n_samples: int, task_id: Optional[int] = None):
-        """FIXED: Properly handle latent samples with world model prediction"""
+        """FIXED: Properly handle latent samples with and without world model prediction"""
         if len(self.latent_buffer) == 0:
             return []
         
         buffer_to_sample = self.latent_buffer
         if task_id is not None:
+            # Check index 5 for task_id, as the tuple now has 6 elements
             buffer_to_sample = [s for s in self.latent_buffer if s[5] == task_id]
             if len(buffer_to_sample) == 0:
                 buffer_to_sample = self.latent_buffer
@@ -609,25 +613,25 @@ class LatentReplayBuffer:
         
         decoded_samples = []
         for idx in indices:
-            latent_sample = buffer_to_sample[idx]
-            latent_vec, action, reward, done, sample_task_id = latent_sample  # FIXED: removed next_state
+            # Now expecting (latent, action, reward, next_state, done, task_id)
+            latent_vec, action, reward, stored_next_state, done, sample_task_id = buffer_to_sample[idx]
             
             try:
-                # FIXED: Critical fix - only use latent samples if we have world model
-                if self.world_model is None:
-                    continue  # Skip if no world model to predict next_state
-                    
                 with torch.no_grad():
                     latent_t = torch.FloatTensor(latent_vec).unsqueeze(0).to(self.device)
-                    state_recon, action_recon = self.encoder.decode(latent_t)
+                    state_recon, _ = self.encoder.decode(latent_t)
                     state_recon = state_recon.cpu().numpy()[0]
-                    
-                    # Use world model to predict next_state (CRITICAL FIX)
-                    state_t = torch.FloatTensor(state_recon).unsqueeze(0).to(self.device)
-                    action_t = torch.LongTensor([action]).to(self.device)
-                    next_state_pred, _, _ = self.world_model.predict_with_uncertainty(state_t, action_t)
-                    next_state = next_state_pred.cpu().numpy()[0]
                 
+                # If world_model is available, predict next_state. Otherwise, use stored next_state.
+                if self.world_model:
+                    with torch.no_grad():
+                        state_t = torch.FloatTensor(state_recon).unsqueeze(0).to(self.device)
+                        action_t = torch.LongTensor([action]).to(self.device)
+                        next_state_pred, _, _ = self.world_model.predict_with_uncertainty(state_t, action_t)
+                        next_state = next_state_pred.cpu().numpy()[0]
+                else:
+                    next_state = stored_next_state
+
                 decoded_sample = (state_recon, action, reward, next_state, done, sample_task_id)
                 decoded_samples.append(decoded_sample)
                 

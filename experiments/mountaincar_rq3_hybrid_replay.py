@@ -93,7 +93,7 @@ class RQ3Agent:
         # Training parameters
         self.epsilon = 1.0
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.995
+        self.epsilon_decay = 0.985
         self.gamma = 0.99
         self.batch_size = 64
         self.update_target_every = 200
@@ -185,10 +185,10 @@ class RQ3Agent:
     def _initialize_condition_features(self):
         """Initialize feature flags based on condition - FIXED: Critical fix for latent_replay"""
         if self.condition == "latent_replay":
-            # FIXED: Critical - latent_replay cannot use latent samples without world model
-            self.force_latent_ratio = 0.0  # Must be 0 - no world model to predict next_state
+            # FIX: With the buffer now storing next_state, we can enable latent sampling.
+            self.force_latent_ratio = 0.5 # Enable sampling from latent buffer
             self.synthetic_ratio = 0.0
-            print("⚠️ WARNING: latent_replay only compresses storage, does not sample from latent buffer (no world model to reconstruct next_state)")
+            print("✅ INFO: latent_replay is now active, sampling from latent buffer.")
         
         elif self.condition == "world_model_only":
             self.force_latent_ratio = 0.0
@@ -436,8 +436,9 @@ class RQ3Agent:
     def check_and_enable_features(self, episodes_completed: int):
         """Progressive feature enabling based on condition - FIXED: More gradual enabling"""
         if self.condition == "latent_replay":
-            # FIXED: latent_replay should never enable latent sampling (no world model)
-            self.force_latent_ratio = 0.0  # Always 0
+            # ✅ FIX: Do not disable latent replay. The ratio is set during initialization.
+            # self.force_latent_ratio = 0.0  # Always 0
+            pass
         
         elif self.condition in ["world_model_only", "hybrid_basic", "hybrid_uncertainty", "hybrid_distill"]:
             # Enable world model features earlier and more frequently
@@ -588,7 +589,7 @@ def run_mountaincar_experiment(
     # Create agent
     agent_config = {
         'policy_hidden': 64,
-        'learning_rate': 5e-4, # Lower learning rate for MountainCar
+        'learning_rate': 1e-3, # Lower learning rate for MountainCar
     }
     agent = RQ3Agent(state_dim, action_dim, condition, config=agent_config)
     
@@ -650,11 +651,9 @@ def run_mountaincar_experiment(
             # This rewards the swinging motion required to climb the hill.
             dist_from_bottom = abs(pos - (-0.5))
             
-            # Combine: Base(-1) + Distance Bonus + Velocity Bonus
-            # 1. dist_from_bottom * 10.0: Max approx 1.0 (at top) -> +10 reward
-            # 2. abs(vel) * 10.0: Max approx 0.07 -> +0.7 reward
-            # This creates a dense positive signal for swinging.
-            modified_reward = reward + (dist_from_bottom * 10.0) + (abs(vel) * 10.0)
+            # Combine: Base(-1) + Distance Bonus. The velocity bonus was removed
+            # as it was encouraging reward hacking (wiggling in the valley).
+            modified_reward = reward + (dist_from_bottom * 1.0)
             
             # Huge bonus for reaching goal (overwrites everything)
             if pos >= 0.5:
@@ -791,7 +790,7 @@ def compute_backward_transfer(task_performances: Dict) -> float:
     return float(np.mean(forgetting_scores)) if forgetting_scores else 0.0
 
 
-def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 250, cycles: int = 2):
+def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 400, cycles: int = 2):
     """Complete RQ3 experiment with all conditions - FIXED: Ensure independence"""
     print(f"🔬 Experimental configuration: seeds={seeds}, episodes_per_task={episodes_per_task}, cycles={cycles}")
     print(f"🔬 Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -942,7 +941,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='RQ3: Complete Hybrid Experiments - MountainCar Version')
     parser.add_argument('--seeds', nargs='+', type=int, default=[1, 2, 3],
                         help='Random seeds for experiments')
-    parser.add_argument('--episodes-per-task', type=int, default=250,
+    parser.add_argument('--episodes-per-task', type=int, default=400,
                         help='Episodes per task')
     parser.add_argument('--cycles', type=int, default=2,
                         help='Number of cycles through all tasks')

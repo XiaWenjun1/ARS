@@ -1,0 +1,8 @@
+{
+  "seed": 2,
+  "condition": "limited_replay",
+  "avg_performance": 238.14999999999998,
+  "final_memory_mb": 0.08392333984375,
+  "compression_ratio": 1.0,
+  "timestamp": "2025-11-25 14:50:10"
+}

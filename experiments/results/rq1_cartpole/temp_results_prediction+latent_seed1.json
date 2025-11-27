@@ -1,0 +1,33 @@
+{
+  "seed": 1,
+  "detector": "prediction+latent",
+  "avg_train": 38.205,
+  "avg_eval": 242.425,
+  "n_detections": 15,
+  "precision": 0.2,
+  "recall": 1.0,
+  "eval_rewards": {
+    "0": 483.8,
+    "1": 63.0,
+    "2": 331.2,
+    "3": 91.7
+  },
+  "detections": [
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    114,
+    144,
+    150,
+    152,
+    187,
+    188
+  ],
+  "timestamp": "2025-11-26 15:54:26"
+}

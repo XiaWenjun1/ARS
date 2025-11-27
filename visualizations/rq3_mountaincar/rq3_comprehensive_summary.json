@@ -9,66 +9,66 @@
     "mean_backward_transfer": 0.0
   },
   "standard_replay": {
-    "mean_performance": -184.85,
+    "mean_performance": -180.20000000000002,
     "std_performance": 0.0,
     "mean_memory_mb": 1.33514404296875,
-    "mean_memory_efficiency": -128.80240203458453,
+    "mean_memory_efficiency": -125.56230915137752,
     "mean_compression_ratio": 1.0,
-    "mean_forward_transfer": -39.2111111111111,
-    "mean_backward_transfer": -18.3
+    "mean_forward_transfer": -56.72222222222222,
+    "mean_backward_transfer": -12.833333333333334
   },
   "limited_replay": {
-    "mean_performance": -178.70000000000002,
+    "mean_performance": -200.0,
     "std_performance": 0.0,
     "mean_memory_mb": 0.05340576171875,
-    "mean_memory_efficiency": -1164.8845388716481,
+    "mean_memory_efficiency": -1303.7319964987666,
     "mean_compression_ratio": 1.0,
-    "mean_forward_transfer": 0.0,
-    "mean_backward_transfer": 0.0
+    "mean_forward_transfer": -37.58888888888887,
+    "mean_backward_transfer": -0.266666666666661
   },
   "latent_replay": {
-    "mean_performance": -200.0,
+    "mean_performance": -193.125,
     "std_performance": 0.0,
     "mean_memory_mb": 0.1068115234375,
-    "mean_memory_efficiency": -967.0641010506433,
+    "mean_memory_efficiency": -933.8212725770275,
     "mean_compression_ratio": 1.1428571428571428,
-    "mean_forward_transfer": -45.77777777777778,
-    "mean_backward_transfer": -6.26666666666667
+    "mean_forward_transfer": -8.844444444444454,
+    "mean_backward_transfer": 0.0
   },
   "world_model_only": {
-    "mean_performance": -200.0,
+    "mean_performance": -189.4,
     "std_performance": 0.0,
     "mean_memory_mb": 0.1373291015625,
-    "mean_memory_efficiency": -842.7116551795083,
+    "mean_memory_efficiency": -798.0479374549943,
     "mean_compression_ratio": 1.1111111111111112,
-    "mean_forward_transfer": 0.0,
-    "mean_backward_transfer": 0.0
+    "mean_forward_transfer": -59.344444444444456,
+    "mean_backward_transfer": -20.03333333333333
   },
   "hybrid_basic": {
-    "mean_performance": -200.0,
+    "mean_performance": -173.625,
     "std_performance": 0.0,
     "mean_memory_mb": 0.1373291015625,
-    "mean_memory_efficiency": -842.7116551795083,
+    "mean_memory_efficiency": -731.5790556527106,
     "mean_compression_ratio": 1.1111111111111112,
-    "mean_forward_transfer": -31.74444444444445,
-    "mean_backward_transfer": -26.73333333333333
+    "mean_forward_transfer": -52.3111111111111,
+    "mean_backward_transfer": -1.3333333333333333
   },
   "hybrid_uncertainty": {
-    "mean_performance": -200.0,
+    "mean_performance": -177.7,
     "std_performance": 0.0,
     "mean_memory_mb": 0.1373291015625,
-    "mean_memory_efficiency": -842.7116551795083,
+    "mean_memory_efficiency": -748.7493056269931,
     "mean_compression_ratio": 1.1111111111111112,
-    "mean_forward_transfer": 0.0,
-    "mean_backward_transfer": 0.0
+    "mean_forward_transfer": -57.333333333333336,
+    "mean_backward_transfer": -41.46666666666667
   },
   "hybrid_distill": {
-    "mean_performance": -200.0,
+    "mean_performance": -197.95,
     "std_performance": 0.0,
     "mean_memory_mb": 0.1373291015625,
-    "mean_memory_efficiency": -842.7116551795083,
+    "mean_memory_efficiency": -834.0738607139183,
     "mean_compression_ratio": 1.1111111111111112,
-    "mean_forward_transfer": 0.0,
-    "mean_backward_transfer": 0.0
+    "mean_forward_transfer": -5.066666666666691,
+    "mean_backward_transfer": -5.066666666666663
   }
 }

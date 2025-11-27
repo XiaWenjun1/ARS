@@ -1,0 +1,8 @@
+{
+  "seed": 0,
+  "condition": "latent_replay",
+  "avg_performance": 19.049999999999997,
+  "final_memory_mb": 0.152587890625,
+  "compression_ratio": 1.2,
+  "timestamp": "2025-11-25 13:51:57"
+}

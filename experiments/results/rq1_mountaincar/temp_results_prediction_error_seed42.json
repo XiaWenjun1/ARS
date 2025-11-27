@@ -1,0 +1,25 @@
+{
+  "seed": 42,
+  "detector": "prediction_error",
+  "avg_train": -200.0,
+  "avg_eval": -200.0,
+  "n_detections": 7,
+  "precision": 0.42857142857142855,
+  "recall": 1.0,
+  "eval_rewards": {
+    "0": -200.0,
+    "1": -200.0,
+    "2": -200.0,
+    "3": -200.0
+  },
+  "detections": [
+    29,
+    54,
+    79,
+    104,
+    130,
+    155,
+    180
+  ],
+  "timestamp": "2025-11-26 22:01:34"
+}

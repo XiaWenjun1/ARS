@@ -1,0 +1,17 @@
+{
+  "seed": 1,
+  "detector": "no_detector",
+  "avg_train": -198.81,
+  "avg_eval": -167.05,
+  "n_detections": 0,
+  "precision": NaN,
+  "recall": NaN,
+  "eval_rewards": {
+    "0": -137.9,
+    "1": -159.7,
+    "2": -178.2,
+    "3": -192.4
+  },
+  "detections": [],
+  "timestamp": "2025-11-26 19:13:50"
+}

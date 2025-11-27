@@ -1,0 +1,3231 @@
+{
+  "seed": 0,
+  "condition": "large_fixed",
+  "avg_train": -199.0125,
+  "avg_eval": -178.07500000000002,
+  "eval_rewards": {
+    "0": -141.4,
+    "1": -177.7,
+    "2": -199.1,
+    "3": -194.1
+  },
+  "episode_rewards": [
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -188.0,
+    -200.0,
+    -200.0,
+    -192.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -185.0,
+    -198.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -157.0,
+    -177.0,
+    -193.0,
+    -200.0,
+    -189.0,
+    -175.0,
+    -183.0,
+    -195.0,
+    -200.0,
+    -196.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -183.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -179.0,
+    -196.0,
+    -199.0,
+    -183.0,
+    -200.0,
+    -195.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -173.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -194.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -197.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -188.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -177.0,
+    -200.0,
+    -180.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -199.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -182.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -196.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -180.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -200.0,
+    -176.0,
+    -200.0,
+    -200.0
+  ],
+  "capacity_history": [
+    {
+      "episode": 0,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 1,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 2,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 3,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 4,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 5,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 6,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 7,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 8,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 9,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 10,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 11,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 12,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 13,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 14,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 15,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 16,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 17,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 18,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 19,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 20,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 21,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 22,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 23,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 24,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 25,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 26,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 27,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 28,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 29,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 30,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 31,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 32,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 33,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 34,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 35,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 36,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 37,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 38,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 39,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 40,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 41,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 42,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 43,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 44,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 45,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 46,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 47,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 48,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 49,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 50,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 51,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 52,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 53,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 54,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 55,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 56,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 57,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 58,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 59,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 60,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 61,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 62,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 63,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 64,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 65,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 66,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 67,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 68,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 69,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 70,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 71,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 72,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 73,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 74,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 75,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 76,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 77,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 78,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 79,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 80,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 81,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 82,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 83,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 84,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 85,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 86,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 87,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 88,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 89,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 90,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 91,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 92,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 93,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 94,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 95,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 96,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 97,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 98,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 99,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 100,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 101,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 102,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 103,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 104,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 105,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 106,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 107,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 108,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 109,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 110,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 111,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 112,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 113,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 114,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 115,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 116,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 117,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 118,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 119,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 120,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 121,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 122,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 123,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 124,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 125,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 126,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 127,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 128,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 129,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 130,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 131,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 132,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 133,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 134,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 135,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 136,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 137,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 138,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 139,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 140,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 141,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 142,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 143,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 144,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 145,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 146,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 147,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 148,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 149,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 150,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 151,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 152,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 153,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 154,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 155,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 156,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 157,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 158,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 159,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 160,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 161,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 162,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 163,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 164,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 165,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 166,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 167,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 168,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 169,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 170,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 171,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 172,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 173,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 174,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 175,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 176,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 177,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 178,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 179,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 180,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 181,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 182,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 183,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 184,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 185,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 186,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 187,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 188,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 189,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 190,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 191,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 192,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 193,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 194,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 195,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 196,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 197,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 198,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 199,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 200,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 201,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 202,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 203,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 204,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 205,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 206,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 207,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 208,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 209,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 210,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 211,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 212,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 213,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 214,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 215,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 216,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 217,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 218,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 219,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 220,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 221,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 222,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 223,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 224,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 225,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 226,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 227,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 228,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 229,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 230,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 231,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 232,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 233,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 234,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 235,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 236,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 237,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 238,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 239,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 240,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 241,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 242,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 243,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 244,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 245,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 246,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 247,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 248,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 249,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 250,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 251,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 252,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 253,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 254,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 255,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 256,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 257,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 258,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 259,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 260,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 261,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 262,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 263,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 264,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 265,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 266,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 267,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 268,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 269,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 270,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 271,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 272,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 273,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 274,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 275,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 276,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 277,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 278,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 279,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 280,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 281,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 282,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 283,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 284,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 285,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 286,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 287,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 288,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 289,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 290,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 291,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 292,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 293,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 294,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 295,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 296,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 297,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 298,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 299,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 300,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 301,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 302,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 303,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 304,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 305,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 306,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 307,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 308,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 309,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 310,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 311,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 312,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 313,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 314,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 315,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 316,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 317,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 318,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 319,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 320,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 321,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 322,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 323,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 324,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 325,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 326,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 327,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 328,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 329,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 330,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 331,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 332,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 333,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 334,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 335,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 336,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 337,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 338,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 339,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 340,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 341,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 342,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 343,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 344,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 345,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 346,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 347,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 348,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 349,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 350,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 351,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 352,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 353,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 354,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 355,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 356,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 357,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 358,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 359,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 360,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 361,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 362,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 363,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 364,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 365,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 366,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 367,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 368,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 369,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 370,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 371,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 372,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 373,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 374,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 375,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 376,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 377,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 378,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 379,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 380,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 381,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 382,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 383,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 384,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 385,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 386,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 387,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 388,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 389,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 390,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 391,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 392,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 393,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 394,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 395,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 396,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 397,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 398,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    },
+    {
+      "episode": 399,
+      "policy_hidden_dim": 256,
+      "world_model_hidden_dim": 0,
+      "epsilon": 0.15,
+      "total_parameters": 67331
+    }
+  ],
+  "architecture_changes": [],
+  "efficiency_metrics": {
+    "parameters_per_reward": -378.10473117383714,
+    "adjustment_frequency": 0.0,
+    "final_policy_capacity": 256,
+    "final_world_model_capacity": 0,
+    "final_epsilon": 0.15,
+    "avg_eval": -178.07500000000002,
+    "reset_count": 0,
+    "has_world_model": false,
+    "meta_adjustments": {},
+    "total_parameters": 67331
+  },
+  "meta_decisions": [],
+  "timestamp": "2025-11-26 13:56:53"
+}

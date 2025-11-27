@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 RQ3 Experimental Framework: Complete Hybrid Latent-Space Replay with World Models - FIXED VERSION
+Optimized for CartPole-v1
 """
 
 from __future__ import annotations
@@ -79,7 +80,10 @@ class RQ3Agent:
         self.distill_loss = None
         if 'distill' in condition:
             self.teacher_net = PolicyNetwork(state_dim, action_dim, hidden_dim).to(device)
-            self.distill_loss = KnowledgeDistillationLoss(temperature=2.0, alpha=0.7)
+            # 【优化】：将 alpha 从 0.7 降低到 0.15。
+            # 说明：在环境动力学剧烈变化（如风力）时，过强的蒸馏会导致负迁移。
+            # 我们只希望保留一点点"记忆"，而不是"顽固"。
+            self.distill_loss = KnowledgeDistillationLoss(temperature=2.0, alpha=0.15)
         
         # Optimizer
         self.optimizer = torch.optim.Adam(
@@ -97,7 +101,7 @@ class RQ3Agent:
         self.update_target_every = 200
         self.steps_done = 0
         
-        # Feature control parameters - FIXED: More conservative ratios
+        # Feature control parameters
         self.force_latent_ratio = 0.0
         self.synthetic_ratio = 0.0
         self.uncertainty_guided = False
@@ -120,7 +124,9 @@ class RQ3Agent:
         buffer_config = {
             'state_dim': self.state_dim,
             'action_dim': self.action_dim,
-            'latent_dim': 3,  # FIXED: Reduced from 8 to 3 for real compression
+            # OPTIMIZATION: Increased from 3 to 4. 
+            # CartPole state is 4D. 3D loses info. 4D keeps info but allows encoder to learn features.
+            'latent_dim': 4, 
             'max_latent_samples': 2000,
             'max_raw_samples': 2000,
             'device': self.device
@@ -181,31 +187,31 @@ class RQ3Agent:
             raise ValueError(f"Unknown condition: {condition}")
     
     def _initialize_condition_features(self):
-        """Initialize feature flags based on condition - FIXED: Critical fix for latent_replay"""
+        """Initialize feature flags based on condition"""
         if self.condition == "latent_replay":
-            # FIXED: Critical - latent_replay cannot use latent samples without world model
-            self.force_latent_ratio = 0.0  # Must be 0 - no world model to predict next_state
+            # FIXED: Allow sampling from latent buffer (LatentReplayBuffer now supports next_state storage)
+            self.force_latent_ratio = 0.5 
             self.synthetic_ratio = 0.0
-            print("⚠️ WARNING: latent_replay only compresses storage, does not sample from latent buffer (no world model to reconstruct next_state)")
+            print("✅ Latent Replay Active: Sampling allowed")
         
         elif self.condition == "world_model_only":
             self.force_latent_ratio = 0.0
-            self.synthetic_ratio = 0.3  # FIXED: Reduced from 0.5 to 0.3
+            self.synthetic_ratio = 0.3
             self.uncertainty_guided = False
         
         elif self.condition == "hybrid_basic":
-            self.force_latent_ratio = 0.1  # FIXED: Reduced from 0.2 to 0.1
-            self.synthetic_ratio = 0.05    # FIXED: Reduced from 0.1 to 0.05
+            self.force_latent_ratio = 0.1
+            self.synthetic_ratio = 0.05
             self.uncertainty_guided = False
         
         elif self.condition == "hybrid_uncertainty":
-            self.force_latent_ratio = 0.1  # FIXED: Reduced from 0.2 to 0.1
-            self.synthetic_ratio = 0.05    # FIXED: Reduced from 0.1 to 0.05
+            self.force_latent_ratio = 0.1
+            self.synthetic_ratio = 0.05
             self.uncertainty_guided = True
         
         elif self.condition == "hybrid_distill":
-            self.force_latent_ratio = 0.1  # FIXED: Reduced from 0.2 to 0.1
-            self.synthetic_ratio = 0.05    # FIXED: Reduced from 0.1 to 0.05
+            self.force_latent_ratio = 0.1
+            self.synthetic_ratio = 0.05
             self.uncertainty_guided = True
             self.use_distillation = True
     
@@ -243,20 +249,22 @@ class RQ3Agent:
                 world_model_uncertainty=None
             )
             
-            # FIXED: Train world model more frequently (every 10 steps instead of 50)
+            # Train world model frequently
             if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
-                if self.steps_done % 10 == 0:  # FIXED: Increased frequency
+                # 【优化】：提高训练频率或强度
+                # CartPole 数据简单，可以更频繁地更新模型以快速适应新物理规律
+                if self.steps_done % 5 == 0:  # 从 10 改为 5
                     loss, uncertainty = self._train_world_model()
                     if loss > 0 and self.debug_counter % 500 == 0:
                         print(f"🤖 World model training: loss={loss:.4f}, uncertainty={uncertainty:.4f}")
             
-            # FIXED: Train encoder more frequently and without step limit
-            if self.steps_done % 100 == 0:  # FIXED: Increased frequency, removed step limit
+            # Train encoder frequently
+            if self.steps_done % 100 == 0:
                 loss = self._train_latent_encoder()
                 if self.debug_counter % 1000 == 0 and loss > 0:
                     print(f"🔧 Encoder training: loss={loss:.4f}")
             
-            # NEW: Validate world model quality periodically
+            # Validate world model quality
             if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
                 if self.debug_counter % 500 == 0:
                     quality_metrics = self.replay_buffer.validate_world_model_quality()
@@ -266,16 +274,15 @@ class RQ3Agent:
             self.replay_buffer.push(state, action, reward, next_state, done)
     
     def _train_world_model(self):
-        """Train world model on recent experiences - FIXED: More frequent training"""
+        """Train world model on recent experiences"""
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0.0, 0.0
         
         if len(self.replay_buffer.raw_buffer) < 16:
             return 0.0, 0.0
         
-        # Sample recent experiences for world model training
         samples = random.sample(
-            self.replay_buffer.raw_buffer[-1000:],  # Recent samples
+            self.replay_buffer.raw_buffer[-1000:],
             min(32, len(self.replay_buffer.raw_buffer))
         )
         
@@ -291,7 +298,7 @@ class RQ3Agent:
         return loss, uncertainty
     
     def _train_latent_encoder(self):
-        """Train latent encoder - FIXED: More frequent training"""
+        """Train latent encoder"""
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0.0
         
@@ -306,31 +313,29 @@ class RQ3Agent:
         return loss
     
     def generate_synthetic_samples(self, task_id: int):
-        """Generate synthetic samples using world model - FIXED: More frequent generation"""
+        """Generate synthetic samples using world model"""
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0
         
         if not hasattr(self.replay_buffer, 'world_model') or self.replay_buffer.world_model is None:
             return 0
         
-        # Generate synthetic samples
-        n_samples = 30  # FIXED: Reduced from 50 to 30 for better quality
+        n_samples = 30
         
         generated = self.replay_buffer.generate_synthetic_samples(
             n_samples, task_id, high_uncertainty=self.uncertainty_guided
         )
         
-        if generated > 0 and self.debug_counter % 200 == 0:  # FIXED: More frequent logging
+        if generated > 0 and self.debug_counter % 200 == 0:
             print(f"🤖 Generated {generated} synthetic samples for task {task_id}")
         
         return generated
     
     def update(self) -> float:
-        """Enhanced update with all features - FIXED: Better uncertainty debugging"""
+        """Enhanced update with all features"""
         if not self.use_replay or self.replay_buffer is None:
             return 0.0
         
-        # Sample batch with appropriate ratios
         try:
             if isinstance(self.replay_buffer, LatentReplayBuffer):
                 states, actions, rewards, next_states, dones = self.replay_buffer.sample_batch(
@@ -341,23 +346,6 @@ class RQ3Agent:
                     synthetic_ratio=self.synthetic_ratio,
                     uncertainty_guided=self.uncertainty_guided
                 )
-                
-                # Enhanced debugging for uncertainty-guided sampling
-                if self.uncertainty_guided and self.debug_counter % 800 == 0 and len(states) > 0:
-                    stats = self.replay_buffer.get_stats()
-                    print(f"🎯 UNCERTAINTY-GUIDED SAMPLING ACTIVE:")
-                    print(f"   - Synthetic samples: {stats['samples_synthetic']}")
-                    print(f"   - Uncertainty score: {stats['uncertainty_score']:.3f}")
-                    print(f"   - Ratios: latent={self.force_latent_ratio:.1%}, synthetic={self.synthetic_ratio:.1%}")
-                    
-                # Enhanced debugging
-                if self.debug_counter % 1000 == 0 and len(states) > 0:
-                    stats = self.replay_buffer.get_stats()
-                    print(f"🔍 DEBUG [step {self.steps_done}]:")
-                    print(f"   - Raw: {stats['samples_raw']}, Latent: {stats['samples_latent']}, Synthetic: {stats['samples_synthetic']}")
-                    print(f"   - Ratios: latent={self.force_latent_ratio:.1%}, synthetic={self.synthetic_ratio:.1%}")
-                    print(f"   - Batch size: {len(states)}")
-                    print(f"   - Compression ratio: {stats.get('compression_ratio', 1.0):.2f}x")
             else:
                 states, actions, rewards, next_states, dones = self.replay_buffer.sample(self.batch_size)
             
@@ -370,28 +358,22 @@ class RQ3Agent:
                 
         except Exception as e:
             print(f"❌ Error in sampling: {e}")
-            import traceback
-            traceback.print_exc()
             return 0.0
         
-        # Convert to tensors
         states = torch.FloatTensor(states).to(self.device)
         actions = torch.LongTensor(actions).unsqueeze(1).to(self.device)
         rewards = torch.FloatTensor(rewards).unsqueeze(1).to(self.device)
         next_states = torch.FloatTensor(next_states).to(self.device)
         dones = torch.FloatTensor(dones).unsqueeze(1).to(self.device)
         
-        # Q-learning update
         q_values = self.policy_net(states).gather(1, actions)
         
         with torch.no_grad():
             next_q = self.target_net(next_states).max(1)[0].unsqueeze(1)
             target = rewards + self.gamma * next_q * (1 - dones)
         
-        # Compute base loss
         td_loss = nn.MSELoss()(q_values, target)
         
-        # Add distillation loss if applicable
         if self.use_distillation and self.teacher_net is not None:
             with torch.no_grad():
                 teacher_q = self.teacher_net(states)
@@ -406,13 +388,11 @@ class RQ3Agent:
         else:
             loss = td_loss
         
-        # Optimization step
         self.optimizer.zero_grad()
         loss.backward()
         torch.nn.utils.clip_grad_norm_(self.policy_net.parameters(), 1.0)
         self.optimizer.step()
         
-        # Update target network
         self.steps_done += 1
         if self.steps_done % self.update_target_every == 0:
             self.target_net.load_state_dict(self.policy_net.state_dict())
@@ -427,22 +407,22 @@ class RQ3Agent:
             print(f"📚 Saved teacher model for distillation (step {self.steps_done})")
     
     def check_and_enable_features(self, episodes_completed: int):
-        """Progressive feature enabling based on condition - FIXED: More gradual enabling"""
+        """Progressive feature enabling based on condition"""
         if self.condition == "latent_replay":
-            # FIXED: latent_replay should never enable latent sampling (no world model)
-            self.force_latent_ratio = 0.0  # Always 0
+            # 【优化】：增加预热期。前50轮不要用Latent数据，避免Encoder未收敛时的噪声干扰
+            if episodes_completed < 50:
+                self.force_latent_ratio = 0.0
+            else:
+                self.force_latent_ratio = 0.5  # Encoder 稳定后再开启混合
         
         elif self.condition in ["world_model_only", "hybrid_basic", "hybrid_uncertainty", "hybrid_distill"]:
-            # Enable world model features earlier and more frequently
-            if episodes_completed > 5:  # FIXED: Start earlier (from 20 to 5)
-                # Generate synthetic samples periodically
-                if episodes_completed % 5 == 0:  # FIXED: More frequent generation (from 10 to 5)
+            if episodes_completed > 5:
+                if episodes_completed % 5 == 0:
                     current_task = 0
                     generated = self.generate_synthetic_samples(current_task)
                     if generated > 0 and episodes_completed % 15 == 0:
                         print(f"🤖 Synthetic generation: {generated} samples (episode {episodes_completed})")
             
-            # Gradually increase synthetic ratio for world_model_only
             if self.condition == "world_model_only" and episodes_completed > 10:
                 if episodes_completed < 20:
                     self.synthetic_ratio = 0.2
@@ -463,14 +443,6 @@ class RQ3Agent:
             print(f"  Latent ratio: {self.force_latent_ratio:.1%}")
             print(f"  Synthetic ratio: {self.synthetic_ratio:.1%}")
             print(f"  Compression: {stats.get('compression_ratio', 1.0):.2f}x")
-            print(f"  Uncertainty guided: {self.uncertainty_guided}")
-            print(f"  Distillation: {self.use_distillation}")
-            
-            # NEW: World model quality info
-            if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
-                quality = self.replay_buffer.validate_world_model_quality()
-                if quality:
-                    print(f"  World Model Quality: state_mse={quality.get('state_prediction_mse', 0):.4f}")
         
         health = self.check_training_health()
         if not health['healthy']:
@@ -485,8 +457,7 @@ class RQ3Agent:
         if isinstance(self.replay_buffer, LatentReplayBuffer):
             return self.replay_buffer.get_memory_usage()
         elif self.replay_buffer is not None:
-            # FIXED: Correct memory calculation for SimpleReplayBuffer
-            sample_size = (2 * self.state_dim + 3) * 4  # state, next_state, action, reward, done
+            sample_size = (2 * self.state_dim + 3) * 4
             mem = len(self.replay_buffer) * sample_size / (1024 * 1024)
             return {
                 'total_mb': mem,
@@ -503,7 +474,6 @@ class RQ3Agent:
             'issues': []
         }
         
-        # Check policy network gradients
         policy_grad_norm = 0.0
         for param in self.policy_net.parameters():
             if param.grad is not None:
@@ -513,22 +483,11 @@ class RQ3Agent:
             health_status['healthy'] = False
             health_status['issues'].append(f"Policy gradient too large: {policy_grad_norm:.2f}")
         
-        # Check replay buffers
-        if isinstance(self.replay_buffer, LatentReplayBuffer):
-            if len(self.replay_buffer.raw_buffer) < 20:
-                health_status['issues'].append("Raw buffer too small")
-            if (self.force_latent_ratio > 0 and 
-                len(self.replay_buffer.latent_buffer) == 0):
-                health_status['issues'].append("Latent buffer empty but sampling enabled")
-            if (self.synthetic_ratio > 0 and 
-                len(self.replay_buffer.synthetic_buffer) == 0):
-                health_status['issues'].append("Synthetic buffer empty but sampling enabled")
-        
         return health_status
 
 
 class SimpleReplayBuffer:
-    """Traditional experience replay buffer - FIXED: Correct memory calculation"""
+    """Traditional experience replay buffer"""
     def __init__(self, max_size: int = 10000):
         self.buffer = []
         self.max_size = max_size
@@ -565,7 +524,7 @@ def run_rq3_experiment(
     """Run single experimental condition"""
     print(f"\n{'='*60}")
     print(f"SEED {seed} - Condition: {condition}")
-    print(f"{'='*60}")
+    print(f"{ '='*60}")
     
     set_global_seed(seed)
     
@@ -574,20 +533,17 @@ def run_rq3_experiment(
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
     
-    # Create agent
     agent_config = {
         'policy_hidden': 64,
         'learning_rate': 1e-3,
     }
     agent = RQ3Agent(state_dim, action_dim, condition, config=agent_config)
     
-    # Task sequence
     task_sequence = []
     for _ in range(cycles):
         for task_id in range(env.total_tasks):
             task_sequence.extend([task_id] * episodes_per_task)
     
-    # Training metrics
     episode_rewards = []
     task_performances = {i: [] for i in range(env.total_tasks)}
     memory_usage_log = []
@@ -599,26 +555,20 @@ def run_rq3_experiment(
     for episode_idx in range(len(task_sequence)):
         desired_task = task_sequence[episode_idx]
         
-        # Task boundary
         if desired_task != env.current_task:
-            # Evaluate on all tasks before switching
             eval_results = evaluate_all_tasks(agent, env, cfg)
             for tid, perf in eval_results.items():
                 task_performances[tid].append(perf)
             
-            # Save teacher for distillation
             if 'distill' in condition:
                 agent.snapshot_for_distillation()
             
-            # Switch task
             env.change_task(desired_task)
             current_task = desired_task
             
-            # Update buffer task boundary
             if isinstance(agent.replay_buffer, LatentReplayBuffer):
                 agent.replay_buffer.update_task_boundary(current_task)
         
-        # Training episode
         state, _ = env.reset()
         episode_reward = 0.0
         done = False
@@ -628,10 +578,7 @@ def run_rq3_experiment(
             next_state, reward, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
             
-            # Store transition
             agent.store_transition(state, action, reward, next_state, done, current_task)
-            
-            # Update policy
             loss = agent.update()
             
             episode_reward += reward
@@ -640,30 +587,21 @@ def run_rq3_experiment(
         episode_rewards.append(episode_reward)
         episodes_completed += 1
         
-        # Progressive feature enabling
         agent.check_and_enable_features(episodes_completed)
         
-        # Periodic diagnostics
         if episodes_completed % 50 == 0 and episodes_completed > 0:
             agent.diagnose()
         
-        # Log memory usage
         if episodes_completed % 20 == 0:
             mem_stats = agent.get_memory_usage()
             mem_stats['episode'] = episodes_completed
             memory_usage_log.append(mem_stats)
     
-    # Final evaluation
     final_eval = evaluate_all_tasks(agent, env, cfg)
     
-    # Compute summary metrics
     avg_performance = np.mean(list(final_eval.values()))
-    
-    # Memory efficiency
     final_memory = agent.get_memory_usage()
     memory_efficiency = avg_performance / (final_memory.get('total_mb', 1.0) + 0.1)
-    
-    # Transfer metrics
     forward_transfer = compute_forward_transfer(task_performances)
     backward_transfer = compute_backward_transfer(task_performances)
     
@@ -756,17 +694,14 @@ def compute_backward_transfer(task_performances: Dict) -> float:
     return float(np.mean(forgetting_scores)) if forgetting_scores else 0.0
 
 
-def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int = 2):
-    """Complete RQ3 experiment with all conditions - FIXED: Ensure independence"""
+def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 300, cycles: int = 2):
+    """Complete RQ3 experiment with all conditions - FIXED VERSION"""
     print(f"🔬 Experimental configuration: seeds={seeds}, episodes_per_task={episodes_per_task}, cycles={cycles}")
     print(f"🔬 Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
-    # === 📂 1. 设置路径管理 (New Path Management) ===
+    # === 📂 Path Management: Save like MountainCar ===
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    # 结果 JSON 保存位置: experiments/results/rq3_cartpole/
     results_dir = os.path.join(base_dir, "results", "rq3_cartpole")
-    # 可视化图表保存位置: visualizations/rq3_cartpole/
-    # 注意：这里假设 visualizations 文件夹在 experiments 的上一级，根据你的文件列表调整
     vis_dir = os.path.join(os.path.dirname(base_dir), "visualizations", "rq3_cartpole")
     
     os.makedirs(results_dir, exist_ok=True)
@@ -776,13 +711,9 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     # ==================================================
 
     cfg = CartPoleConfig()
-    
-    # Validate environment setup
     env = CartPoleCL(cfg.TASKS)
     env.reset(seed=seeds[0])
-    print(f"🔬 Environment validation: state_dim={env.observation_space.shape[0]}, action_dim={env.action_space.n}, tasks={env.total_tasks}")
     
-    # All experimental conditions
     conditions = [
         "baseline_no_replay",
         "standard_replay",        
@@ -795,7 +726,7 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
     ]
     
     print("=" * 80)
-    print("COMPLETE RQ3 EXPERIMENT: All Hybrid Conditions - FIXED VERSION")
+    print("COMPLETE RQ3 EXPERIMENT: All Hybrid Conditions - CartPole Fixed")
     print("=" * 80)
     
     all_results = {}
@@ -806,15 +737,11 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
         
         for seed in seeds:
             print(f"\n  🔧 Seed {seed} starting...")
-            start_time = time.time()
-            
-            # Set different global seeds for each run
             set_global_seed(seed)
-            
             result = run_rq3_experiment(cfg, condition, seed, episodes_per_task, cycles)
             condition_results.append(result)
             
-# === 💾 2. 保存到新路径 (Save to new path) ===
+            # === 💾 Save to new path (Same format as MountainCar) ===
             json_filename = f'temp_results_{condition}_seed{seed}.json'
             json_path = os.path.join(results_dir, json_filename)
             
@@ -832,11 +759,10 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
         
         all_results[condition] = condition_results
     
-    # Comprehensive results analysis
     print("\n" + "=" * 80)
-    print("RQ3 COMPLETE RESULTS SUMMARY - FIXED VERSION")
+    print("RQ3 COMPLETE RESULTS SUMMARY - CartPole Fixed")
     print("=" * 80)
-    print(f"{'Condition':<25} {'Perf':<8} {'Memory':<10} {'Eff':<8} {'Comp':<8} {'FT':<8} {'BT':<8}")
+    print(f"{ 'Condition':<25} {'Perf':<8} {'Memory':<10} {'Eff':<8} {'Comp':<8} {'FT':<8} {'BT':<8}")
     print("-" * 80)
     
     for condition in conditions:
@@ -848,67 +774,23 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 100, cycles: int
             fts = [r['forward_transfer'] for r in all_results[condition]]
             bts = [r['backward_transfer'] for r in all_results[condition]]
             
-            mean_perf = np.mean(perfs)
-            std_perf = np.std(perfs)
-            mean_mem = np.mean(mems)
-            mean_eff = np.mean(effs)
-            mean_comp = np.mean(comps)
-            mean_ft = np.mean(fts)
-            mean_bt = np.mean(bts)
-            
-            print(f"{condition:<25} {mean_perf:>5.1f}±{std_perf:<2.1f} {mean_mem:>8.3f} "
-                  f"{mean_eff:>6.1f} {mean_comp:>6.2f}x {mean_ft:>6.1f} {mean_bt:>6.1f}")
+            print(f"{condition:<25} {np.mean(perfs):>5.1f}±{np.std(perfs):<2.1f} {np.mean(mems):>8.3f} "
+                  f"{np.mean(effs):>6.1f} {np.mean(comps):>6.2f}x {np.mean(fts):>6.1f} {np.mean(bts):>6.1f}")
     
-    print("=" * 80)
-    
-    # Key insights
-    print("\n🔍 KEY INSIGHTS:")
-    
-    # Compare hybrid methods
-    hybrid_conditions = ["hybrid_basic", "hybrid_uncertainty", "hybrid_distill"]
-    best_hybrid = None
-    best_performance = -float('inf')
-    
-    for cond in hybrid_conditions:
-        if cond in all_results:
-            perf = np.mean([r['avg_performance'] for r in all_results[cond]])
-            if perf > best_performance:
-                best_performance = perf
-                best_hybrid = cond
-    
-    if best_hybrid:
-        print(f"🏆 Best hybrid method: {best_hybrid} (performance: {best_performance:.1f})")
-    
-    # Memory efficiency champion
-    best_efficiency = -float('inf')
-    best_eff_condition = None
-    
-    for cond in conditions:
-        if cond in all_results and cond != "baseline_no_replay":
-            eff = np.mean([r['memory_efficiency'] for r in all_results[cond]])
-            if eff > best_efficiency:
-                best_efficiency = eff
-                best_eff_condition = cond
-    
-    if best_eff_condition:
-        print(f"💾 Most memory efficient: {best_eff_condition} ({best_efficiency:.1f} perf/MB)")
-    
-# === 📊 3. 生成可视化到新路径 (Generate viz to new path) ===
+    # === 📊 Generate viz to new path ===
     print(f"\n📊 Generating comprehensive visualizations in {vis_dir}...")
     create_comprehensive_analysis(all_results, save_dir=vis_dir)
     # ==========================================================
-    
-    print(f"🔬 End time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     return all_results
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='RQ3: Complete Hybrid Experiments - Fixed Version')
+    parser = argparse.ArgumentParser(description='RQ3: Complete Hybrid Experiments - CartPole Fixed')
     parser.add_argument('--seeds', nargs='+', type=int, default=[1, 2, 3],
                         help='Random seeds for experiments')
-    parser.add_argument('--episodes-per-task', type=int, default=100,
-                        help='Episodes per task')
+    parser.add_argument('--episodes-per-task', type=int, default=300,
+                        help='Episodes per task (Increased for better convergence)')
     parser.add_argument('--cycles', type=int, default=2,
                         help='Number of cycles through all tasks')
     parser.add_argument('--quick-test', action='store_true',
@@ -917,7 +799,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     if args.quick_test:
-        print("🚀 QUICK TEST MODE - FIXED VERSION")
+        print("🚀 QUICK TEST MODE")
         main(seeds=[1], episodes_per_task=50, cycles=1)
     else:
         main(seeds=args.seeds, episodes_per_task=args.episodes_per_task, cycles=args.cycles)

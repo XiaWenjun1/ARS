@@ -1,0 +1,51 @@
+{
+  "small_fixed": {
+    "mean_performance": -154.52499999999998,
+    "std_performance": 0.0,
+    "min_performance": -154.52499999999998,
+    "max_performance": -154.52499999999998,
+    "n_runs": 1
+  },
+  "large_fixed": {
+    "mean_performance": -178.07500000000002,
+    "std_performance": 0.0,
+    "min_performance": -178.07500000000002,
+    "max_performance": -178.07500000000002,
+    "n_runs": 1
+  },
+  "dreamer_style": {
+    "mean_performance": -178.425,
+    "std_performance": 0.0,
+    "min_performance": -178.425,
+    "max_performance": -178.425,
+    "n_runs": 1
+  },
+  "dreamer_no_imagination": {
+    "mean_performance": -154.52499999999998,
+    "std_performance": 0.0,
+    "min_performance": -154.52499999999998,
+    "max_performance": -154.52499999999998,
+    "n_runs": 1
+  },
+  "adaptive_policy_only": {
+    "mean_performance": -184.875,
+    "std_performance": 0.0,
+    "min_performance": -184.875,
+    "max_performance": -184.875,
+    "n_runs": 1
+  },
+  "adaptive_world_model": {
+    "mean_performance": -154.3,
+    "std_performance": 0.0,
+    "min_performance": -154.3,
+    "max_performance": -154.3,
+    "n_runs": 1
+  },
+  "fully_adaptive": {
+    "mean_performance": -153.1,
+    "std_performance": 0.0,
+    "min_performance": -153.1,
+    "max_performance": -153.1,
+    "n_runs": 1
+  }
+}

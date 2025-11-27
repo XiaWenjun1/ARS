@@ -1,0 +1,19 @@
+{
+  "seed": 42,
+  "detector": "latent_space",
+  "avg_train": -200.0,
+  "avg_eval": -200.0,
+  "n_detections": 1,
+  "precision": 1.0,
+  "recall": 0.3333333333333333,
+  "eval_rewards": {
+    "0": -200.0,
+    "1": -200.0,
+    "2": -200.0,
+    "3": -200.0
+  },
+  "detections": [
+    168
+  ],
+  "timestamp": "2025-11-26 22:04:13"
+}

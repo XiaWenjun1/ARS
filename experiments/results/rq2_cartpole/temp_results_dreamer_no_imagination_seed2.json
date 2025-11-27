@@ -1,0 +1,6430 @@
+{
+  "seed": 2,
+  "condition": "dreamer_no_imagination",
+  "avg_train": 92.7175,
+  "avg_eval": 119.225,
+  "eval_rewards": {
+    "0": 183.8,
+    "1": 64.7,
+    "2": 152.9,
+    "3": 75.5
+  },
+  "episode_rewards": [
+    9.0,
+    10.0,
+    10.0,
+    8.0,
+    9.0,
+    10.0,
+    9.0,
+    9.0,
+    9.0,
+    9.0,
+    9.0,
+    12.0,
+    10.0,
+    10.0,
+    11.0,
+    12.0,
+    10.0,
+    9.0,
+    8.0,
+    11.0,
+    8.0,
+    10.0,
+    10.0,
+    15.0,
+    18.0,
+    16.0,
+    10.0,
+    10.0,
+    10.0,
+    11.0,
+    9.0,
+    10.0,
+    11.0,
+    10.0,
+    11.0,
+    21.0,
+    12.0,
+    9.0,
+    10.0,
+    9.0,
+    12.0,
+    10.0,
+    10.0,
+    16.0,
+    11.0,
+    9.0,
+    13.0,
+    15.0,
+    12.0,
+    19.0,
+    17.0,
+    15.0,
+    21.0,
+    8.0,
+    11.0,
+    19.0,
+    12.0,
+    28.0,
+    14.0,
+    12.0,
+    14.0,
+    27.0,
+    14.0,
+    16.0,
+    12.0,
+    18.0,
+    11.0,
+    13.0,
+    19.0,
+    28.0,
+    15.0,
+    24.0,
+    69.0,
+    22.0,
+    12.0,
+    64.0,
+    142.0,
+    70.0,
+    63.0,
+    69.0,
+    54.0,
+    76.0,
+    38.0,
+    32.0,
+    37.0,
+    63.0,
+    23.0,
+    31.0,
+    44.0,
+    44.0,
+    27.0,
+    47.0,
+    23.0,
+    40.0,
+    19.0,
+    30.0,
+    40.0,
+    50.0,
+    45.0,
+    51.0,
+    39.0,
+    53.0,
+    50.0,
+    46.0,
+    48.0,
+    48.0,
+    57.0,
+    166.0,
+    89.0,
+    125.0,
+    179.0,
+    208.0,
+    246.0,
+    228.0,
+    154.0,
+    205.0,
+    191.0,
+    237.0,
+    131.0,
+    147.0,
+    183.0,
+    198.0,
+    155.0,
+    151.0,
+    155.0,
+    125.0,
+    148.0,
+    147.0,
+    212.0,
+    155.0,
+    161.0,
+    194.0,
+    170.0,
+    218.0,
+    149.0,
+    153.0,
+    109.0,
+    132.0,
+    162.0,
+    143.0,
+    173.0,
+    153.0,
+    199.0,
+    186.0,
+    189.0,
+    213.0,
+    182.0,
+    202.0,
+    174.0,
+    172.0,
+    196.0,
+    144.0,
+    141.0,
+    141.0,
+    16.0,
+    139.0,
+    121.0,
+    119.0,
+    122.0,
+    140.0,
+    127.0,
+    141.0,
+    128.0,
+    145.0,
+    15.0,
+    145.0,
+    141.0,
+    128.0,
+    138.0,
+    166.0,
+    145.0,
+    142.0,
+    127.0,
+    141.0,
+    183.0,
+    136.0,
+    139.0,
+    134.0,
+    181.0,
+    134.0,
+    142.0,
+    130.0,
+    136.0,
+    180.0,
+    167.0,
+    27.0,
+    198.0,
+    322.0,
+    381.0,
+    500.0,
+    500.0,
+    500.0,
+    21.0,
+    12.0,
+    500.0,
+    194.0,
+    212.0,
+    160.0,
+    387.0,
+    130.0,
+    27.0,
+    23.0,
+    55.0,
+    27.0,
+    26.0,
+    8.0,
+    16.0,
+    20.0,
+    23.0,
+    16.0,
+    17.0,
+    13.0,
+    23.0,
+    15.0,
+    16.0,
+    13.0,
+    16.0,
+    35.0,
+    12.0,
+    13.0,
+    16.0,
+    13.0,
+    28.0,
+    16.0,
+    19.0,
+    22.0,
+    23.0,
+    28.0,
+    63.0,
+    24.0,
+    12.0,
+    7.0,
+    56.0,
+    54.0,
+    39.0,
+    100.0,
+    36.0,
+    28.0,
+    23.0,
+    68.0,
+    8.0,
+    47.0,
+    32.0,
+    9.0,
+    15.0,
+    29.0,
+    69.0,
+    9.0,
+    11.0,
+    38.0,
+    24.0,
+    39.0,
+    19.0,
+    19.0,
+    21.0,
+    16.0,
+    24.0,
+    149.0,
+    26.0,
+    49.0,
+    30.0,
+    20.0,
+    31.0,
+    38.0,
+    28.0,
+    33.0,
+    20.0,
+    60.0,
+    44.0,
+    9.0,
+    21.0,
+    30.0,
+    14.0,
+    11.0,
+    25.0,
+    14.0,
+    35.0,
+    48.0,
+    61.0,
+    27.0,
+    60.0,
+    12.0,
+    88.0,
+    19.0,
+    35.0,
+    61.0,
+    16.0,
+    28.0,
+    12.0,
+    143.0,
+    32.0,
+    27.0,
+    30.0,
+    10.0,
+    15.0,
+    19.0,
+    41.0,
+    169.0,
+    26.0,
+    85.0,
+    73.0,
+    13.0,
+    8.0,
+    14.0,
+    30.0,
+    19.0,
+    30.0,
+    65.0,
+    27.0,
+    88.0,
+    19.0,
+    30.0,
+    50.0,
+    23.0,
+    10.0,
+    18.0,
+    31.0,
+    35.0,
+    50.0,
+    40.0,
+    14.0,
+    11.0,
+    59.0,
+    49.0,
+    46.0,
+    58.0,
+    80.0,
+    11.0,
+    35.0,
+    67.0,
+    13.0,
+    34.0,
+    25.0,
+    21.0,
+    17.0,
+    39.0,
+    127.0,
+    14.0,
+    60.0,
+    62.0,
+    68.0,
+    14.0,
+    19.0,
+    41.0,
+    18.0,
+    18.0,
+    89.0,
+    17.0,
+    26.0,
+    48.0,
+    19.0,
+    100.0,
+    15.0,
+    100.0,
+    83.0,
+    40.0,
+    48.0,
+    94.0,
+    12.0,
+    80.0,
+    36.0,
+    42.0,
+    74.0,
+    144.0,
+    59.0,
+    29.0,
+    124.0,
+    31.0,
+    27.0,
+    58.0,
+    71.0,
+    43.0,
+    28.0,
+    14.0,
+    124.0,
+    30.0,
+    77.0,
+    42.0,
+    158.0,
+    156.0,
+    223.0,
+    18.0,
+    127.0,
+    76.0,
+    25.0,
+    71.0,
+    73.0,
+    80.0,
+    31.0,
+    19.0,
+    23.0,
+    46.0,
+    120.0,
+    50.0,
+    191.0,
+    34.0,
+    29.0,
+    18.0,
+    116.0,
+    13.0,
+    191.0,
+    94.0,
+    190.0,
+    164.0,
+    40.0,
+    155.0,
+    121.0,
+    193.0,
+    32.0,
+    191.0,
+    143.0,
+    37.0,
+    127.0,
+    171.0,
+    123.0,
+    98.0,
+    202.0,
+    101.0,
+    36.0,
+    161.0,
+    146.0,
+    254.0,
+    42.0,
+    126.0,
+    223.0,
+    147.0,
+    110.0,
+    113.0,
+    131.0,
+    140.0,
+    64.0,
+    113.0,
+    136.0,
+    174.0,
+    139.0,
+    45.0,
+    134.0,
+    165.0,
+    133.0,
+    101.0,
+    71.0,
+    37.0,
+    146.0,
+    156.0,
+    160.0,
+    228.0,
+    46.0,
+    175.0,
+    135.0,
+    62.0,
+    35.0,
+    121.0,
+    247.0,
+    120.0,
+    136.0,
+    176.0,
+    148.0,
+    138.0,
+    51.0,
+    41.0,
+    43.0,
+    220.0,
+    123.0,
+    198.0,
+    174.0,
+    105.0,
+    153.0,
+    139.0,
+    157.0,
+    187.0,
+    209.0,
+    173.0,
+    146.0,
+    168.0,
+    43.0,
+    342.0,
+    88.0,
+    194.0,
+    130.0,
+    125.0,
+    144.0,
+    233.0,
+    22.0,
+    28.0,
+    93.0,
+    64.0,
+    63.0,
+    113.0,
+    105.0,
+    235.0,
+    139.0,
+    194.0,
+    115.0,
+    87.0,
+    139.0,
+    166.0,
+    141.0,
+    153.0,
+    198.0,
+    205.0,
+    139.0,
+    113.0,
+    129.0,
+    265.0,
+    272.0,
+    62.0,
+    32.0,
+    147.0,
+    500.0,
+    292.0,
+    195.0,
+    126.0,
+    172.0,
+    87.0,
+    195.0,
+    182.0,
+    89.0,
+    259.0,
+    210.0,
+    172.0,
+    180.0,
+    253.0,
+    121.0,
+    127.0,
+    107.0,
+    158.0,
+    230.0,
+    214.0,
+    254.0,
+    243.0,
+    72.0,
+    180.0,
+    113.0,
+    211.0,
+    220.0,
+    195.0,
+    61.0,
+    21.0,
+    134.0,
+    135.0,
+    78.0,
+    148.0,
+    126.0,
+    99.0,
+    115.0,
+    188.0,
+    277.0,
+    413.0,
+    183.0,
+    296.0,
+    363.0,
+    117.0,
+    142.0,
+    357.0,
+    48.0,
+    234.0,
+    291.0,
+    265.0,
+    277.0,
+    386.0,
+    174.0,
+    349.0,
+    500.0,
+    49.0,
+    86.0,
+    357.0,
+    126.0,
+    490.0,
+    454.0,
+    391.0,
+    363.0,
+    195.0,
+    235.0,
+    68.0,
+    154.0,
+    225.0,
+    226.0,
+    312.0,
+    155.0,
+    85.0,
+    315.0,
+    192.0,
+    115.0,
+    321.0,
+    207.0,
+    250.0,
+    187.0,
+    192.0,
+    147.0,
+    164.0,
+    174.0,
+    79.0,
+    500.0,
+    278.0,
+    439.0,
+    328.0,
+    500.0,
+    424.0,
+    189.0,
+    500.0,
+    71.0,
+    30.0,
+    7.0,
+    38.0,
+    26.0,
+    35.0,
+    183.0,
+    11.0,
+    199.0,
+    17.0,
+    14.0,
+    32.0,
+    61.0,
+    120.0,
+    42.0,
+    52.0,
+    96.0,
+    177.0,
+    25.0,
+    61.0,
+    8.0,
+    131.0,
+    82.0,
+    10.0,
+    209.0,
+    57.0,
+    11.0,
+    12.0,
+    36.0,
+    27.0,
+    89.0,
+    37.0,
+    188.0,
+    56.0,
+    29.0,
+    71.0,
+    21.0,
+    26.0,
+    92.0,
+    24.0,
+    24.0,
+    12.0,
+    11.0,
+    39.0,
+    81.0,
+    43.0,
+    68.0,
+    112.0,
+    37.0,
+    11.0,
+    76.0,
+    13.0,
+    231.0,
+    56.0,
+    24.0,
+    19.0,
+    12.0,
+    33.0,
+    203.0,
+    9.0,
+    30.0,
+    27.0,
+    69.0,
+    73.0,
+    130.0,
+    62.0,
+    54.0,
+    20.0,
+    63.0,
+    93.0,
+    10.0,
+    23.0,
+    18.0,
+    85.0,
+    23.0,
+    71.0,
+    24.0,
+    65.0,
+    41.0,
+    35.0,
+    46.0,
+    73.0,
+    40.0,
+    37.0,
+    83.0,
+    24.0,
+    13.0,
+    83.0,
+    66.0,
+    55.0,
+    76.0,
+    13.0,
+    29.0,
+    12.0,
+    74.0,
+    22.0,
+    102.0,
+    82.0,
+    14.0,
+    79.0,
+    43.0,
+    45.0,
+    33.0,
+    78.0,
+    67.0,
+    16.0,
+    19.0,
+    51.0,
+    22.0,
+    41.0,
+    28.0,
+    63.0,
+    70.0,
+    51.0,
+    8.0,
+    58.0,
+    46.0,
+    73.0,
+    62.0,
+    143.0,
+    86.0,
+    48.0,
+    30.0,
+    112.0,
+    43.0,
+    34.0,
+    11.0,
+    40.0,
+    10.0,
+    17.0,
+    19.0,
+    304.0,
+    32.0,
+    70.0,
+    27.0,
+    38.0,
+    173.0,
+    116.0,
+    22.0,
+    70.0,
+    31.0,
+    27.0,
+    42.0,
+    11.0,
+    94.0,
+    52.0,
+    199.0,
+    17.0,
+    29.0,
+    22.0,
+    54.0,
+    22.0,
+    72.0,
+    124.0,
+    50.0,
+    42.0,
+    25.0,
+    51.0,
+    83.0,
+    38.0,
+    12.0,
+    125.0,
+    24.0,
+    84.0,
+    16.0,
+    126.0,
+    18.0,
+    109.0,
+    69.0,
+    29.0,
+    20.0,
+    86.0,
+    124.0,
+    106.0,
+    50.0,
+    29.0,
+    42.0,
+    140.0,
+    25.0,
+    20.0,
+    9.0,
+    133.0,
+    43.0,
+    32.0,
+    25.0,
+    69.0,
+    170.0,
+    49.0,
+    27.0,
+    195.0,
+    171.0,
+    22.0,
+    95.0,
+    103.0,
+    40.0,
+    45.0,
+    33.0,
+    10.0,
+    122.0,
+    52.0
+  ],
+  "capacity_history": [
+    {
+      "episode": 0,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 1,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 2,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 3,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 4,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 5,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 6,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 7,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 8,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 9,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 10,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 11,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 12,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 13,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 14,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 15,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 16,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 17,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 18,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 19,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 20,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 21,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 22,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 23,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 24,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 25,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 26,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 27,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 28,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 29,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 30,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 31,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 32,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 33,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 34,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 35,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 36,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 37,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 38,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 39,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 40,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 41,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 42,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 43,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 44,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 45,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 46,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 47,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 48,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 49,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 50,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 51,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 52,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 53,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 54,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 55,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 56,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 57,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 58,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 59,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 60,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 61,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 62,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 63,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 64,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 65,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 66,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 67,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 68,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 69,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 70,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 71,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 72,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 73,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 74,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 75,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 76,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 77,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 78,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 79,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 80,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 81,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 82,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 83,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 84,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 85,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 86,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 87,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 88,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 89,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 90,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 91,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 92,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 93,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 94,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 95,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 96,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 97,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 98,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 99,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 100,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 101,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 102,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 103,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 104,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 105,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 106,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 107,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 108,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 109,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 110,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 111,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 112,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 113,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 114,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 115,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 116,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 117,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 118,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 119,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 120,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 121,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 122,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 123,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 124,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 125,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 126,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 127,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 128,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 129,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 130,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 131,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 132,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 133,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 134,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 135,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 136,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 137,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 138,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 139,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 140,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 141,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 142,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 143,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 144,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 145,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 146,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 147,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 148,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 149,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 150,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 151,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 152,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 153,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 154,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 155,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 156,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 157,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 158,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 159,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 160,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 161,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 162,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 163,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 164,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 165,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 166,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 167,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 168,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 169,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 170,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 171,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 172,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 173,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 174,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 175,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 176,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 177,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 178,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 179,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 180,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 181,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 182,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 183,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 184,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 185,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 186,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 187,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 188,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 189,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 190,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 191,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 192,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 193,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 194,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 195,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 196,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 197,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 198,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 199,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 200,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 201,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 202,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 203,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 204,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 205,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 206,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 207,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 208,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 209,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 210,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 211,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 212,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 213,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 214,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 215,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 216,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 217,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 218,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 219,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 220,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 221,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 222,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 223,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 224,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 225,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 226,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 227,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 228,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 229,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 230,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 231,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 232,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 233,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 234,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 235,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 236,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 237,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 238,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 239,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 240,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 241,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 242,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 243,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 244,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 245,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 246,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 247,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 248,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 249,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 250,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 251,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 252,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 253,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 254,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 255,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 256,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 257,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 258,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 259,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 260,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 261,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 262,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 263,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 264,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 265,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 266,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 267,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 268,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 269,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 270,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 271,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 272,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 273,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 274,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 275,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 276,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 277,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 278,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 279,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 280,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 281,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 282,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 283,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 284,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 285,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 286,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 287,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 288,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 289,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 290,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 291,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 292,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 293,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 294,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 295,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 296,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 297,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 298,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 299,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 300,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 301,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 302,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 303,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 304,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 305,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 306,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 307,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 308,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 309,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 310,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 311,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 312,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 313,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 314,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 315,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 316,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 317,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 318,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 319,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 320,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 321,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 322,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 323,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 324,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 325,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 326,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 327,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 328,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 329,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 330,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 331,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 332,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 333,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 334,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 335,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 336,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 337,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 338,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 339,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 340,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 341,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 342,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 343,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 344,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 345,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 346,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 347,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 348,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 349,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 350,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 351,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 352,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 353,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 354,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 355,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 356,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 357,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 358,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 359,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 360,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 361,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 362,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 363,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 364,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 365,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 366,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 367,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 368,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 369,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 370,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 371,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 372,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 373,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 374,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 375,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 376,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 377,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 378,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 379,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 380,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 381,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 382,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 383,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 384,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 385,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 386,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 387,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 388,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 389,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 390,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 391,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 392,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 393,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 394,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 395,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 396,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 397,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 398,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 399,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 400,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 401,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 402,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 403,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 404,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 405,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 406,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 407,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 408,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 409,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 410,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 411,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 412,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 413,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 414,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 415,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 416,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 417,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 418,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 419,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 420,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 421,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 422,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 423,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 424,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 425,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 426,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 427,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 428,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 429,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 430,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 431,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 432,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 433,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 434,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 435,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 436,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 437,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 438,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 439,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 440,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 441,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 442,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 443,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 444,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 445,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 446,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 447,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 448,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 449,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 450,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 451,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 452,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 453,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 454,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 455,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 456,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 457,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 458,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 459,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 460,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 461,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 462,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 463,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 464,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 465,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 466,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 467,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 468,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 469,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 470,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 471,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 472,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 473,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 474,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 475,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 476,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 477,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 478,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 479,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 480,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 481,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 482,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 483,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 484,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 485,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 486,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 487,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 488,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 489,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 490,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 491,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 492,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 493,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 494,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 495,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 496,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 497,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 498,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 499,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 500,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 501,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 502,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 503,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 504,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 505,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 506,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 507,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 508,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 509,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 510,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 511,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 512,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 513,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 514,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 515,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 516,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 517,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 518,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 519,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 520,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 521,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 522,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 523,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 524,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 525,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 526,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 527,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 528,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 529,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 530,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 531,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 532,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 533,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 534,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 535,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 536,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 537,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 538,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 539,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 540,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 541,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 542,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 543,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 544,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 545,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 546,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 547,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 548,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 549,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 550,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 551,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 552,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 553,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 554,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 555,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 556,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 557,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 558,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 559,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 560,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 561,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 562,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 563,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 564,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 565,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 566,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 567,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 568,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 569,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 570,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 571,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 572,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 573,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 574,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 575,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 576,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 577,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 578,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 579,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 580,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 581,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 582,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 583,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 584,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 585,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 586,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 587,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 588,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 589,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 590,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 591,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 592,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 593,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 594,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 595,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 596,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 597,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 598,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 599,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 600,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 601,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 602,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 603,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 604,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 605,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 606,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 607,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 608,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 609,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 610,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 611,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 612,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 613,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 614,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 615,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 616,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 617,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 618,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 619,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 620,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 621,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 622,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 623,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 624,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 625,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 626,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 627,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 628,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 629,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 630,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 631,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 632,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 633,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 634,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 635,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 636,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 637,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 638,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 639,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 640,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 641,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 642,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 643,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 644,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 645,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 646,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 647,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 648,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 649,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 650,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 651,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 652,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 653,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 654,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 655,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 656,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 657,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 658,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 659,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 660,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 661,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 662,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 663,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 664,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 665,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 666,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 667,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 668,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 669,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 670,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 671,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 672,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 673,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 674,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 675,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 676,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 677,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 678,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 679,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 680,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 681,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 682,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 683,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 684,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 685,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 686,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 687,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 688,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 689,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 690,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 691,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 692,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 693,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 694,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 695,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 696,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 697,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 698,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 699,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 700,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 701,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 702,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 703,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 704,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 705,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 706,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 707,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 708,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 709,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 710,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 711,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 712,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 713,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 714,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 715,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 716,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 717,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 718,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 719,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 720,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 721,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 722,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 723,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 724,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 725,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 726,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 727,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 728,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 729,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 730,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 731,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 732,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 733,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 734,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 735,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 736,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 737,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 738,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 739,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 740,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 741,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 742,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 743,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 744,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 745,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 746,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 747,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 748,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 749,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 750,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 751,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 752,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 753,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 754,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 755,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 756,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 757,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 758,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 759,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 760,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 761,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 762,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 763,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 764,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 765,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 766,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 767,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 768,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 769,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 770,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 771,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 772,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 773,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 774,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 775,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 776,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 777,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 778,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 779,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 780,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 781,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 782,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 783,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 784,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 785,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 786,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 787,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 788,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 789,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 790,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 791,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 792,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 793,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 794,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 795,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 796,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 797,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 798,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    },
+    {
+      "episode": 799,
+      "policy_hidden_dim": 64,
+      "world_model_hidden_dim": 64,
+      "epsilon": 0.1,
+      "total_parameters": 20753
+    }
+  ],
+  "architecture_changes": [],
+  "efficiency_metrics": {
+    "parameters_per_reward": 174.06584188097582,
+    "adjustment_frequency": 0.0,
+    "final_policy_capacity": 64,
+    "final_world_model_capacity": 64,
+    "final_epsilon": 0.1,
+    "avg_eval": 119.225,
+    "reset_count": 0,
+    "has_world_model": true,
+    "meta_adjustments": {}
+  },
+  "meta_decisions": [],
+  "timestamp": "2025-11-25 17:45:17"
+}

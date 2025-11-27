@@ -1,0 +1,8 @@
+{
+  "seed": 1,
+  "condition": "world_model_only",
+  "avg_performance": 135.125,
+  "final_memory_mb": 0.1983642578125,
+  "compression_ratio": 1.1538461538461537,
+  "timestamp": "2025-11-25 15:02:03"
+}
