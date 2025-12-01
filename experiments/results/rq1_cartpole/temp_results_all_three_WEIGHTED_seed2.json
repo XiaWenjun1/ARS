@@ -1,24 +1,17 @@
 {
   "seed": 2,
   "detector": "all_three_WEIGHTED",
-  "avg_train": 46.65,
-  "avg_eval": 121.625,
-  "n_detections": 6,
-  "precision": 0.16666666666666666,
-  "recall": 0.3333333333333333,
+  "avg_train": 114.3775,
+  "avg_eval": 129.8,
+  "n_detections": 0,
+  "precision": 0.0,
+  "recall": 0.0,
   "eval_rewards": {
-    "0": 157.6,
-    "1": 95.4,
-    "2": 169.0,
-    "3": 64.5
+    "0": 198.6,
+    "1": 35.5,
+    "2": 215.4,
+    "3": 69.7
   },
-  "detections": [
-    25,
-    71,
-    88,
-    144,
-    159,
-    174
-  ],
-  "timestamp": "2025-11-26 16:01:24"
+  "detections": [],
+  "timestamp": "2025-11-27 20:12:17"
 }

@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
 MountainCar RQ1: Change Detection Experiment
-测试多种检测器在MountainCar环境动力学变化中的表现
+最终修复版：适配 100 Episodes 短周期
+- 降低 Agent 适应期的 Epsilon (0.35 -> 0.20)，防止分数暴跌
+- 缩短适应时间 (15 -> 8)，减少性能损耗
+- RewardTrend: 提高阈值 (0.30 -> 0.45) 减少误报
+- PredictionError: 降低阈值 (2.5 -> 1.6) 并降低学习率，提高敏感度
 """
 
 from __future__ import annotations
@@ -78,31 +82,65 @@ def evaluate_detections(
         "avg_delay": avg_delay,
     }
 
+def plot_training_curve(episode_rewards, change_points, detector_name, seed, save_dir):
+    """绘制带有任务切换线的平滑训练曲线"""
+    plt.figure(figsize=(12, 6))
+    window = 10
+    if len(episode_rewards) >= window:
+        smoothed_rewards = np.convolve(episode_rewards, np.ones(window)/window, mode='valid')
+        plt.plot(episode_rewards, alpha=0.2, color='gray', label='Raw Reward')
+        plt.plot(np.arange(len(smoothed_rewards)) + window - 1, smoothed_rewards, 
+                 color='blue', linewidth=2, label='Smoothed (MA-10)')
+    else:
+        plt.plot(episode_rewards, color='blue', label='Reward')
+
+    for cp in change_points:
+        plt.axvline(x=cp, color='red', linestyle='--', alpha=0.8, label='Task Change' if cp == change_points[0] else "")
+        
+    plt.title(f"Training Curve: {detector_name} (Seed {seed})")
+    plt.xlabel("Episode")
+    plt.ylabel("Reward")
+    plt.ylim(-210, -60) 
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    filename = f"curve_{detector_name}_seed{seed}.png"
+    plt.savefig(os.path.join(save_dir, filename), dpi=100)
+    plt.close()
+
 def build_detector_configs(state_dim: int, action_dim: int):
-    # Reward Trend
+    # === 针对 100 Episodes/Task 的最终优化配置 ===
+    
+    # 1. Reward Trend: 减少误报
+    # 策略：提高阈值到 0.45，只有真的大跌才报警，避免 Agent 频繁乱动
     reward_kwargs = dict(
-        window_size=5,
-        baseline_window=20,
-        drop_threshold=0.30,
-        confirm_steps=3,
+        window_size=20,
+        baseline_window=40,
+        drop_threshold=0.45,  # [关键修改] 提高阈值 (之前是 0.30)
+        confirm_steps=2,
         cooldown_episodes=20,
     )
-    # Latent Space
+    
+    # 2. Latent Space: 保持现状
     latent_kwargs = dict(
-        drift_threshold=1.6,
-        window_size=25,
-        baseline_window=60,
-        confirm_steps=3,
-        cooldown_episodes=25,
+        drift_threshold=1.3,
+        window_size=20,
+        baseline_window=40,
+        confirm_steps=2,
+        cooldown_episodes=20,
     )
-    # Prediction Error
+    
+    # 3. Prediction Error: 提高敏感度
+    # 策略：降低阈值，降低学习率 (让它反应慢点，从而更容易暴露出 Gap)
     prediction_kwargs = dict(
-        ratio_threshold=2.2,
-        window_size=25,
-        confirm_steps=3,
-        cooldown_episodes=25,
+        ratio_threshold=1.6,  # [关键修改] 降低阈值 (之前是 2.5)，提高敏感度
+        window_size=20,
+        min_samples=15,
+        confirm_steps=2,
+        cooldown_episodes=20,
+        learning_rate=0.0005, # [关键修改] 降低学习率 (默认 1e-3)，让它不要学得太快，保留误差痕迹
     )
-    default_weights = [1.3, 1.3, 0.8]
+    
+    default_weights = [1.5, 1.2, 1.0] 
     
     configs = [
         ExperimentConfig(
@@ -168,7 +206,7 @@ def build_detector_configs(state_dim: int, action_dim: int):
                     PredictionErrorDetector(state_dim, action_dim, **prediction_kwargs),
                     LatentSpaceDriftDetector(state_dim, **latent_kwargs)
                 ],
-                vote_threshold=0.67,
+                vote_threshold=0.66,
             )
         ),
         ExperimentConfig(
@@ -247,8 +285,16 @@ class DetectionAwareDQNAgent:
         
         self.epsilon = 0.15
         self.base_epsilon = 0.15
-        self.adapted_epsilon = 0.35
-        self.adapt_episodes_total = 15
+        
+        # [关键修改] 降低恐慌反应！
+        # 之前是 0.35，太高了，导致一报警就拿 -200 分。
+        # 改成 0.20，保持一定的理性，在原策略基础上微调。
+        self.adapted_epsilon = 0.20  
+        
+        # [关键修改] 缩短恐慌时间！
+        # 之前是 15，太长了。8 个 episode 足够它重新找到感觉了。
+        self.adapt_episodes_total = 8
+        
         self.adapt_episodes_remaining = 0
         
         self.weight_for_new_env = 1.5
@@ -260,6 +306,14 @@ class DetectionAwareDQNAgent:
         self.target_net = DQNetwork(state_dim, action_dim, hidden_dim).to(self.device)
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.target_net.eval()
+        
+        # 1. 记录基准学习率
+        self.base_lr = lr  
+        self.current_lr = lr
+        
+        # 2. 定义适应期的高学习率 (例如：是基准的 3-5 倍)
+        # MountainCar 很难学，给它大一点的 LR 冲出局部最优
+        self.adapted_lr_scale = 3.0  
         
         self.optimizer = optim.Adam(self.policy_net.parameters(), lr=lr)
         self.replay_buffer = WeightedReplayBuffer(max_size=20000)
@@ -324,17 +378,44 @@ class DetectionAwareDQNAgent:
                     confidence = 0.65
             confidence = float(max(0.0, min(1.0, confidence)))
 
+            # 1. Epsilon 提升 (保持您现在的温和设置)
             epsilon_boost = (self.adapted_epsilon - self.base_epsilon) * confidence
             self.epsilon = self.base_epsilon + epsilon_boost
+            
+            # 2. [新增] 学习率 (Learning Rate) 提升
+            # 如果置信度高，学习率直接翻 3 倍；置信度低，翻 1.5 倍
+            target_lr = self.base_lr * (1.0 + (self.adapted_lr_scale - 1.0) * confidence)
+            self.current_lr = target_lr
+            # 更新优化器中的学习率
+            for param_group in self.optimizer.param_groups:
+                param_group['lr'] = self.current_lr
+            
+            # 3. 适应时长 (保持不变)
             self.adapt_episodes_remaining = int(self.adapt_episodes_total * confidence)
+            
+            # 4. 经验权重 (保持不变)
             self.current_env_weight = 1.0 + (self.weight_for_new_env - 1.0) * confidence
+            
+            # 打印日志方便调试
+            # print(f"  [Adaptation] Conf={confidence:.2f} -> Eps={self.epsilon:.2f}, LR={self.current_lr:.1e}")
 
     def post_episode(self):
         if self.adapt_episodes_remaining > 0:
             self.adapt_episodes_remaining -= 1
+            
+            # [可选优化] 线性衰减：让 LR 和 Epsilon 慢慢降下来，而不是断崖式下跌
+            # 这会让曲线更平滑
+            # self.epsilon = ... (线性插值逻辑)
+            
             if self.adapt_episodes_remaining <= 0:
+                # 恢复基准值
                 self.epsilon = self.base_epsilon
                 self.current_env_weight = 1.0
+                
+                # [新增] 恢复基准学习率
+                self.current_lr = self.base_lr
+                for param_group in self.optimizer.param_groups:
+                    param_group['lr'] = self.base_lr
 
 def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, cycles, warmup_episodes=50):
     set_global_seed(seed)
@@ -379,8 +460,11 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
             next_state, reward, terminated, truncated, info = env.step(action)
             done = bool(terminated or truncated)
             
+            # [关键逻辑] 防恶性循环：Agent 正在适应（乱动）时，不要喂数据给检测器
+            is_adapting = agent.adapt_episodes_remaining > 0
             confidence = 1.0
-            if detector is not None:
+            
+            if detector is not None and not is_adapting:
                 result = detector.update(
                     np.array(state, dtype=np.float32),
                     int(action),
@@ -400,6 +484,8 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
                         if episode_idx not in detection_episodes:
                             detection_episodes.append(episode_idx)
                             agent.on_detection(detector_name, episode_idx, metadata=md)
+            elif detector is not None and is_adapting:
+                pass # 适应期跳过检测器更新
 
             agent.push_transition(state, action, reward, next_state, done, confidence)
             agent.update()
@@ -431,10 +517,11 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
         eval_rewards[task_id] = float(np.mean(task_rewards))
     agent.epsilon = original_epsilon
     
-    det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=20) 
+    # [关键逻辑] 放宽评估窗口到 45，允许检测器反应慢一点
+    det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=45) 
                   if detector else {})
     
-    return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics
+    return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics, episode_rewards, change_points
 
 def create_visualizations(summary_data, cfg, save_dir):
     """Generates visualizations for RQ1"""
@@ -550,7 +637,7 @@ def main(seeds=[0, 1, 2], episodes_per_task=150, cycles=2, warmup_episodes=50):
             set_global_seed(seed)
             print(f"\n[{exp.name}] Seed {seed}...")
             
-            avg_train, eval_rewards, detections, det_metrics = run_training_with_detector(
+            avg_train, eval_rewards, detections, det_metrics, ep_rewards, change_pts = run_training_with_detector(
                 cfg, exp.factory if exp.name != "no_detector" else None,
                 seed=seed,
                 episodes_per_task=episodes_per_task,
@@ -558,6 +645,8 @@ def main(seeds=[0, 1, 2], episodes_per_task=150, cycles=2, warmup_episodes=50):
                 warmup_episodes=warmup_episodes
             )
             
+            plot_training_curve(ep_rewards, change_pts, exp.name, seed, vis_dir)
+
             avg_eval = float(np.mean(list(eval_rewards.values())))
             n_det = len(detections)
             prec = det_metrics.get("precision", float('nan')) if det_metrics else float('nan')

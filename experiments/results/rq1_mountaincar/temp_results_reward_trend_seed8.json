@@ -1,17 +1,23 @@
 {
   "seed": 8,
   "detector": "reward_trend",
-  "avg_train": -199.13,
-  "avg_eval": -163.775,
-  "n_detections": 0,
-  "precision": 0.0,
-  "recall": 0.0,
+  "avg_train": -153.8,
+  "avg_eval": -115.92499999999998,
+  "n_detections": 5,
+  "precision": 0.4,
+  "recall": 0.6666666666666666,
   "eval_rewards": {
-    "0": -110.7,
-    "1": -165.9,
-    "2": -197.6,
-    "3": -180.9
+    "0": -106.6,
+    "1": -108.8,
+    "2": -145.4,
+    "3": -102.9
   },
-  "detections": [],
-  "timestamp": "2025-11-26 22:10:11"
+  "detections": [
+    60,
+    84,
+    113,
+    139,
+    314
+  ],
+  "timestamp": "2025-11-27 18:11:44"
 }

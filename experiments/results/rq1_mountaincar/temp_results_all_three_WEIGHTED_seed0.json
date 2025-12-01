@@ -1,17 +1,17 @@
 {
   "seed": 0,
   "detector": "all_three_WEIGHTED",
-  "avg_train": -199.9675,
-  "avg_eval": -158.1,
+  "avg_train": -199.98,
+  "avg_eval": -167.875,
   "n_detections": 0,
   "precision": 0.0,
   "recall": 0.0,
   "eval_rewards": {
-    "0": -114.7,
-    "1": -143.3,
-    "2": -184.5,
-    "3": -189.9
+    "0": -129.4,
+    "1": -160.9,
+    "2": -186.2,
+    "3": -195.0
   },
   "detections": [],
-  "timestamp": "2025-11-26 18:46:38"
+  "timestamp": "2025-11-27 14:14:03"
 }

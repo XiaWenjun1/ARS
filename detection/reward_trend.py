@@ -40,13 +40,7 @@ class RewardTrendDetector(ChangeDetector):
         self._episode_accum = 0.0
 
     def _compute_confidence(self, baseline_mean: float, recent_mean: float, drop: float) -> float:
-        """Normalize drop -> confidence in [0,1].
-
-        Heuristics:
-         - relative drop (baseline -> recent) mapped with saturate at 0.6 (60% drop -> conf=1)
-         - absolute drop mapped with saturate at 40 points -> conf_abs
-         - final confidence = max(rel_conf, abs_conf)
-        """
+        """Normalize drop -> confidence in [0,1]."""
         if baseline_mean <= 0:
             rel_drop = 0.0
         else:
@@ -78,28 +72,31 @@ class RewardTrendDetector(ChangeDetector):
             data = np.array(self.history, dtype=float)
             baseline = data[: self.baseline_window]
             recent = data[-self.window_size :]
+            
             baseline_mean = float(np.mean(baseline))
             recent_mean = float(np.mean(recent))
-            drop = baseline_mean - recent_mean
-            score = float(drop)
+            
+            # [关键修改] 使用绝对差值 Diff，而非单纯 Drop
+            diff = abs(baseline_mean - recent_mean)
+            score = float(diff)
 
             metadata = {
                 "baseline_mean": baseline_mean,
                 "recent_mean": recent_mean,
-                "drop": drop,
+                "diff": diff,
                 "streak": int(self._streak),
                 "cooldown": int(self._cooldown),
             }
 
-            # relative drop
-            if baseline_mean > 1e-8:
-                rel_drop = (baseline_mean - recent_mean) / (baseline_mean + 1e-8)
+            # [关键修改] 修复负数计算 bug
+            if abs(baseline_mean) > 1e-8:
+                rel_diff = diff / (abs(baseline_mean) + 1e-8)
             else:
-                rel_drop = 0.0
-            metadata["relative_drop"] = float(rel_drop)
+                rel_diff = 0.0
+            metadata["relative_diff"] = float(rel_diff)
 
-            # detection condition: either relative drop passes threshold OR absolute drop large
-            cond = (rel_drop > self.drop_threshold) or (drop > 20.0)
+            # [关键修改] 触发条件：相对变化 > 阈值 (0.3) OR 绝对差值 > 40
+            cond = (rel_diff > self.drop_threshold) or (diff > 40.0)
 
             if cond and self._cooldown <= 0:
                 self._streak += 1
@@ -111,8 +108,8 @@ class RewardTrendDetector(ChangeDetector):
                 self._streak = 0
                 self._cooldown = self.cooldown_episodes
 
-            # compute normalized confidence and attach
-            conf = self._compute_confidence(baseline_mean, recent_mean, drop)
+            # compute normalized confidence
+            conf = float(np.clip(rel_diff / 0.5, 0.0, 1.0))
             metadata["confidence"] = float(conf)
 
         return DetectionResult(detected=bool(detected), score=float(score), metadata=metadata)

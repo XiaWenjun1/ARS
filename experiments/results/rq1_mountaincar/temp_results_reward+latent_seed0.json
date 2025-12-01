@@ -1,20 +1,21 @@
 {
   "seed": 0,
   "detector": "reward+latent",
-  "avg_train": -199.93,
-  "avg_eval": -167.3,
-  "n_detections": 2,
+  "avg_train": -199.9275,
+  "avg_eval": -157.42499999999998,
+  "n_detections": 3,
   "precision": 0.0,
   "recall": 0.0,
   "eval_rewards": {
-    "0": -131.8,
-    "1": -161.5,
-    "2": -186.0,
-    "3": -189.9
+    "0": -113.9,
+    "1": -151.0,
+    "2": -175.7,
+    "3": -189.1
   },
   "detections": [
-    344,
-    345
+    385,
+    392,
+    399
   ],
-  "timestamp": "2025-11-26 17:20:22"
+  "timestamp": "2025-11-27 13:49:37"
 }

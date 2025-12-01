@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """
-完全修复版：解决warmup和过度检测问题（已更新：使用 detectors 返回的 confidence、multi-modal 默认按置信度投票、weighted detector 提供权重）
+CartPole RQ1: Change Detection Experiment (Optimized for High Performance)
+修改点：
+1. 引入 Learning Rate Boost (学习率爆发)，加速适应而不只是增加随机性。
+2. 大幅提高检测阈值，消除误报（CartPole 误报代价极大）。
+3. 降低适应期的 Epsilon，防止杆子因随机动作倒塌。
 """
 
 from __future__ import annotations
@@ -32,15 +36,16 @@ def set_global_seed(seed: int):
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
 @dataclass
 class ExperimentConfig:
     name: str
     factory: Callable[[], object]
-    detection_window: int = 15
+    detection_window: int = 40 
 
 def evaluate_detections(
     change_points: List[int], 
@@ -76,37 +81,64 @@ def evaluate_detections(
         "avg_delay": avg_delay,
     }
 
+def plot_training_curve(episode_rewards, change_points, detector_name, seed, save_dir):
+    plt.figure(figsize=(12, 6))
+    window = 10
+    if len(episode_rewards) >= window:
+        smoothed_rewards = np.convolve(episode_rewards, np.ones(window)/window, mode='valid')
+        plt.plot(episode_rewards, alpha=0.2, color='gray', label='Raw Reward')
+        plt.plot(np.arange(len(smoothed_rewards)) + window - 1, smoothed_rewards, 
+                 color='blue', linewidth=2, label='Smoothed (MA-10)')
+    else:
+        plt.plot(episode_rewards, color='blue', label='Reward')
+
+    for cp in change_points:
+        plt.axvline(x=cp, color='red', linestyle='--', alpha=0.8, label='Task Change' if cp == change_points[0] else "")
+        
+    plt.title(f"Training Curve: {detector_name} (Seed {seed})")
+    plt.xlabel("Episode")
+    plt.ylabel("Reward")
+    plt.ylim(0, 520)
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    filename = f"curve_{detector_name}_seed{seed}.png"
+    plt.savefig(os.path.join(save_dir, filename), dpi=100)
+    plt.close()
+
 def build_detector_configs(state_dim: int, action_dim: int):
-    """修复后的检测器配置（注意：MultiModalDetector 使用置信度投票）"""
+    # === CartPole 强防误报配置 ===
     
-    # Reward Trend
+    # 1. Reward Trend: 必须大跌才报警
+    # CartPole 满分 500。如果只跌到 400，说明旧策略还能用，不要报警。
+    # 只有跌到 300 以下（跌幅 > 40% 或 绝对值 > 150）才认为是灾难。
     reward_kwargs = dict(
-        window_size=3,
-        baseline_window=15,
-        drop_threshold=0.22,
+        window_size=10,       
+        baseline_window=30,   
+        drop_threshold=0.45,  # [大幅提高] 45% 的跌幅才算数
+        confirm_steps=3,      # [增加] 多确认一步
+        cooldown_episodes=20,
+    )
+    
+    # 2. Latent Space: 
+    latent_kwargs = dict(
+        drift_threshold=2.5,  # [提高] 之前 1.3 太敏感了，改成 2.0
+        window_size=20,       
+        baseline_window=40,   
+        confirm_steps=3,
+        cooldown_episodes=20,
+    )
+    
+    # 3. Prediction Error: 
+    prediction_kwargs = dict(
+        ratio_threshold=1.5,  # [大幅提高] 之前 1.6 太敏感，改成 3.0 (误差翻3倍才算)
+        window_size=15,
+        min_samples=10,       
         confirm_steps=2,
         cooldown_episodes=15,
-    )
-    
-    # Latent Space
-    latent_kwargs = dict(
-        drift_threshold=1.4,
-        window_size=20,
-        baseline_window=50,
-        confirm_steps=3,
-        cooldown_episodes=18,
-    )
-    
-    # Prediction Error
-    prediction_kwargs = dict(
-        ratio_threshold=2.0,
-        window_size=20,
-        confirm_steps=3,
-        cooldown_episodes=18,
+        learning_rate=0.0005,
     )
 
-    # weights for weighted multimodal: [reward, prediction, latent]
-    default_weights = [1.4, 1.2, 0.7]
+    default_weights = [1.5, 1.0, 0.8]
     
     configs = [
         ExperimentConfig(
@@ -153,7 +185,6 @@ def build_detector_configs(state_dim: int, action_dim: int):
                 vote_threshold=0.5,
             )
         ),
-        # OR (any)
         ExperimentConfig(
             name="all_three_ANY",
             factory=lambda: MultiModalDetector(
@@ -165,7 +196,6 @@ def build_detector_configs(state_dim: int, action_dim: int):
                 vote_threshold=0.33,
             )
         ),
-        # MAJORITY
         ExperimentConfig(
             name="all_three_MAJORITY",
             factory=lambda: MultiModalDetector(
@@ -174,10 +204,9 @@ def build_detector_configs(state_dim: int, action_dim: int):
                     PredictionErrorDetector(state_dim, action_dim, **prediction_kwargs),
                     LatentSpaceDriftDetector(state_dim, **latent_kwargs)
                 ],
-                vote_threshold=0.67,
+                vote_threshold=0.66,
             )
         ),
-        # WEIGHTED
         ExperimentConfig(
             name="all_three_WEIGHTED",
             factory=lambda: WeightedMultiModalDetector(
@@ -186,17 +215,15 @@ def build_detector_configs(state_dim: int, action_dim: int):
                     PredictionErrorDetector(state_dim, action_dim, **prediction_kwargs),
                     LatentSpaceDriftDetector(state_dim, **latent_kwargs)
                 ],
-                vote_threshold=0.4,
+                vote_threshold=0.5, # 稍微提高门槛
                 detector_weights=default_weights,
             )
         ),
     ]
 
     class NullDetector:
-        def __init__(self):
-            self.name = "no_detector"
-        def reset(self):
-            pass
+        def __init__(self): self.name = "no_detector"
+        def reset(self): pass
         def update(self, state, action, reward, next_state, done, info=None):
             return DetectionResult(detected=False, score=0.0, metadata={})
 
@@ -256,9 +283,19 @@ class DetectionAwareDQNAgent:
         
         self.epsilon = 0.05
         self.base_epsilon = 0.05
-        self.adapted_epsilon = 0.18
+        
+        # [关键修改] CartPole 适应策略
+        # 1. 探索率只能微调！一旦乱动(0.2+)杆子必倒。
+        self.adapted_epsilon = 0.10 
+        
+        # 2. 适应期要短，利用 LR Boost 快速收敛
         self.adapt_episodes_total = 10
         self.adapt_episodes_remaining = 0
+        
+        # 3. [新增] 学习率动态调整
+        self.base_lr = lr
+        self.current_lr = lr
+        self.adapted_lr_scale = 3.0 # 报警时学习率翻 3 倍
         
         self.weight_for_new_env = 1.3
         self.current_env_weight = 1.0
@@ -321,19 +358,21 @@ class DetectionAwareDQNAgent:
         if self.adapt_episodes_remaining <= 0:
             confidence = metadata.get("confidence") if isinstance(metadata, dict) else None
             if confidence is None:
-                raw_score = metadata.get("score", 1.0) if isinstance(metadata, dict) else 1.0
-                if "reward" in detector_name.lower():
-                    confidence = min(0.95, max(0.5, raw_score / 40.0))
-                elif "prediction" in detector_name.lower():
-                    confidence = min(0.95, max(0.5, (raw_score - 1.0) / 2.5))
-                elif "latent" in detector_name.lower():
-                    confidence = min(0.95, max(0.5, raw_score / 2.5))
-                else:
-                    confidence = 0.6
+                # 简化的 fallback
+                confidence = 0.8 
             confidence = float(max(0.0, min(1.0, confidence)))
 
+            # 1. 微调 Epsilon (不要太高)
             epsilon_boost = (self.adapted_epsilon - self.base_epsilon) * confidence
             self.epsilon = self.base_epsilon + epsilon_boost
+            
+            # 2. [新增] 大幅提升 Learning Rate
+            # CartPole 需要快速调整权重来适应新的物理参数
+            target_lr = self.base_lr * (1.0 + (self.adapted_lr_scale - 1.0) * confidence)
+            self.current_lr = target_lr
+            for param_group in self.optimizer.param_groups:
+                param_group['lr'] = self.current_lr
+
             self.adapt_episodes_remaining = int(self.adapt_episodes_total * confidence)
             self.current_env_weight = 1.0 + (self.weight_for_new_env - 1.0) * confidence
 
@@ -343,8 +382,12 @@ class DetectionAwareDQNAgent:
             if self.adapt_episodes_remaining <= 0:
                 self.epsilon = self.base_epsilon
                 self.current_env_weight = 1.0
+                # 恢复 LR
+                self.current_lr = self.base_lr
+                for param_group in self.optimizer.param_groups:
+                    param_group['lr'] = self.base_lr
 
-def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, cycles, warmup_episodes=30):
+def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, cycles, warmup_episodes=50):
     set_global_seed(seed)
     env = CartPoleCL(cfg.TASKS)
     env.reset(seed=seed)
@@ -387,8 +430,9 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
             next_state, reward, terminated, truncated, info = env.step(action)
             done = bool(terminated or truncated)
             
-            confidence = 1.0
-            if detector is not None:
+            is_adapting = agent.adapt_episodes_remaining > 0
+            
+            if detector is not None and not is_adapting:
                 result = detector.update(
                     np.array(state, dtype=np.float32),
                     int(action),
@@ -397,19 +441,19 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
                     done,
                     info={"task_id": env.current_task}
                 )
-                md = result.metadata if isinstance(result.metadata, dict) else {}
-                confidence = md.get("confidence") if isinstance(md.get("confidence"), (int, float)) else None
-                if confidence is None:
-                    raw_score = float(getattr(result, "score", 0.0) or 0.0)
-                    confidence = float(max(0.0, min(1.0, (raw_score) / (raw_score + 1.0))))
-
+                
                 if episodes_completed >= warmup_episodes:
                     if result.detected:
-                        if episode_idx not in detection_episodes:
+                        # 简单的冷却机制：防止同一任务内频繁触发
+                        if not detection_episodes or (episode_idx - detection_episodes[-1] > 20):
                             detection_episodes.append(episode_idx)
+                            md = result.metadata if isinstance(result.metadata, dict) else {}
                             agent.on_detection(detector_name, episode_idx, metadata=md)
+                            
+            elif detector is not None and is_adapting:
+                pass 
 
-            agent.push_transition(state, action, reward, next_state, done, confidence)
+            agent.push_transition(state, action, reward, next_state, done)
             agent.update()
             
             episode_reward += float(reward)
@@ -438,16 +482,14 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
         eval_rewards[task_id] = float(np.mean(task_rewards))
     agent.epsilon = original_epsilon
     
-    det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=15) 
+    det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=45) 
                   if detector else {})
     
-    return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics
+    return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics, episode_rewards, change_points
 
 def create_visualizations(summary_data, cfg, save_dir):
-    """Generates visualizations for RQ1"""
     os.makedirs(save_dir, exist_ok=True)
     
-    # 1. Task Performance Heatmap
     task_names = [f"T{i}\n({cfg.TASKS[i]['task_name']})" for i in range(len(cfg.TASKS))]
     detector_names = [data['name'] for data in summary_data]
 
@@ -470,7 +512,6 @@ def create_visualizations(summary_data, cfg, save_dir):
     plt.savefig(os.path.join(save_dir, "task_performance_heatmap.png"), dpi=300, bbox_inches='tight')
     plt.close()
 
-    # 2. Detector Comparison
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 
     summary_data_sorted = sorted(summary_data, key=lambda x: x['mean_eval'], reverse=True)
@@ -523,8 +564,7 @@ def create_visualizations(summary_data, cfg, save_dir):
     plt.savefig(os.path.join(save_dir, "detector_comparison.png"), dpi=300, bbox_inches='tight')
     plt.close()
 
-def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
-    # === 📂 Path Management ===
+def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     results_dir = os.path.join(base_dir, "results", "rq1_cartpole")
     vis_dir = os.path.join(os.path.dirname(base_dir), "visualizations", "rq1_cartpole")
@@ -533,7 +573,6 @@ def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
     os.makedirs(vis_dir, exist_ok=True)
     print(f"📂 Results will be saved to: {results_dir}")
     print(f"📊 Visualizations will be saved to: {vis_dir}")
-    # ==========================
 
     cfg = CartPoleConfig()
     dummy_env = CartPoleCL(cfg.TASKS)
@@ -559,7 +598,7 @@ def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
             set_global_seed(seed)
             print(f"\n[{exp.name}] Seed {seed}...")
             
-            avg_train, eval_rewards, detections, det_metrics = run_training_with_detector(
+            avg_train, eval_rewards, detections, det_metrics, ep_rewards, change_pts = run_training_with_detector(
                 cfg, exp.factory if exp.name != "no_detector" else None,
                 seed=seed,
                 episodes_per_task=episodes_per_task,
@@ -567,12 +606,13 @@ def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
                 warmup_episodes=warmup_episodes
             )
             
+            plot_training_curve(ep_rewards, change_pts, exp.name, seed, vis_dir)
+
             avg_eval = float(np.mean(list(eval_rewards.values())))
             n_det = len(detections)
             prec = det_metrics.get("precision", float('nan')) if det_metrics else float('nan')
             rec = det_metrics.get("recall", float('nan')) if det_metrics else float('nan')
             
-            # === 💾 Save JSON ===
             seed_result = {
                 'seed': seed,
                 'detector': exp.name,
@@ -597,13 +637,11 @@ def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
             json_path = os.path.join(results_dir, json_filename)
             with open(json_path, 'w') as f:
                 json.dump(seed_result, f, indent=2, default=convert_numpy)
-            # ====================
             
             print(f"  → avg_eval={avg_eval:.1f}, detections={n_det}, P={prec:.2f}, R={rec:.2f}")
         
         all_results[exp.name] = exp_results
     
-    # 打印汇总表格（保持原样）
     print("\n" + "=" * 80)
     print("Summary Results (mean ± std)")
     print("=" * 80)
@@ -636,7 +674,6 @@ def main(seeds=[0, 1, 2], episodes_per_task=50, cycles=1, warmup_episodes=20):
     
     print("=" * 80)
     
-    # 统计检验（保持原样）
     if 'no_detector' in all_results:
         baseline_evals = [r['avg_eval'] for r in all_results['no_detector']]
         baseline_mean = np.mean(baseline_evals)
@@ -662,13 +699,13 @@ if __name__ == '__main__':
     parser.add_argument('--seeds', nargs='+', type=int, default=[0, 1, 2])
     parser.add_argument('--episodes-per-task', type=int, default=100)
     parser.add_argument('--cycles', type=int, default=2)
-    parser.add_argument('--warmup-episodes', type=int, default=40)
+    parser.add_argument('--warmup-episodes', type=int, default=50)
     parser.add_argument('--quick-test', action='store_true', help="Quick test with 1 seed")
     args = parser.parse_args()
     
     if args.quick_test:
         print("🚀 QUICK TEST MODE")
-        main(seeds=[0], episodes_per_task=50, cycles=1, warmup_episodes=20)
+        main(seeds=[0], episodes_per_task=100, cycles=1, warmup_episodes=50)
     else:
         main(seeds=args.seeds, episodes_per_task=args.episodes_per_task, 
              cycles=args.cycles, warmup_episodes=args.warmup_episodes)

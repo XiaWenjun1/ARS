@@ -122,7 +122,10 @@ class PredictionErrorDetector(ChangeDetector):
 
         if len(self.recent_errors) >= self.min_samples and self.baseline_error is not None:
             recent_mean = float(np.mean(self.recent_errors))
-            ratio = recent_mean / (self.baseline_error + 1e-8)
+            
+            # [修复] 将分母底限从 0.01 降低到 1e-4，适配 MountainCar 的微小误差
+            ratio = recent_mean / (max(self.baseline_error, 1e-4))
+            
             score = float(ratio)
             metadata = {
                 "baseline_error": float(self.baseline_error),

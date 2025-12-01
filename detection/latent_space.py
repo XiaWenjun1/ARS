@@ -42,11 +42,11 @@ class LatentSpaceDriftDetector(ChangeDetector):
         state_dim: int,
         latent_dim: int = 6,
         hidden_dim: int = 128,
-        window_size: int = 20,
-        baseline_window: int = 60,
-        drift_threshold: float = 1.8,
-        confirm_steps: int = 3,
-        cooldown_episodes: int = 25,
+        window_size: int = 20,       # [修改] 默认改小
+        baseline_window: int = 40,   # [修改] 默认改小
+        drift_threshold: float = 1.3,
+        confirm_steps: int = 2,
+        cooldown_episodes: int = 20,
         learning_rate: float = 5e-4,
         device: Optional[str] = None,
     ):
@@ -72,9 +72,17 @@ class LatentSpaceDriftDetector(ChangeDetector):
         self._cooldown = 0
 
     def _compute_confidence(self, drift: float) -> float:
-        """Map drift -> confidence. drift >= 4.0 -> 1.0 by default."""
-        max_drift = 4.0
-        conf = float(np.clip(drift / max_drift, 0.0, 1.0))
+        """
+        [关键修改] 动态置信度计算
+        不再使用硬编码的 4.0，而是基于 drift_threshold。
+        如果 drift 达到阈值的 2 倍，置信度即为 1.0。
+        """
+        reference = self.drift_threshold * 2.0
+        # 避免除以 0
+        if reference <= 1e-6:
+            reference = 1.0
+            
+        conf = float(np.clip(drift / reference, 0.0, 1.0))
         return conf
 
     def update(self, state, action, reward, next_state, done, info=None) -> DetectionResult:
@@ -107,8 +115,11 @@ class LatentSpaceDriftDetector(ChangeDetector):
             recent = data[-self.window_size :]
             baseline_mean = np.mean(baseline, axis=0)
             recent_mean = np.mean(recent, axis=0)
+            
+            # 计算漂移 (Drift)
             drift = float(np.linalg.norm(recent_mean - baseline_mean))
             score = float(drift)
+            
             metadata = {
                 "drift": float(drift),
                 "baseline_norm": float(np.linalg.norm(baseline_mean)),
