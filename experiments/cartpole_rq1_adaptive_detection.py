@@ -5,6 +5,8 @@ CartPole RQ1: Change Detection Experiment (Optimized for High Performance)
 1. 引入 Learning Rate Boost (学习率爆发)，加速适应而不只是增加随机性。
 2. 大幅提高检测阈值，消除误报（CartPole 误报代价极大）。
 3. 降低适应期的 Epsilon，防止杆子因随机动作倒塌。
+4. [Update] 使用 RQ1metrics 统一绘图，移除本地冗余绘图代码。
+5. [Update] 修复绘图保存路径，确保保存至 rq1_cartpole 子目录。
 """
 
 from __future__ import annotations
@@ -20,6 +22,13 @@ import seaborn as sns
 
 sys.path.append(os.path.dirname(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Import shared metrics module
+try:
+    import RQ1metrics
+except ImportError:
+    # 如果找不到，尝试从上一级导入（根据项目结构可能不同）
+    pass
 
 from configs.cartpole_config import CartPoleConfig
 from detection import (
@@ -81,29 +90,7 @@ def evaluate_detections(
         "avg_delay": avg_delay,
     }
 
-def plot_training_curve(episode_rewards, change_points, detector_name, seed, save_dir):
-    plt.figure(figsize=(12, 6))
-    window = 10
-    if len(episode_rewards) >= window:
-        smoothed_rewards = np.convolve(episode_rewards, np.ones(window)/window, mode='valid')
-        plt.plot(episode_rewards, alpha=0.2, color='gray', label='Raw Reward')
-        plt.plot(np.arange(len(smoothed_rewards)) + window - 1, smoothed_rewards, 
-                 color='blue', linewidth=2, label='Smoothed (MA-10)')
-    else:
-        plt.plot(episode_rewards, color='blue', label='Reward')
-
-    for cp in change_points:
-        plt.axvline(x=cp, color='red', linestyle='--', alpha=0.8, label='Task Change' if cp == change_points[0] else "")
-        
-    plt.title(f"Training Curve: {detector_name} (Seed {seed})")
-    plt.xlabel("Episode")
-    plt.ylabel("Reward")
-    plt.ylim(0, 520)
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    filename = f"curve_{detector_name}_seed{seed}.png"
-    plt.savefig(os.path.join(save_dir, filename), dpi=100)
-    plt.close()
+# [Deleted] plot_training_curve has been removed as requested.
 
 def build_detector_configs(state_dim: int, action_dim: int):
     # === CartPole 强防误报配置 ===
@@ -487,83 +474,6 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
     
     return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics, episode_rewards, change_points
 
-def create_visualizations(summary_data, cfg, save_dir):
-    os.makedirs(save_dir, exist_ok=True)
-    
-    task_names = [f"T{i}\n({cfg.TASKS[i]['task_name']})" for i in range(len(cfg.TASKS))]
-    detector_names = [data['name'] for data in summary_data]
-
-    performance_matrix = np.zeros((len(detector_names), len(task_names)))
-    for i, data in enumerate(summary_data):
-        for j in range(len(task_names)):
-            task_rewards = [r['eval_rewards'].get(j, 0.0) for r in data['all_results']]
-            performance_matrix[i, j] = np.mean(task_rewards)
-
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(performance_matrix,
-                xticklabels=task_names,
-                yticklabels=detector_names,
-                annot=True, fmt=".1f", cmap="YlGnBu",
-                cbar_kws={'label': 'Average Reward'})
-    plt.title("Task Performance Heatmap by Detector")
-    plt.xlabel("Tasks")
-    plt.ylabel("Detectors")
-    plt.tight_layout()
-    plt.savefig(os.path.join(save_dir, "task_performance_heatmap.png"), dpi=300, bbox_inches='tight')
-    plt.close()
-
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-
-    summary_data_sorted = sorted(summary_data, key=lambda x: x['mean_eval'], reverse=True)
-    names = [data['name'] for data in summary_data_sorted]
-    evals = [data['mean_eval'] for data in summary_data_sorted]
-    eval_err = [data['std_eval'] for data in summary_data_sorted]
-
-    colors = plt.cm.YlGnBu(np.linspace(0.3, 0.9, len(names))) if len(names) > 0 else []
-
-    bars1 = ax1.bar(range(len(names)), evals, yerr=eval_err,
-                   color=colors, alpha=0.8, capsize=5, edgecolor='black', linewidth=0.5)
-    ax1.set_ylabel('Average Evaluation Reward')
-    ax1.set_title('Performance Comparison')
-    ax1.set_xticks(range(len(names)))
-    ax1.set_xticklabels(names, rotation=45, ha='right', fontsize=10)
-
-    max_eval = max(evals) if evals else 1.0
-    text_offset = max(1.0, 0.02 * max_eval)
-    for bar, val in zip(bars1, evals):
-        ax1.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + text_offset,
-                 f'{val:.0f}', ha='center', va='bottom', fontweight='bold')
-    ax1.grid(True, alpha=0.3, axis='y')
-
-    precisions = [data['mean_prec'] if not np.isnan(data['mean_prec']) else 0 for data in summary_data_sorted]
-    recalls = [data['mean_rec'] if not np.isnan(data['mean_rec']) else 0 for data in summary_data_sorted]
-
-    x = np.arange(len(names))
-    width = 0.35
-
-    bars2 = ax2.bar(x - width / 2, precisions, width, label='Precision',
-                    color='lightcoral', alpha=0.8, edgecolor='darkred')
-    bars3 = ax2.bar(x + width / 2, recalls, width, label='Recall',
-                    color='lightblue', alpha=0.8, edgecolor='darkblue')
-
-    ax2.set_ylabel('Score')
-    ax2.set_title('Detection Accuracy')
-    ax2.set_xticks(x)
-    ax2.set_xticklabels(names, rotation=45, ha='right', fontsize=10)
-    ax2.legend()
-    ax2.set_ylim(0, 1.1)
-    ax2.grid(True, alpha=0.3, axis='y')
-
-    for i, (prec, rec) in enumerate(zip(precisions, recalls)):
-        if prec > 0:
-            ax2.text(i - width / 2, prec + 0.02, f'{prec:.2f}', ha='center', va='bottom', fontsize=8)
-        if rec > 0:
-            ax2.text(i + width / 2, rec + 0.02, f'{rec:.2f}', ha='center', va='bottom', fontsize=8)
-
-    plt.tight_layout()
-    plt.savefig(os.path.join(save_dir, "detector_comparison.png"), dpi=300, bbox_inches='tight')
-    plt.close()
-
 def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
     base_dir = os.path.dirname(os.path.abspath(__file__))
     results_dir = os.path.join(base_dir, "results", "rq1_cartpole")
@@ -606,7 +516,7 @@ def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
                 warmup_episodes=warmup_episodes
             )
             
-            plot_training_curve(ep_rewards, change_pts, exp.name, seed, vis_dir)
+            # [Deleted] plot_training_curve has been removed.
 
             avg_eval = float(np.mean(list(eval_rewards.values())))
             n_det = len(detections)
@@ -623,6 +533,8 @@ def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
                 'recall': rec,
                 'eval_rewards': eval_rewards,
                 'detections': detections,
+                'episode_rewards': ep_rewards, # Added for plotting
+                'change_points': change_pts,   # Added for plotting
                 'timestamp': time.strftime('%Y-%m-%d %H:%M:%S')
             }
             exp_results.append(seed_result)
@@ -691,7 +603,16 @@ def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
 
     # === 📊 Visualization ===
     print(f"\n📈 Generating visualizations in {vis_dir}...")
-    create_visualizations(summary_data, cfg, vis_dir)
+    
+    # Use shared metrics module if available
+    if 'RQ1metrics' in sys.modules:
+        # [Fix] 显式传入 save_dir
+        RQ1metrics.plot_task_performance_heatmap(summary_data, cfg, save_dir=vis_dir)
+        RQ1metrics.plot_detector_comparison(summary_data, save_dir=vis_dir)
+        RQ1metrics.plot_learning_curves(summary_data, cfg, save_dir=vis_dir) 
+    else:
+        print("⚠️ RQ1metrics module not found. Skipping visualization generation.")
+        
     print("✅ Visualizations saved.")
 
 if __name__ == '__main__':

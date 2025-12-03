@@ -29,16 +29,13 @@ def infer_env_from_cfg(cfg) -> str:
     """尝试从 cfg 推断环境名，返回小写前缀，找不到则返回 'env'"""
     if cfg is None:
         return "env"
-    # 优先用 cfg 类名，比如 CartPoleConfig / MountainCarConfig
     cls_name = cfg.__class__.__name__.lower()
     for env in KNOWN_ENVS:
         if env in cls_name:
             return env
-    # 其次检查 TASKS 里可能包含的字符串
     try:
         tasks = getattr(cfg, 'TASKS', None)
         if tasks:
-            # 把所有 task_name 合并成字符串检索关键字
             combined = " ".join([t.get('task_name', '') for t in tasks]).lower()
             for env in KNOWN_ENVS:
                 if env in combined:
@@ -49,24 +46,29 @@ def infer_env_from_cfg(cfg) -> str:
 
 def infer_env_from_latest_visual(vis_dir: str) -> str:
     """当没有 cfg 时，尝试从 visualizations 目录中最新文件的前缀推断环境"""
+    if not os.path.exists(vis_dir):
+        return "env"
     pattern = os.path.join(vis_dir, "*")
     files = sorted(glob.glob(pattern), key=os.path.getmtime, reverse=True)
     if not files:
         return "env"
     latest = os.path.basename(files[0])
-    # 假设文件名格式为 <prefix>_YYYY... 以 '_' 分割并取第一个 token
     token = latest.split("_", 1)[0].lower()
     if token in KNOWN_ENVS:
         return token
-    # 也尝试 token 中包含已知 env
     for env in KNOWN_ENVS:
         if env in token:
             return env
     return "env"
 
-def plot_task_performance_heatmap(summary_data, cfg):
+def plot_task_performance_heatmap(summary_data, cfg, save_dir=None):
     """显示每个检测器在不同任务上的表现，文件名带环境前缀"""
-    vis_dir = ensure_visualization_dir()
+    # 如果未提供 save_dir，则使用默认路径
+    if save_dir is None:
+        save_dir = ensure_visualization_dir()
+    else:
+        os.makedirs(save_dir, exist_ok=True)
+        
     env_prefix = infer_env_from_cfg(cfg)
 
     # 准备数据
@@ -93,15 +95,20 @@ def plot_task_performance_heatmap(summary_data, cfg):
     plt.ylabel("Detectors")
     plt.tight_layout()
 
-    # 保存到visualizations目录，文件名前加环境前缀
-    save_path = get_unique_filepath(f"{env_prefix}_task_performance_heatmap", vis_dir, ext='png')
+    save_path = get_unique_filepath(f"{env_prefix}_task_performance_heatmap", save_dir, ext='png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     print(f"Saved heatmap: {save_path}")
     plt.close()
 
-def plot_detector_comparison(summary_data):
+def plot_detector_comparison(summary_data, save_dir=None):
     """对比检测器的综合性能（奖励+检测指标），尽量带环境前缀（从已有可视化推断）"""
-    vis_dir = ensure_visualization_dir()
+    # 如果未提供 save_dir，则使用默认路径
+    if save_dir is None:
+        vis_dir = ensure_visualization_dir()
+    else:
+        vis_dir = save_dir
+        os.makedirs(vis_dir, exist_ok=True)
+
     env_prefix = infer_env_from_latest_visual(vis_dir)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
@@ -112,7 +119,6 @@ def plot_detector_comparison(summary_data):
     evals = [data['mean_eval'] for data in summary_data_sorted]
     eval_err = [data['std_eval'] for data in summary_data_sorted]
 
-    # 使用颜色渐变：性能越高颜色越深
     colors = plt.cm.YlGnBu(np.linspace(0.3, 0.9, len(names))) if len(names) > 0 else []
 
     bars1 = ax1.bar(range(len(names)), evals, yerr=eval_err,
@@ -122,7 +128,6 @@ def plot_detector_comparison(summary_data):
     ax1.set_xticks(range(len(names)))
     ax1.set_xticklabels(names, rotation=45, ha='right', fontsize=10)
 
-    # 在柱子上添加数值（根据数据范围自适应偏移）
     max_eval = max(evals) if evals else 1.0
     text_offset = max(1.0, 0.02 * max_eval)
     for bar, val in zip(bars1, evals):
@@ -151,7 +156,6 @@ def plot_detector_comparison(summary_data):
     ax2.set_ylim(0, 1)
     ax2.grid(True, alpha=0.3, axis='y')
 
-    # 在柱子上添加数值
     for i, (prec, rec) in enumerate(zip(precisions, recalls)):
         if prec > 0:
             ax2.text(i - width / 2, prec + 0.02, f'{prec:.2f}',
@@ -162,8 +166,86 @@ def plot_detector_comparison(summary_data):
 
     plt.tight_layout()
 
-    # 保存到visualizations目录，文件名前加环境前缀（若无法推断则为 env）
     save_path = get_unique_filepath(f"{env_prefix}_detector_comparison", vis_dir, ext='png')
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
     print(f"Saved detector comparison: {save_path}")
+    plt.close()
+
+def plot_learning_curves(summary_data, cfg=None, save_dir=None):
+    """
+    RQ3风格的学习曲线 (Learning Curves Comparison)
+    修改：不再绘制平均值和标准差，而是绘制所有Seed的独立曲线。
+    这样可以更直观地看到每个实验的适应过程和稳定性。
+    """
+    # 如果未提供 save_dir，则使用默认路径
+    if save_dir is None:
+        save_dir = ensure_visualization_dir()
+    else:
+        os.makedirs(save_dir, exist_ok=True)
+        
+    env_prefix = infer_env_from_cfg(cfg)
+    plot_data = summary_data
+    
+    plt.figure(figsize=(14, 7))
+    
+    # 获取任务切换点 (假设所有 run 的切换点一致，取第一个有数据的)
+    change_points = []
+    for data in summary_data:
+        if data['all_results'] and 'change_points' in data['all_results'][0]:
+            change_points = data['all_results'][0]['change_points']
+            break
+            
+    # 绘制曲线
+    colors = sns.color_palette("husl", len(plot_data))
+    
+    for idx, data in enumerate(plot_data):
+        name = data['name']
+        all_rewards = []
+        
+        # 收集该检测器所有 Seed 的 episode_rewards
+        for res in data['all_results']:
+            if 'episode_rewards' in res:
+                all_rewards.append(res['episode_rewards'])
+        
+        if not all_rewards:
+            continue
+            
+        # 遍历每个种子并独立绘制
+        window_size = 20
+        kernel = np.ones(window_size) / window_size
+        
+        for i, rewards in enumerate(all_rewards):
+            rewards_arr = np.array(rewards)
+            
+            # 平滑处理 (Window smoothing)
+            if len(rewards_arr) > window_size:
+                smoothed = np.convolve(rewards_arr, kernel, mode='valid')
+                x_axis = np.arange(len(smoothed)) + window_size // 2
+            else:
+                smoothed = rewards_arr
+                x_axis = np.arange(len(rewards_arr))
+            
+            # 绘图：同一个检测器的不同种子使用相同的颜色
+            # 只有第一个种子带 Label，避免图例重复
+            label = name if i == 0 else None
+            
+            # 设置 alpha 透明度，让重叠部分更深
+            plt.plot(x_axis, smoothed, label=label, color=colors[idx], linewidth=1.5, alpha=0.6)
+
+    # 绘制任务切换竖线
+    for i, cp in enumerate(change_points):
+        plt.axvline(x=cp, color='gray', linestyle='--', alpha=0.6, 
+                   label='Task Change' if i == 0 else "")
+        plt.text(cp + 5, plt.ylim()[1] * 0.95, f'T{i+1}', color='gray', fontsize=8)
+
+    plt.xlabel('Episode')
+    plt.ylabel(f'Reward (Smoothed, w={window_size})')
+    plt.title(f'RQ1 Learning Curves: {env_prefix.capitalize()} (Individual Seeds)')
+    plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left')
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    
+    save_path = get_unique_filepath(f"{env_prefix}_learning_curves", save_dir, ext='png')
+    plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    print(f"Saved learning curves: {save_path}")
     plt.close()

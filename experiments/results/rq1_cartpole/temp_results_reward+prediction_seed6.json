@@ -1,0 +1,30 @@
+{
+  "seed": 6,
+  "detector": "reward+prediction",
+  "avg_train": 80.735,
+  "avg_eval": 116.375,
+  "n_detections": 12,
+  "precision": 0.25,
+  "recall": 1.0,
+  "eval_rewards": {
+    "0": 162.7,
+    "1": 42.5,
+    "2": 154.7,
+    "3": 105.6
+  },
+  "detections": [
+    100,
+    121,
+    142,
+    165,
+    186,
+    207,
+    271,
+    297,
+    318,
+    343,
+    374,
+    395
+  ],
+  "timestamp": "2025-12-02 15:08:31"
+}
