@@ -20,9 +20,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from configs.mountaincar_config import MountainCarConfig
 from environments.mountaincar_cl import MountainCarCL
-from ars_components.LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
+from LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
 # Import the new visualization module
-from analysis.RQ3metrics import create_comprehensive_analysis
+from RQ3metrics import create_comprehensive_analysis
 
 
 def set_global_seed(seed: int):
@@ -795,12 +795,8 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 400, cycles: int
     print(f"🔬 Experimental configuration: seeds={seeds}, episodes_per_task={episodes_per_task}, cycles={cycles}")
     print(f"🔬 Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
-    # === 📂 1. 设置路径管理 (New Path Management) ===
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    # 结果 JSON 保存位置: experiments/results/rq3_mountaincar/
     results_dir = os.path.join(base_dir, "results", "rq3_mountaincar")
-    # 可视化图表保存位置: visualizations/rq3_mountaincar/
-    # 注意：这里假设 visualizations 文件夹在 experiments 的上一级，根据你的文件列表调整
     vis_dir = os.path.join(os.path.dirname(base_dir), "visualizations", "rq3_mountaincar")
     
     os.makedirs(results_dir, exist_ok=True)
@@ -848,7 +844,6 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 400, cycles: int
             result = run_mountaincar_experiment(cfg, condition, seed, episodes_per_task, cycles)
             condition_results.append(result)
             
-# === 💾 2. 保存到新路径 (Save to new path) ===
             json_filename = f'temp_results_{condition}_seed{seed}.json'
             json_path = os.path.join(results_dir, json_filename)
             
@@ -927,10 +922,8 @@ def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 400, cycles: int
     if best_eff_condition:
         print(f"💾 Most memory efficient: {best_eff_condition} ({best_efficiency:.1f} perf/MB)")
 
-# === 📊 3. 生成可视化到新路径 (Generate viz to new path) ===
     print(f"\n📊 Generating comprehensive visualizations in {vis_dir}...")
     create_comprehensive_analysis(all_results, save_dir=vis_dir)
-    # ==========================================================
     
     print(f"🔬 End time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     

@@ -4,81 +4,75 @@ from .base_wrapper import ContinualLearningWrapper
 
 class CartPoleCL(ContinualLearningWrapper):
     """
-    A specialized ContinualLearningWrapper for the 'CartPole-v1' environment.
-    This wrapper modifies specific physical parameters of the CartPole environment,
-    such as pole length, cart mass, and introduces external 'wind' forces,
-    to create distinct tasks for continual learning experiments.
+    CartPole Environment Wrapper for Continual Learning.
+    
+    This wrapper modifies the standard CartPole-v1 environment to simulate different 
+    tasks by altering physical properties (pole length, cart mass) and introducing 
+    external disturbances (wind) that affect both dynamics and observations.
     """
-    # Constants for default values and wind effect scaling.
+    
+    # Constants
     DEFAULT_POLE_LENGTH = 0.5
     DEFAULT_MASSCART = 1.0
-    WIND_POSITION_SCALE = 0.2  # Scales the magnitude of wind noise applied to position.
-    WIND_VELOCITY_SCALE = 0.05 # Scales the magnitude of wind noise applied to velocity.
+    
+    # Scaling factors for wind noise injection
+    WIND_POSITION_SCALE = 0.2
+    WIND_VELOCITY_SCALE = 0.05
 
     def __init__(self, task_params, render_mode=None):
-        """
-        Initializes the CartPoleCL environment wrapper.
-
-        Args:
-            task_params (list): A list of dictionaries, each defining specific
-                                parameters for a CartPole CL task (e.g., pole_length, masscart, wind_force).
-            render_mode (str, optional): The render mode for the environment. Defaults to None.
-        """
         super().__init__('CartPole-v1', task_params, render_mode)
 
     def _apply_task_parameters(self):
         """
-        Applies CartPole-specific parameter modifications based on the current task configuration.
-        This method accesses the underlying Gym environment's unwrapped properties to change them.
+        Apply CartPole specific parameter modifications based on the current task configuration.
         """
         task_config = self.task_params[self.current_task]
         env = self.env.unwrapped
 
-        # 1. Modify Pole Length: Directly changes the 'length' attribute of the pole.
+        # 1. Modify Pole Length
+        # Changing the length affects the angular physics (moment of inertia).
+        # Shorter poles fall faster; longer poles fall slower but are harder to recover.
         if hasattr(env, 'length'):
             env.length = task_config.get('pole_length', self.DEFAULT_POLE_LENGTH)
 
-        # 2. [New] Modify Cart Mass: A key factor in creating inertia differences.
+        # 2. [New] Modify Cart Mass
+        # This is key to creating inertia differences. 
+        # A heavier cart requires more force (steps) to accelerate and decelerate.
         if hasattr(env, 'masscart'):
             env.masscart = task_config.get('masscart', self.DEFAULT_MASSCART)
-            # Recalculate total mass to ensure the physics engine is synchronized with the new mass.
+            
+            # Recalculate total mass to ensure physics engine synchronization
+            # The Gym environment uses total_mass for acceleration calculations.
             if hasattr(env, 'total_mass') and hasattr(env, 'masspole'):
                 env.total_mass = env.masspole + env.masscart
 
-        # 3. Set Wind Force: This is a core logic for introducing external disturbances.
-        # This value determines the intensity of the stochastic wind effect.
+        # 3. Set Wind Force
+        # This is the core logic for environmental disturbance.
         self.wind_force = task_config.get('wind_force', 0.0)
 
     def step(self, action):
         """
-        Takes a step in the environment, applying wind effects to actions and observations,
-        then returning the modified results.
-
-        Args:
-            action (int): The action to take in the environment.
-
-        Returns:
-            tuple: (observation, reward, terminated, truncated, info) after applying wind effects.
+        Perform a step in the environment with potential wind interference.
         """
-        # Apply wind effects: wind can stochastically affect actions.
+        # Apply wind effects: wind can stochastically affect actions (Action Noise)
         if self.wind_force > 0:
-            # The stronger the wind force, the higher the probability of the action being perturbed.
-            # The probability is capped at 0.25 to prevent extreme action flipping.
+            # The stronger the wind, the higher the probability of action perturbation.
+            # Capped at 25% probability to prevent the task from becoming impossible.
             if np.random.random() < min(0.25, self.wind_force * 0.05):
-                action = 1 - action # Flip the action (e.g., if action is 0, becomes 1, and vice-versa).
+                action = 1 - action  # Flip the action (0->1 or 1->0)
 
         observation, reward, terminated, truncated, info = self.env.step(action)
 
-        # Apply wind noise to observation.
+        # Apply wind noise to observation (Observation Noise / Sensor Noise)
         if self.wind_force > 0:
             modified_obs = np.array(observation, dtype=np.float32)
-            # Both position and velocity observations are affected by wind noise.
-            # Noise is sampled from a normal distribution, scaled by wind force.
+            
+            # Position and velocity are both affected by wind noise.
+            # We add Gaussian noise scaled by the wind force intensity.
             modified_obs[0] += np.random.normal(0, self.wind_force * self.WIND_POSITION_SCALE)
             modified_obs[1] += np.random.normal(0, self.wind_force * self.WIND_VELOCITY_SCALE)
             observation = modified_obs
         else:
-            # Ensure observation is consistently a float32 numpy array even without wind.
             observation = np.array(observation, dtype=np.float32)
 
         return observation, reward, terminated, truncated, info

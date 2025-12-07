@@ -4,40 +4,49 @@ import torch.nn.functional as F
 
 class DQNNetwork(nn.Module):
     """
-    DQN Neural Network (Q-Network) to approximate the action-value function.
-    This network takes a state as input and outputs Q-values for each possible action.
+    DQN Neural Network.
+    
+    This class defines a simple fully connected (dense) neural network used to 
+    approximate the Q-value function Q(s, a). It maps an input state to Q-values 
+    for each possible action.
     """
     
     def __init__(self, state_dim, action_dim, hidden_dim=128):
         """
-        Initializes the DQNNetwork architecture.
+        Initialize the network architecture.
 
         Args:
-            state_dim (int): The dimension of the input state space.
-            action_dim (int): The dimension of the output action space (number of possible actions).
-            hidden_dim (int, optional): The number of neurons in the hidden layers. Defaults to 128.
+            state_dim (int): Dimension of the input state vector.
+            action_dim (int): Dimension of the output action space (number of actions).
+            hidden_dim (int): Number of neurons in the hidden layers. Default is 128.
         """
         super(DQNNetwork, self).__init__()
-        # First fully connected layer: maps state input to hidden_dim.
+        
+        # First fully connected layer: maps state_dim -> hidden_dim
         self.fc1 = nn.Linear(state_dim, hidden_dim)
-        # Second fully connected layer: maps hidden_dim to hidden_dim.
+        
+        # Second fully connected layer: maps hidden_dim -> hidden_dim
         self.fc2 = nn.Linear(hidden_dim, hidden_dim)
-        # Third fully connected layer: maps hidden_dim to action_dim (Q-values for each action).
+        
+        # Output layer: maps hidden_dim -> action_dim
+        # The output represents the estimated Q-values for every action in the current state.
         self.fc3 = nn.Linear(hidden_dim, action_dim)
         
     def forward(self, x):
         """
-        Defines the forward pass of the network.
+        Forward pass through the network.
 
         Args:
-            x (torch.Tensor): The input tensor representing the state.
+            x (torch.Tensor): Input tensor representing the state.
 
         Returns:
-            torch.Tensor: A tensor of Q-values for each action in the given state.
+            torch.Tensor: Q-values for each action.
         """
-        # Apply ReLU activation function after the first hidden layer.
+        # Apply first linear layer followed by ReLU activation
         x = F.relu(self.fc1(x))
-        # Apply ReLU activation function after the second hidden layer.
+        
+        # Apply second linear layer followed by ReLU activation
         x = F.relu(self.fc2(x))
-        # No activation after the output layer, as we are predicting Q-values directly.
+        
+        # Apply output layer (no activation function, as Q-values can be arbitrary real numbers)
         return self.fc3(x)

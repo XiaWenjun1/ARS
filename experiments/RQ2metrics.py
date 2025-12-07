@@ -6,13 +6,17 @@ from typing import Dict, List
 def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict, 
                      save_path: str = "rq2_results.png"):
     """
-    生成RQ2的完整可视化报告
+    Generate a complete visual report for Research Question 2 (RQ2).
+    
+    This function creates a 2x3 grid of subplots visualizing performance, 
+    imagination benefits, parameter efficiency, capacity evolution, and key statistics.
     """
     fig = plt.figure(figsize=(16, 12))
     
-    # 1. 主性能对比（左上）
+    # 1. Main Performance Comparison (Top-Left)
     ax1 = plt.subplot(2, 3, 1)
     conditions = list(cartpole_results.keys())
+    # Calculate mean and std deviation for each condition
     cartpole_means = [np.mean([r['avg_eval'] for r in cartpole_results[c]]) for c in conditions]
     cartpole_stds = [np.std([r['avg_eval'] for r in cartpole_results[c]]) for c in conditions]
     
@@ -25,7 +29,7 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
     ax1.set_xticklabels(conditions, rotation=45, ha='right', fontsize=8)
     ax1.grid(axis='y', alpha=0.3)
     
-    # 2. MountainCar对比（右上）
+    # 2. MountainCar Comparison (Top-Right)
     ax2 = plt.subplot(2, 3, 2)
     mc_conditions = list(mountaincar_results.keys())
     mc_means = [np.mean([r['avg_eval'] for r in mountaincar_results[c]]) for c in mc_conditions]
@@ -39,9 +43,10 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
     ax2.set_xticklabels(mc_conditions, rotation=45, ha='right', fontsize=8)
     ax2.grid(axis='y', alpha=0.3)
     
-    # 3. Imagination效果（中上）
+    # 3. Imagination Effect (Top-Middle)
     ax3 = plt.subplot(2, 3, 3)
-    # 对比有/无imagination的Dreamer
+    # Compare Dreamer with and without imagination
+    # 
     dreamer_with = cartpole_means[conditions.index('dreamer_style')]
     dreamer_without = cartpole_means[conditions.index('dreamer_no_imagination')]
     
@@ -50,13 +55,14 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
                    color=['green', 'gray'], alpha=0.7)
     ax3.set_ylabel('Performance')
     ax3.set_title('Imagination Benefit')
+    # Add text label showing the exact gain
     ax3.text(0, dreamer_with + 5, f'+{dreamer_with - dreamer_without:.1f}', 
              ha='center', fontweight='bold')
     
-    # 4. 参数效率（左下）
+    # 4. Parameter Efficiency (Bottom-Left)
     ax4 = plt.subplot(2, 3, 4)
-    # 计算参数效率：performance / parameters
-    # small_fixed: 64维, large_fixed: 128维, fully_adaptive: 64维policy+72维WM
+    # Calculate efficiency: performance / parameters
+    # Assumptions: small_fixed=64 dim, large_fixed=128 dim, fully_adaptive=64 dim policy + 72 dim WM
     params = {
         'small_fixed': 64,
         'large_fixed': 128,
@@ -73,9 +79,9 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
     ax4.set_title('Parameter Efficiency')
     ax4.set_xticklabels(efficiency.keys(), rotation=45, ha='right')
     
-    # 5. 容量调整历史（中下）
+    # 5. Capacity Adjustment History (Bottom-Middle)
     ax5 = plt.subplot(2, 3, 5)
-    # 如果有capacity_history数据
+    # Check if 'fully_adaptive' data is available for capacity history plotting
     if 'fully_adaptive' in cartpole_results and len(cartpole_results['fully_adaptive']) > 0:
         run = cartpole_results['fully_adaptive'][0]
         if 'capacity_history' in run:
@@ -92,11 +98,11 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
             ax5.legend()
             ax5.grid(alpha=0.3)
     
-    # 6. 关键对比总结（右下）
+    # 6. Key Comparison Summary (Bottom-Right)
     ax6 = plt.subplot(2, 3, 6)
     ax6.axis('off')
     
-    # 计算关键指标
+    # Calculate Key Metrics
     imagination_gain = dreamer_with - dreamer_without
     adaptive_gain = cartpole_means[conditions.index('fully_adaptive')] - cartpole_means[conditions.index('small_fixed')]
     
@@ -131,11 +137,11 @@ def plot_rq2_results(cartpole_results: Dict, mountaincar_results: Dict,
     plt.show()
 
 
-# 使用示例
+# Example Usage
 if __name__ == '__main__':
-    # 假设已经运行了实验并有results
-    # cartpole_results = main(...)  # 从cartpole实验获取
-    # mountaincar_results = main_mountaincar(...)  # 从mountaincar实验获取
+    # Assuming experiments have been run and results are available
+    # cartpole_results = main(...)  # Get from CartPole experiment
+    # mountaincar_results = main_mountaincar(...)  # Get from MountainCar experiment
     
     # plot_rq2_results(cartpole_results, mountaincar_results)
     pass

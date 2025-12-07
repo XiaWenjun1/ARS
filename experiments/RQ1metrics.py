@@ -6,11 +6,13 @@ import datetime
 import uuid
 import glob
 
-# 可识别的环境前缀（全小写）
+# Recognizable environment prefixes (all lowercase)
 KNOWN_ENVS = ['cartpole', 'mountaincar']
 
 def ensure_visualization_dir():
-    """确保visualizations目录存在（在experiments同级目录）"""
+    """
+    Ensure the 'visualizations' directory exists (at the same level as experiments).
+    """
     current_dir = os.path.dirname(__file__)
     parent_dir = os.path.dirname(current_dir)
     vis_dir = os.path.join(parent_dir, 'visualizations')
@@ -19,14 +21,19 @@ def ensure_visualization_dir():
     return vis_dir
 
 def get_unique_filepath(prefix: str, vis_dir: str, ext: str = "png") -> str:
-    """生成唯一文件路径，格式: {prefix}_{YYYYmmddTHHMMSS}_{6hex}.ext"""
+    """
+    Generate a unique filepath in the format: {prefix}_{YYYYmmddTHHMMSS}_{6hex}.ext
+    """
     ts = datetime.datetime.now().strftime("%Y%m%dT%H%M%S")
     short_id = uuid.uuid4().hex[:6]
     filename = f"{prefix}_{ts}_{short_id}.{ext}"
     return os.path.join(vis_dir, filename)
 
 def infer_env_from_cfg(cfg) -> str:
-    """尝试从 cfg 推断环境名，返回小写前缀，找不到则返回 'env'"""
+    """
+    Attempt to infer the environment name from the configuration object (cfg).
+    Returns a lowercase prefix, or 'env' if not found.
+    """
     if cfg is None:
         return "env"
     cls_name = cfg.__class__.__name__.lower()
@@ -45,7 +52,10 @@ def infer_env_from_cfg(cfg) -> str:
     return "env"
 
 def infer_env_from_latest_visual(vis_dir: str) -> str:
-    """当没有 cfg 时，尝试从 visualizations 目录中最新文件的前缀推断环境"""
+    """
+    When no cfg is available, try to infer the environment from the prefix of the 
+    latest file in the visualizations directory.
+    """
     if not os.path.exists(vis_dir):
         return "env"
     pattern = os.path.join(vis_dir, "*")
@@ -62,8 +72,12 @@ def infer_env_from_latest_visual(vis_dir: str) -> str:
     return "env"
 
 def plot_task_performance_heatmap(summary_data, cfg, save_dir=None):
-    """显示每个检测器在不同任务上的表现，文件名带环境前缀"""
-    # 如果未提供 save_dir，则使用默认路径
+    """
+    Display the performance of each detector across different tasks as a heatmap.
+    The filename will include the environment prefix.
+    """
+    # 
+    # If save_dir is not provided, use the default path
     if save_dir is None:
         save_dir = ensure_visualization_dir()
     else:
@@ -71,19 +85,19 @@ def plot_task_performance_heatmap(summary_data, cfg, save_dir=None):
         
     env_prefix = infer_env_from_cfg(cfg)
 
-    # 准备数据
+    # Prepare data
     task_names = [f"T{i}\n({cfg.TASKS[i]['task_name']})" for i in range(len(cfg.TASKS))]
     detector_names = [data['name'] for data in summary_data]
 
-    # 创建性能矩阵
+    # Create performance matrix
     performance_matrix = np.zeros((len(detector_names), len(task_names)))
     for i, data in enumerate(summary_data):
         for j in range(len(task_names)):
-            # 保护性索引（避免少数 seed 缺失某个任务数据导致 KeyError）
+            # Defensive indexing (avoids KeyError if a few seeds are missing data for a task)
             task_rewards = [r['eval_rewards'].get(j, 0.0) for r in data['all_results']]
             performance_matrix[i, j] = np.mean(task_rewards)
 
-    # 绘制热图
+    # Plot Heatmap
     plt.figure(figsize=(12, 8))
     sns.heatmap(performance_matrix,
                 xticklabels=task_names,
@@ -101,8 +115,12 @@ def plot_task_performance_heatmap(summary_data, cfg, save_dir=None):
     plt.close()
 
 def plot_detector_comparison(summary_data, save_dir=None):
-    """对比检测器的综合性能（奖励+检测指标），尽量带环境前缀（从已有可视化推断）"""
-    # 如果未提供 save_dir，则使用默认路径
+    """
+    Compare the comprehensive performance (Reward + Detection Metrics) of detectors.
+    Tries to include the environment prefix in the filename (inferred from existing visuals).
+    """
+    # 
+    # If save_dir is not provided, use the default path
     if save_dir is None:
         vis_dir = ensure_visualization_dir()
     else:
@@ -113,7 +131,7 @@ def plot_detector_comparison(summary_data, save_dir=None):
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 
-    # 左图：平均评估奖励（按性能排序）
+    # Left Plot: Average Evaluation Reward (Sorted by performance)
     summary_data_sorted = sorted(summary_data, key=lambda x: x['mean_eval'], reverse=True)
     names = [data['name'] for data in summary_data_sorted]
     evals = [data['mean_eval'] for data in summary_data_sorted]
@@ -122,7 +140,7 @@ def plot_detector_comparison(summary_data, save_dir=None):
     colors = plt.cm.YlGnBu(np.linspace(0.3, 0.9, len(names))) if len(names) > 0 else []
 
     bars1 = ax1.bar(range(len(names)), evals, yerr=eval_err,
-                   color=colors, alpha=0.8, capsize=5, edgecolor='black', linewidth=0.5)
+                    color=colors, alpha=0.8, capsize=5, edgecolor='black', linewidth=0.5)
     ax1.set_ylabel('Average Evaluation Reward')
     ax1.set_title('Performance Comparison (Sorted by Reward)')
     ax1.set_xticks(range(len(names)))
@@ -136,7 +154,7 @@ def plot_detector_comparison(summary_data, save_dir=None):
 
     ax1.grid(True, alpha=0.3, axis='y')
 
-    # 右图：检测指标
+    # Right Plot: Detection Metrics (Precision & Recall)
     precisions = [data['mean_prec'] if not np.isnan(data['mean_prec']) else 0 for data in summary_data_sorted]
     recalls = [data['mean_rec'] if not np.isnan(data['mean_rec']) else 0 for data in summary_data_sorted]
 
@@ -173,11 +191,15 @@ def plot_detector_comparison(summary_data, save_dir=None):
 
 def plot_learning_curves(summary_data, cfg=None, save_dir=None):
     """
-    RQ3风格的学习曲线 (Learning Curves Comparison)
-    修改：不再绘制平均值和标准差，而是绘制所有Seed的独立曲线。
-    这样可以更直观地看到每个实验的适应过程和稳定性。
+    RQ3-style Learning Curves Comparison.
+    
+
+[Image of reinforcement learning curve plot]
+
+    Modification: Instead of plotting Mean +/- Std, this plots individual curves for ALL seeds.
+    This allows for a more intuitive visualization of the adaptation process and stability of each experiment.
     """
-    # 如果未提供 save_dir，则使用默认路径
+    # If save_dir is not provided, use the default path
     if save_dir is None:
         save_dir = ensure_visualization_dir()
     else:
@@ -188,21 +210,21 @@ def plot_learning_curves(summary_data, cfg=None, save_dir=None):
     
     plt.figure(figsize=(14, 7))
     
-    # 获取任务切换点 (假设所有 run 的切换点一致，取第一个有数据的)
+    # Get task change points (Assume change points are consistent across runs, take the first valid one)
     change_points = []
     for data in summary_data:
         if data['all_results'] and 'change_points' in data['all_results'][0]:
             change_points = data['all_results'][0]['change_points']
             break
             
-    # 绘制曲线
+    # Plot curves
     colors = sns.color_palette("husl", len(plot_data))
     
     for idx, data in enumerate(plot_data):
         name = data['name']
         all_rewards = []
         
-        # 收集该检测器所有 Seed 的 episode_rewards
+        # Collect episode_rewards for all seeds of this detector
         for res in data['all_results']:
             if 'episode_rewards' in res:
                 all_rewards.append(res['episode_rewards'])
@@ -210,14 +232,14 @@ def plot_learning_curves(summary_data, cfg=None, save_dir=None):
         if not all_rewards:
             continue
             
-        # 遍历每个种子并独立绘制
+        # Iterate through each seed and plot independently
         window_size = 20
         kernel = np.ones(window_size) / window_size
         
         for i, rewards in enumerate(all_rewards):
             rewards_arr = np.array(rewards)
             
-            # 平滑处理 (Window smoothing)
+            # Smoothing (Window convolution)
             if len(rewards_arr) > window_size:
                 smoothed = np.convolve(rewards_arr, kernel, mode='valid')
                 x_axis = np.arange(len(smoothed)) + window_size // 2
@@ -225,17 +247,17 @@ def plot_learning_curves(summary_data, cfg=None, save_dir=None):
                 smoothed = rewards_arr
                 x_axis = np.arange(len(rewards_arr))
             
-            # 绘图：同一个检测器的不同种子使用相同的颜色
-            # 只有第一个种子带 Label，避免图例重复
+            # Plotting: Different seeds of the same detector use the same color
+            # Only the first seed gets a Label to avoid legend duplication
             label = name if i == 0 else None
             
-            # 设置 alpha 透明度，让重叠部分更深
+            # Set alpha transparency so overlapping lines appear darker
             plt.plot(x_axis, smoothed, label=label, color=colors[idx], linewidth=1.5, alpha=0.6)
 
-    # 绘制任务切换竖线
+    # Draw vertical lines for task changes
     for i, cp in enumerate(change_points):
         plt.axvline(x=cp, color='gray', linestyle='--', alpha=0.6, 
-                   label='Task Change' if i == 0 else "")
+                    label='Task Change' if i == 0 else "")
         plt.text(cp + 5, plt.ylim()[1] * 0.95, f'T{i+1}', color='gray', fontsize=8)
 
     plt.xlabel('Episode')

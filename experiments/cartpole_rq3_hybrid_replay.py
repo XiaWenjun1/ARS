@@ -21,12 +21,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from configs.cartpole_config import CartPoleConfig
 from environments.cartpole_cl import CartPoleCL
-from ars_components.LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
+from LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
 # Import the new visualization module
-from analysis.RQ3metrics import create_comprehensive_analysis
+from RQ3metrics import create_comprehensive_analysis
 
 
 def set_global_seed(seed: int):
+    """Set seeds for reproducibility."""
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -35,7 +36,7 @@ def set_global_seed(seed: int):
 
 
 class PolicyNetwork(nn.Module):
-    """Simple policy network for fair comparison"""
+    """Simple policy network for fair comparison across all conditions."""
     def __init__(self, state_dim: int, action_dim: int, hidden_dim: int = 64):
         super().__init__()
         self.fc = nn.Sequential(
@@ -52,8 +53,16 @@ class PolicyNetwork(nn.Module):
 
 class RQ3Agent:
     """
-    Complete agent with all hybrid conditions - FIXED VERSION
+    Complete agent with all hybrid conditions - FIXED VERSION.
+    
+    This agent supports various replay strategies including:
+    - Standard Replay (Unlimited buffer)
+    - Limited Replay (Restricted buffer size)
+    - Latent Replay (Storing compressed states)
+    - World Model (Generating synthetic samples)
+    - Hybrid approaches (Combining Latent + Synthetic + Uncertainty + Distillation)
     """
+    # 
     def __init__(
         self,
         state_dim: int,
@@ -80,9 +89,10 @@ class RQ3Agent:
         self.distill_loss = None
         if 'distill' in condition:
             self.teacher_net = PolicyNetwork(state_dim, action_dim, hidden_dim).to(device)
-            # 【优化】：将 alpha 从 0.7 降低到 0.15。
-            # 说明：在环境动力学剧烈变化（如风力）时，过强的蒸馏会导致负迁移。
-            # 我们只希望保留一点点"记忆"，而不是"顽固"。
+            # [OPTIMIZATION]: Reduced alpha from 0.7 to 0.15.
+            # Explanation: When environment dynamics change drastically (e.g., wind force),
+            # strong distillation can cause negative transfer. 
+            # We want to retain a "faint memory" rather than being "stubborn".
             self.distill_loss = KnowledgeDistillationLoss(temperature=2.0, alpha=0.15)
         
         # Optimizer
@@ -120,7 +130,7 @@ class RQ3Agent:
         self.debug_counter = 0
     
     def _setup_replay(self, condition: str):
-        """Setup replay buffer based on experimental condition"""
+        """Setup replay buffer based on experimental condition."""
         buffer_config = {
             'state_dim': self.state_dim,
             'action_dim': self.action_dim,
@@ -187,7 +197,7 @@ class RQ3Agent:
             raise ValueError(f"Unknown condition: {condition}")
     
     def _initialize_condition_features(self):
-        """Initialize feature flags based on condition"""
+        """Initialize feature flags based on condition."""
         if self.condition == "latent_replay":
             # FIXED: Allow sampling from latent buffer (LatentReplayBuffer now supports next_state storage)
             self.force_latent_ratio = 0.5 
@@ -216,7 +226,7 @@ class RQ3Agent:
             self.use_distillation = True
     
     def select_action(self, state: np.ndarray, training: bool = True) -> int:
-        """Epsilon-greedy action selection"""
+        """Epsilon-greedy action selection."""
         if training and random.random() < self.epsilon:
             return random.randint(0, self.action_dim - 1)
         
@@ -234,7 +244,7 @@ class RQ3Agent:
         done: bool,
         task_id: int = 0
     ):
-        """Store transition with enhanced features"""
+        """Store transition with enhanced features (Latent/World Model updates)."""
         if not self.use_replay or self.replay_buffer is None:
             return
         
@@ -251,9 +261,9 @@ class RQ3Agent:
             
             # Train world model frequently
             if hasattr(self.replay_buffer, 'world_model') and self.replay_buffer.world_model is not None:
-                # 【优化】：提高训练频率或强度
-                # CartPole 数据简单，可以更频繁地更新模型以快速适应新物理规律
-                if self.steps_done % 5 == 0:  # 从 10 改为 5
+                # [OPTIMIZATION]: Increase training frequency/intensity.
+                # CartPole data is simple; frequent updates help adapt to new physics quickly.
+                if self.steps_done % 5 == 0:  # Changed from 10 to 5
                     loss, uncertainty = self._train_world_model()
                     if loss > 0 and self.debug_counter % 500 == 0:
                         print(f"🤖 World model training: loss={loss:.4f}, uncertainty={uncertainty:.4f}")
@@ -274,7 +284,7 @@ class RQ3Agent:
             self.replay_buffer.push(state, action, reward, next_state, done)
     
     def _train_world_model(self):
-        """Train world model on recent experiences"""
+        """Train world model on recent experiences."""
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0.0, 0.0
         
@@ -298,7 +308,7 @@ class RQ3Agent:
         return loss, uncertainty
     
     def _train_latent_encoder(self):
-        """Train latent encoder"""
+        """Train latent encoder using autoencoder loss."""
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0.0
         
@@ -313,7 +323,8 @@ class RQ3Agent:
         return loss
     
     def generate_synthetic_samples(self, task_id: int):
-        """Generate synthetic samples using world model"""
+        """Generate synthetic samples using the World Model (Dreaming)."""
+        # 
         if not isinstance(self.replay_buffer, LatentReplayBuffer):
             return 0
         
@@ -332,7 +343,7 @@ class RQ3Agent:
         return generated
     
     def update(self) -> float:
-        """Enhanced update with all features"""
+        """Enhanced update with all features (Latent/Synthetic Sampling + Distillation)."""
         if not self.use_replay or self.replay_buffer is None:
             return 0.0
         
@@ -374,6 +385,7 @@ class RQ3Agent:
         
         td_loss = nn.MSELoss()(q_values, target)
         
+        # Apply Knowledge Distillation if enabled
         if self.use_distillation and self.teacher_net is not None:
             with torch.no_grad():
                 teacher_q = self.teacher_net(states)
@@ -400,20 +412,21 @@ class RQ3Agent:
         return float(loss.item())
     
     def snapshot_for_distillation(self):
-        """Save current policy as teacher for knowledge distillation"""
+        """Save current policy as teacher for knowledge distillation."""
         if self.teacher_net is not None:
             self.teacher_net.load_state_dict(self.policy_net.state_dict())
             self.teacher_net.eval()
             print(f"📚 Saved teacher model for distillation (step {self.steps_done})")
     
     def check_and_enable_features(self, episodes_completed: int):
-        """Progressive feature enabling based on condition"""
+        """Progressive feature enabling based on condition (Warmup periods)."""
         if self.condition == "latent_replay":
-            # 【优化】：增加预热期。前50轮不要用Latent数据，避免Encoder未收敛时的噪声干扰
+            # [OPTIMIZATION]: Added warmup period. Do not use Latent data for first 50 episodes
+            # to avoid noise from unconverged Encoder.
             if episodes_completed < 50:
                 self.force_latent_ratio = 0.0
             else:
-                self.force_latent_ratio = 0.5  # Encoder 稳定后再开启混合
+                self.force_latent_ratio = 0.5  # Enable mixing after Encoder stabilizes
         
         elif self.condition in ["world_model_only", "hybrid_basic", "hybrid_uncertainty", "hybrid_distill"]:
             if episodes_completed > 5:
@@ -432,7 +445,7 @@ class RQ3Agent:
                     self.synthetic_ratio = 0.3
     
     def diagnose(self):
-        """Enhanced diagnostics"""
+        """Enhanced diagnostics for monitoring replay buffer state."""
         print(f"\n=== Diagnostics (step {self.steps_done}) ===")
         
         if isinstance(self.replay_buffer, LatentReplayBuffer):
@@ -453,7 +466,7 @@ class RQ3Agent:
         print("=" * 50)
     
     def get_memory_usage(self) -> Dict:
-        """Get memory usage statistics"""
+        """Get memory usage statistics of the replay buffer."""
         if isinstance(self.replay_buffer, LatentReplayBuffer):
             return self.replay_buffer.get_memory_usage()
         elif self.replay_buffer is not None:
@@ -468,7 +481,7 @@ class RQ3Agent:
             return {'total_mb': 0.0, 'compression_ratio': 1.0}
     
     def check_training_health(self) -> Dict:
-        """Check training health status"""
+        """Check training health status (e.g., gradient norms)."""
         health_status = {
             'healthy': True,
             'issues': []
@@ -487,7 +500,7 @@ class RQ3Agent:
 
 
 class SimpleReplayBuffer:
-    """Traditional experience replay buffer"""
+    """Traditional experience replay buffer (FIFO)."""
     def __init__(self, max_size: int = 10000):
         self.buffer = []
         self.max_size = max_size
@@ -521,7 +534,7 @@ def run_rq3_experiment(
     episodes_per_task: int = 100,
     cycles: int = 2
 ) -> Dict:
-    """Run single experimental condition"""
+    """Run single experimental condition."""
     print(f"\n{'='*60}")
     print(f"SEED {seed} - Condition: {condition}")
     print(f"{ '='*60}")
@@ -552,9 +565,11 @@ def run_rq3_experiment(
     env.change_task(current_task)
     episodes_completed = 0
     
+    # Main training loop
     for episode_idx in range(len(task_sequence)):
         desired_task = task_sequence[episode_idx]
         
+        # Task Change Logic
         if desired_task != env.current_task:
             eval_results = evaluate_all_tasks(agent, env, cfg)
             for tid, perf in eval_results.items():
@@ -625,7 +640,7 @@ def run_rq3_experiment(
 
 
 def evaluate_all_tasks(agent: RQ3Agent, env: CartPoleCL, cfg: CartPoleConfig, n_episodes: int = 10) -> Dict:
-    """Evaluate agent on all tasks"""
+    """Evaluate agent on all tasks."""
     original_epsilon = agent.epsilon
     agent.epsilon = 0.0
     
@@ -655,7 +670,7 @@ def evaluate_all_tasks(agent: RQ3Agent, env: CartPoleCL, cfg: CartPoleConfig, n_
 
 
 def compute_forward_transfer(task_performances: Dict) -> float:
-    """Measure forward transfer"""
+    """Measure forward transfer (Performance on new task vs baseline)."""
     if len(task_performances) < 2:
         return 0.0
     
@@ -673,7 +688,7 @@ def compute_forward_transfer(task_performances: Dict) -> float:
 
 
 def compute_backward_transfer(task_performances: Dict) -> float:
-    """Measure backward transfer (forgetting)"""
+    """Measure backward transfer (Forgeting). Negative means forgetting."""
     if len(task_performances) < 2:
         return 0.0
     
@@ -695,7 +710,7 @@ def compute_backward_transfer(task_performances: Dict) -> float:
 
 
 def main(seeds: List[int] = [1, 2, 3], episodes_per_task: int = 300, cycles: int = 2):
-    """Complete RQ3 experiment with all conditions - FIXED VERSION"""
+    """Complete RQ3 experiment with all conditions - FIXED VERSION."""
     print(f"🔬 Experimental configuration: seeds={seeds}, episodes_per_task={episodes_per_task}, cycles={cycles}")
     print(f"🔬 Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     

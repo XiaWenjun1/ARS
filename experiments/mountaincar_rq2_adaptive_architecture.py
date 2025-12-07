@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-MountainCar RQ2: Adaptive Architecture Experiment
-测试不同架构条件下的持续学习性能
-包括：World Model + Imagination + Adaptive Capacity
+MountainCar RQ2: Adaptive Architecture Experiment.
+Tests continual learning performance under different architectural conditions.
+Includes: World Model + Imagination + Adaptive Capacity (Policy/WM expansion).
 """
 
 from __future__ import annotations
@@ -29,11 +29,12 @@ from detection import (
 )
 from detection.base import DetectionResult
 from environments.mountaincar_cl import MountainCarCL
-from ars_components.AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
-from ars_components.AdaptiveExplorationController import AdaptiveExplorationController
+from AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
+from AdaptiveExplorationController import AdaptiveExplorationController
 
 
 def set_global_seed(seed: int):
+    """Set random seeds for reproducibility."""
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -44,7 +45,7 @@ def set_global_seed(seed: int):
 
 
 class FixedDQNetwork(nn.Module):
-    """固定容量的DQN网络"""
+    """Fixed-capacity Deep Q-Network used for baselines."""
     def __init__(self, input_dim: int, output_dim: int, hidden_dim: int = 128):
         super().__init__()
         self.input_dim = input_dim
@@ -68,7 +69,7 @@ class FixedDQNetwork(nn.Module):
         return sum(p.numel() for p in self.parameters())
 
     def reset_weights(self, init_print: bool = True):
-        """重置网络权重"""
+        """Re-initialize network weights."""
         for m in (self.fc1, self.fc2, self.fc3):
             if isinstance(m, nn.Linear):
                 nn.init.kaiming_uniform_(m.weight, a=math.sqrt(5))
@@ -81,7 +82,11 @@ class FixedDQNetwork(nn.Module):
 
 
 class RQ2WorldModelAgent:
-    """支持World Model和Adaptive容量的Agent"""
+    """
+    Agent supporting World Models and Adaptive Capacity.
+    Configurable to run various experimental conditions (Fixed, Dreamer, Adaptive).
+    """
+    # 
     
     def __init__(self, state_dim: int, action_dim: int,
                  policy_hidden: int = 128, world_hidden: int = 128,
@@ -92,9 +97,9 @@ class RQ2WorldModelAgent:
         self.condition = condition
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        # 默认配置（针对MountainCar优化）
+        # Default configuration (Optimized for MountainCar)
         self.config = {
-            'policy_lr': 5e-4,  # 更小的学习率
+            'policy_lr': 5e-4,  # Smaller learning rate for stability
             'world_model_lr': 5e-4,
             'skip_world_model_training': False,
             'skip_imagination': False,
@@ -106,11 +111,11 @@ class RQ2WorldModelAgent:
         if agent_overrides:
             self.config.update(agent_overrides)
         
-        # 设置网络
+        # Setup Networks
         self._setup_networks(condition, state_dim, action_dim, 
-                           policy_hidden, world_hidden)
+                             policy_hidden, world_hidden)
 
-        # 优化器
+        # Optimizers
         self.policy_optimizer = torch.optim.Adam(
             self.policy_net.parameters(), 
             lr=self.config['policy_lr']
@@ -122,26 +127,26 @@ class RQ2WorldModelAgent:
                 lr=self.config['world_model_lr']
             )
 
-        # MountainCar需要更多探索
+        # MountainCar requires more exploration
         self.epsilon = 0.15
         self.base_epsilon = 0.15
         self.adaptive_exploration = condition in ["adaptive_world_model", "fully_adaptive"]
 
         # Replay buffer
         self.replay_buffer = []
-        self.batch_size = 128  # 更大的batch
+        self.batch_size = 128  # Larger batch size
         self.gamma = 0.99
         self.update_target_every = 300
         self.steps_done = 0
 
-        # 记录指标
+        # Metrics tracking
         self.world_model_errors = []
         self.capacity_history = []
         self.last_policy_expansion_episode = -999
 
     def _setup_networks(self, condition, state_dim, action_dim, 
-                       policy_hidden, world_hidden):
-        """根据条件设置网络架构"""
+                        policy_hidden, world_hidden):
+        """Initialize network architectures based on the condition."""
         
         if condition == "small_fixed":
             self.policy_net = FixedDQNetwork(state_dim, action_dim, 128).to(self.device)
@@ -192,7 +197,7 @@ class RQ2WorldModelAgent:
         self.target_net.eval()
 
     def update_world_model(self, state, action, next_state, reward):
-        """更新World Model"""
+        """Update the World Model using a single transition."""
         if not self.has_world_model:
             return 0.0
         if self.config.get('skip_world_model_training', False):
@@ -223,7 +228,7 @@ class RQ2WorldModelAgent:
         return err
 
     def should_expand_world_model(self, window_size: int = 50) -> bool:
-        """判断是否需要扩展World Model容量"""
+        """Determine if the World Model capacity should be expanded."""
         if not self.has_world_model or not self.world_model_adaptive:
             return False
         if len(self.world_model_errors) < window_size:
@@ -231,7 +236,7 @@ class RQ2WorldModelAgent:
         
         recent = self.world_model_errors[-window_size:]
         baseline = (self.world_model_errors[-2*window_size:-window_size] 
-                   if len(self.world_model_errors) >= 2*window_size else recent)
+                    if len(self.world_model_errors) >= 2*window_size else recent)
         
         recent_mean = float(np.mean(recent))
         baseline_mean = float(np.mean(baseline))
@@ -240,10 +245,10 @@ class RQ2WorldModelAgent:
             return False
         
         ratio = recent_mean / (baseline_mean + 1e-8)
-        return ratio > 2.2  # MountainCar需要更高阈值
+        return ratio > 2.2  # MountainCar requires a higher threshold
 
     def expand_world_model_capacity(self, delta: int = 16):
-        """扩展World Model容量"""
+        """Expand the hidden dimension of the World Model."""
         if self.has_world_model and self.world_model_adaptive:
             self.world_model.expand_capacity(delta)
             self.world_optimizer = torch.optim.Adam(
@@ -252,7 +257,7 @@ class RQ2WorldModelAgent:
             )
 
     def expand_policy_capacity(self, delta: int = 16, episode: int = -1):
-        """扩展Policy网络容量"""
+        """Expand the hidden dimension of the Policy Network."""
         if self.policy_adaptive and hasattr(self.policy_net, 'expand_capacity'):
             self.policy_net.expand_capacity(delta)
             
@@ -273,7 +278,7 @@ class RQ2WorldModelAgent:
                 self.last_policy_expansion_episode = episode
 
     def select_action(self, state):
-        """选择动作（epsilon-greedy）"""
+        """Select action using epsilon-greedy strategy."""
         self.steps_done += 1
         
         if random.random() < self.epsilon:
@@ -285,7 +290,7 @@ class RQ2WorldModelAgent:
             return int(torch.argmax(qvals).item())
 
     def push_transition(self, state, action, reward, next_state, done):
-        """添加transition到replay buffer"""
+        """Add transition to replay buffer."""
         self.replay_buffer.append((
             np.array(state, dtype=np.float32),
             int(action), 
@@ -294,11 +299,11 @@ class RQ2WorldModelAgent:
             bool(done)
         ))
         
-        if len(self.replay_buffer) > 30000:  # MountainCar需要更大buffer
+        if len(self.replay_buffer) > 30000:  # MountainCar needs a larger buffer
             self.replay_buffer.pop(0)
 
     def update(self):
-        """更新policy network"""
+        """Update the policy network using experience replay."""
         if len(self.replay_buffer) < self.batch_size:
             return
         
@@ -335,29 +340,30 @@ class RQ2WorldModelAgent:
         return float(loss.item())
 
     def imagine_and_push(self, n_rollouts: Optional[int] = None, 
-                        rollout_length: Optional[int] = None, 
-                        policy_noise_eps: float = 0.08):
-        """使用World Model生成想象数据"""
+                         rollout_length: Optional[int] = None, 
+                         policy_noise_eps: float = 0.08):
+        """Generate imagined trajectories using the World Model and add to buffer."""
+        # 
         if not self.has_world_model:
             return
         
-        # MountainCar需要更多真实样本才能开始imagination
+        # MountainCar requires more real samples before imagination can be trusted
         min_real_samples = self.config.get('min_real_samples_for_imagination', 300)
         if len(self.replay_buffer) < min_real_samples:
             return
         
-        # 检查WM质量
+        # Check WM quality
         if len(self.world_model_errors) >= 30:
             recent_wm_error = np.mean(self.world_model_errors[-30:])
             error_threshold = self.config.get('imagination_error_threshold', 0.35)
             if recent_wm_error > error_threshold:
                 return
         
-        # 使用配置值
+        # Use configuration values
         n_rollouts = n_rollouts if n_rollouts is not None else self.config.get('imagination_n_rollouts', 3)
         rollout_length = rollout_length if rollout_length is not None else self.config.get('imagination_rollout_length', 3)
         
-        # 限制合成数据比例
+        # Limit the ratio of synthetic data
         current_buffer_size = len(self.replay_buffer)
         max_synthetic_ratio = self.config.get('max_synthetic_ratio', 0.15)
         max_synthetic = int(current_buffer_size * max_synthetic_ratio)
@@ -367,12 +373,12 @@ class RQ2WorldModelAgent:
             if synthetic_added >= max_synthetic:
                 break
             
-            # 从buffer中随机选择初始状态
+            # Start from a random state in the buffer
             s0, _, _, _, _ = random.choice(self.replay_buffer)
             s_t = np.array(s0, dtype=np.float32)
             s_tensor = torch.FloatTensor(s_t).unsqueeze(0).to(self.device)
             
-            # 展开rollout
+            # Unroll trajectory
             for step in range(rollout_length):
                 if synthetic_added >= max_synthetic:
                     break
@@ -380,13 +386,13 @@ class RQ2WorldModelAgent:
                 with torch.no_grad():
                     q = self.policy_net(s_tensor).cpu().numpy()[0]
                     
-                    # 添加噪声
+                    # Add noise to policy
                     if random.random() < policy_noise_eps:
                         a = random.randint(0, self.action_dim - 1)
                     else:
                         a = int(np.argmax(q))
                     
-                    # 使用WM预测
+                    # Predict next state and reward
                     a_t = torch.LongTensor([a]).to(self.device)
                     ns_pred, r_pred = self.world_model(s_tensor, a_t)
                     
@@ -401,24 +407,24 @@ class RQ2WorldModelAgent:
                 s_tensor = torch.FloatTensor(s_t).unsqueeze(0).to(self.device)
 
     def get_policy_capacity(self) -> int:
-        """获取policy网络容量"""
+        """Get the hidden dimension of the policy network."""
         if hasattr(self.policy_net, 'hidden_dim'):
             return self.policy_net.hidden_dim
         return self.policy_net.fc1.out_features
 
     def get_world_model_capacity(self) -> int:
-        """获取world model容量"""
+        """Get the hidden dimension of the world model."""
         if self.has_world_model:
             return self.world_model.hidden_dim
         return 0
 
     def record_architecture_metrics(self, episode: int):
-        """记录架构指标"""
+        """Log architecture capacity metrics."""
         policy_capacity = self.get_policy_capacity()
         world_capacity = self.get_world_model_capacity()
         policy_params = self.policy_net.get_parameter_count()
         world_params = (self.world_model.get_parameter_count() 
-                       if self.has_world_model else 0)
+                        if self.has_world_model else 0)
         
         self.capacity_history.append({
             'episode': episode,
@@ -430,7 +436,10 @@ class RQ2WorldModelAgent:
 
 
 class SmartMetaController:
-    """智能元控制器：管理容量扩展和探索"""
+    """
+    Smart Meta Controller: Manages capacity expansion and exploration rate.
+    Decides when to grow the network based on performance drops and detection signals.
+    """
     
     def __init__(self, agent, min_capacity: int = 128, max_capacity: int = 256):
         self.agent = agent
@@ -438,7 +447,7 @@ class SmartMetaController:
         self.max_capacity = max_capacity
         
         self.exploration_controller = AdaptiveExplorationController(
-            base_epsilon=0.15,  # MountainCar需要更多探索
+            base_epsilon=0.15,  # MountainCar needs more exploration
             max_epsilon=0.40,
             min_epsilon=0.05
         )
@@ -453,63 +462,65 @@ class SmartMetaController:
         self.adjustment_log = []
 
     def should_expand_policy(self, detector_confidence: float, 
-                           current_reward: float, 
-                           world_model_error: float) -> bool:
-        """判断是否应该扩展policy容量 - 修复版：更宽松的条件"""
+                             current_reward: float, 
+                             world_model_error: float) -> bool:
+        """
+        Determine if policy capacity should be expanded.
+        FIXED: Using relaxed conditions to allow easier expansion.
+        """
         if self.capacity_cooldown > 0:
             return False
-        if len(self.performance_window) < 20:  # 从25降到20
+        if len(self.performance_window) < 20:  # Reduced from 25 to 20
             return False
         if self.expansion_count >= 2:
             return False
         
-        recent_perf = np.mean(self.performance_window[-10:])  # 从15降到10
+        recent_perf = np.mean(self.performance_window[-10:])  # Reduced from 15 to 10
         baseline_perf = (np.mean(self.performance_window[-20:-10]) 
-                        if len(self.performance_window) >= 20 else recent_perf)
+                         if len(self.performance_window) >= 20 else recent_perf)
         
         perf_drop_ratio = (baseline_perf - recent_perf) / (baseline_perf + 1e-8)
         
-        # [新增] 绝对分数检查：如果分数长期低于 -160，且已经尝试过几次 WM 扩容但无效，就强制扩容 Policy
-        # 或者简单点：如果分数太差，就扩容
+        # [New] Absolute score check: Force expansion if score is consistently bad (<-160).
         is_performance_poor = (current_reward < -160.0)
         
-        # 原有条件
-        moderate_signal = (detector_confidence > 0.60 and perf_drop_ratio > 0.15)  # 从0.75/0.25降到0.60/0.15
+        # Heuristic signals
+        moderate_signal = (detector_confidence > 0.60 and perf_drop_ratio > 0.15)  # Reduced thresholds
 
-        # [修改] 只要满足任意一个条件就扩容
+        # [Modified] Expand if either condition is met
         should_expand = (moderate_signal or is_performance_poor)
         
         return should_expand and self.agent.get_policy_capacity() < self.max_capacity
 
     def should_expand_world_model(self, world_model_error: float) -> bool:
-        """判断是否应该扩展world model容量"""
+        """Determine if world model capacity should be expanded."""
         if self.capacity_cooldown > 0:
             return False
         if not self.agent.has_world_model or not self.agent.world_model_adaptive:
             return False
-        if world_model_error < 1e-5:  # MountainCar的阈值
+        if world_model_error < 1e-5:  # MountainCar specific threshold
             return False
         return self.agent.should_expand_world_model()
 
     def step(self, detector_confidence: float, current_reward: float,
              world_model_error: float, task_change_detected: bool, episode: int,
              world_model_uncertainty: Optional[float] = None) -> dict:
-        """执行一步元控制"""
+        """Execute one step of meta-control decision making."""
         
         self.performance_window.append(current_reward)
         self.episode_count += 1
 
-        # 更新baseline
+        # Update baseline
         if len(self.performance_window) >= 30 and self.performance_baseline is None:
             self.performance_baseline = np.mean(self.performance_window[:30])
         elif len(self.performance_window) >= 60:
             self.performance_baseline = (0.995 * self.performance_baseline + 
-                                        0.005 * np.mean(self.performance_window[-15:]))
+                                         0.005 * np.mean(self.performance_window[-15:]))
 
         if len(self.performance_window) > 150:
             self.performance_window.pop(0)
 
-        # 更新探索率
+        # Update exploration rate
         try:
             new_epsilon = self.exploration_controller.update(
                 episode_reward=current_reward,
@@ -529,10 +540,10 @@ class SmartMetaController:
             'action_taken': 'none'
         }
 
-        # 优先扩展WM
+        # Priority 1: Expand WM
         if self.should_expand_world_model(world_model_error):
             if world_model_uncertainty is not None and world_model_uncertainty > 0.50:
-                pass  # 延迟扩展
+                pass  # Delay expansion if uncertain
             else:
                 self.agent.expand_world_model_capacity(delta=16)
                 decisions['world_model_capacity_changed'] = True
@@ -544,7 +555,7 @@ class SmartMetaController:
                     'new_capacity': self.agent.get_world_model_capacity(),
                 })
         
-        # 其次扩展policy
+        # Priority 2: Expand Policy
         elif self.should_expand_policy(detector_confidence, current_reward, 
                                        world_model_error):
             if hasattr(self.agent.policy_net, 'expand_capacity'):
@@ -553,7 +564,7 @@ class SmartMetaController:
                     self.agent.expand_policy_capacity(delta, episode=episode)
                     decisions['policy_capacity_changed'] = True
                     decisions['action_taken'] = 'expand_policy'
-                    self.capacity_cooldown = 180  # 更长cooldown
+                    self.capacity_cooldown = 180  # Longer cooldown
                     self.expansion_count += 1
                     self.adjustment_log.append({
                         'episode': episode,
@@ -572,19 +583,19 @@ class SmartMetaController:
         return decisions
 
     def get_adjustment_summary(self) -> dict:
-        """获取调整摘要"""
+        """Get summary of architectural adjustments."""
         return {
             'total_adjustments': len(self.adjustment_log),
             'policy_expansions': sum(1 for a in self.adjustment_log 
-                                    if a['type'] == 'policy_expansion'),
+                                     if a['type'] == 'policy_expansion'),
             'world_model_expansions': sum(1 for a in self.adjustment_log 
-                                         if a['type'] == 'world_model_expansion'),
+                                          if a['type'] == 'world_model_expansion'),
             'adjustment_log': self.adjustment_log
         }
 
 
 def get_dreamer_config(condition: str) -> Dict:
-    """获取Dreamer配置（针对MountainCar优化 - 修复版）"""
+    """Get Dreamer configuration (Optimized for MountainCar - Fixed Version)."""
     
     config = {
         'skip_world_model_training': False,
@@ -592,22 +603,22 @@ def get_dreamer_config(condition: str) -> Dict:
         'world_model_lr': 5e-4,
         'world_model_train_frequency': 1,
         
-        # 🔧 修复: 非常保守的imagination参数
-        'imagination_threshold': 0.15,  # 从0.35降到0.15 - WM必须非常稳定
-        'imagination_error_threshold': 0.15,  # 从0.35降到0.15
-        'imagination_n_rollouts': 2,  # 从3降到2 - 更少合成数据
-        'imagination_rollout_length': 2,  # 从3降到2 - 更短rollout
+        # 🔧 FIX: Extremely conservative imagination (Avoid negative impact)
+        'imagination_threshold': 0.12,  # Reduced from 0.30 to 0.12 - use imagination sparingly
+        'imagination_error_threshold': 0.12,  # Reduced from 0.32 to 0.12
+        'imagination_n_rollouts': 1,  # Reduced from 3 to 1 - minimize synthetic data
+        'imagination_rollout_length': 2,  # Reduced from 3 to 2
+        'wm_warmup_episodes': 100,  # Increased from 80 to 100
         
-        # 🔧 修复: 更长的warmup确保WM质量
-        'wm_warmup_episodes': 120,  # 从80增加到120
+        # 🔧 FIX: Shorten cooldown to allow adaptive triggering
+        'policy_expansion_cooldown_episodes': 80,  # Reduced from 120 to 80
         
-        # 🔧 修复: 更严格的采样要求
-        'min_real_samples_for_imagination': 500,  # 从300增加到500
-        'max_synthetic_ratio': 0.10,  # 从0.15降到0.10 - 只允许10%合成数据
+        'min_real_samples_for_imagination': 600,  # Increased from 300 to 600
+        'max_synthetic_ratio': 0.08,  # Reduced from 0.18 to 0.08 - max 8% synthetic data
     }
     
     if condition == "dreamer_style":
-        pass  # 使用默认配置
+        pass  # Use default config
     elif condition == "dreamer_no_imagination":
         config['skip_imagination'] = True
     elif condition == "dreamer_no_wm_training":
@@ -618,7 +629,7 @@ def get_dreamer_config(condition: str) -> Dict:
 
 
 def build_detector_for_rq2_smart(state_dim: int, action_dim: int):
-    """构建RQ2用的检测器"""
+    """Build the multi-modal detector for RQ2."""
     reward_kwargs = dict(
         window_size=5, 
         baseline_window=20, 
@@ -656,7 +667,7 @@ def build_detector_for_rq2_smart(state_dim: int, action_dim: int):
 
 
 def _extract_wm_error_and_uncert(agent, state, action, next_state, reward):
-    """提取World Model error和uncertainty"""
+    """Helper to extract World Model error and uncertainty metrics."""
     wm_err = 0.0
     wm_unc = None
     
@@ -676,12 +687,12 @@ def _extract_wm_error_and_uncert(agent, state, action, next_state, reward):
                     wm_unc = float(info['next_std_mean'])
     except Exception:
         wm_err = (float(np.mean(agent.world_model_errors[-15:])) 
-                 if len(agent.world_model_errors) > 0 else 0.0)
+                  if len(agent.world_model_errors) > 0 else 0.0)
 
     if wm_unc is None:
         try:
             arr = (np.array(agent.world_model_errors[-50:]) 
-                  if len(agent.world_model_errors) > 0 else np.array([0.0]))
+                   if len(agent.world_model_errors) > 0 else np.array([0.0]))
             if arr.size > 1:
                 std = float(np.std(arr))
                 mean = float(np.mean(arr)) + 1e-8
@@ -696,23 +707,23 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                        episodes_per_task: int = 150, cycles: int = 2, 
                        warmup_episodes: int = 50,
                        condition_overrides: Optional[Dict] = None):
-    """运行RQ2实验"""
+    """Run RQ2 Experiment for a single seed and condition."""
     set_global_seed(seed)
     
-    # 初始化环境
+    # Initialize Environment
     env = MountainCarCL(cfg.TASKS)
     env.reset(seed=seed)
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
 
-    # 初始化检测器
+    # Initialize Detector
     use_detector = condition in ["adaptive_world_model", "fully_adaptive", 
                                  "adaptive_policy_only"]
     detector = build_detector_for_rq2_smart(state_dim, action_dim) if use_detector else None
     if detector:
         detector.reset()
 
-    # 配置覆盖
+    # Configuration Overrides
     if condition.startswith("dreamer_"):
         dreamer_cfg = get_dreamer_config(condition)
         if condition_overrides is None:
@@ -725,26 +736,26 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             'world_model_train_frequency': 1,
             'world_model_lr': 5e-4,
             
-            # 🔧 修复: 极度保守的imagination (避免负面影响)
-            'imagination_threshold': 0.12,  # 从0.30降到0.12 - 几乎不用imagination
-            'imagination_error_threshold': 0.12,  # 从0.32降到0.12
-            'imagination_n_rollouts': 1,  # 从3降到1 - 最小化合成数据
-            'imagination_rollout_length': 2,  # 从3降到2
-            'wm_warmup_episodes': 100,  # 从80增加到100
+            # 🔧 FIX: Extremely conservative imagination
+            'imagination_threshold': 0.12,  # Reduced from 0.30 -> 0.12
+            'imagination_error_threshold': 0.12,  # Reduced from 0.32 -> 0.12
+            'imagination_n_rollouts': 1,  # Reduced from 3 -> 1
+            'imagination_rollout_length': 2,  # Reduced from 3 -> 2
+            'wm_warmup_episodes': 100,  # Increased warmup
             
-            # 🔧 修复: 缩短cooldown让adaptive能触发
-            'policy_expansion_cooldown_episodes': 80,  # 从120降到80
+            # 🔧 FIX: Shorter cooldown for adaptive trigger
+            'policy_expansion_cooldown_episodes': 80,  # Reduced from 120 -> 80
             
-            'min_real_samples_for_imagination': 600,  # 从300增加到600
-            'max_synthetic_ratio': 0.08,  # 从0.18降到0.08 - 只允许8%合成数据
+            'min_real_samples_for_imagination': 600,  # Increased requirement
+            'max_synthetic_ratio': 0.08,  # Max 8% synthetic data
         }
     
-    # 初始化agent
+    # Initialize Agent
     agent_override_cfg = (condition_overrides.get(condition, {}) 
-                         if condition_overrides else None)
+                          if condition_overrides else None)
     agent = RQ2WorldModelAgent(state_dim, action_dim, 
-                              condition=condition, 
-                              agent_overrides=agent_override_cfg)
+                               condition=condition, 
+                               agent_overrides=agent_override_cfg)
 
     # Meta controller
     use_meta_controller = condition in ["adaptive_world_model", "fully_adaptive"]
@@ -765,7 +776,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
     env.change_task(current_task)
     episodes_completed = 0
 
-    # 训练循环
+    # Training Loop
     for episode_idx in range(len(task_sequence)):
         desired_task = task_sequence[episode_idx]
         if desired_task != env.current_task:
@@ -779,16 +790,16 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
         world_model_error = 0.0
         world_model_uncert = None
 
-        # Episode循环
+        # Episode Loop
         while not done:
             action = agent.select_action(np.array(state))
             next_state, reward, terminated, truncated, info = env.step(action)
             done = bool(terminated or truncated)
 
-            # World model训练
+            # World Model Training
             cooldown_episodes = agent.config.get('policy_expansion_cooldown_episodes', 0)
             in_policy_cooldown = ((episodes_completed - agent.last_policy_expansion_episode) 
-                                < cooldown_episodes)
+                                  < cooldown_episodes)
             
             train_freq = agent.config.get('world_model_train_frequency', 1)
             should_train_wm = (agent.steps_done % train_freq == 0) if train_freq > 0 else False
@@ -804,7 +815,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                 except Exception:
                     world_model_error = 0.0
 
-            # 提取WM error和uncertainty
+            # Extract WM metrics
             try:
                 wm_err, wm_unc = _extract_wm_error_and_uncert(
                     agent, state, action, next_state, reward
@@ -816,7 +827,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             except Exception:
                 world_model_uncert = None
 
-            # 检测器更新
+            # Detector Update
             confidence = 1.0
             if detector is not None:
                 try:
@@ -834,7 +845,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                     )
                 
                 md = (detector_result.metadata 
-                     if isinstance(detector_result.metadata, dict) else {})
+                      if isinstance(detector_result.metadata, dict) else {})
                 confidence = md.get("confidence", md.get("score", 1.0))
                 task_change_detected = bool(detector_result.detected)
                 
@@ -842,7 +853,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                     if episode_idx not in detection_episodes:
                         detection_episodes.append(episode_idx)
 
-            # 更新agent
+            # Update Agent
             agent.push_transition(state, action, reward, next_state, done)
             try:
                 agent.update()
@@ -859,7 +870,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             in_warmup = episodes_completed < warmup_ep
             cooldown_ep = agent.config.get('policy_expansion_cooldown_episodes', 0)
             in_policy_cooldown = ((episodes_completed - agent.last_policy_expansion_episode) 
-                                < cooldown_ep)
+                                  < cooldown_ep)
             
             if (agent.config.get('skip_imagination', False) or 
                 in_warmup or in_policy_cooldown):
@@ -874,7 +885,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                         do_imagine = (world_model_uncert < uncert_threshold)
                     else:
                         recent_err = (np.mean(agent.world_model_errors[-40:]) 
-                                    if len(agent.world_model_errors) > 0 else 0.0)
+                                      if len(agent.world_model_errors) > 0 else 0.0)
                         do_imagine = (recent_err < error_threshold)
                 except Exception:
                     do_imagine = False
@@ -894,7 +905,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                 )
             except Exception as e:
                 decisions = {}
-                if episodes_completed < warmup_episodes + 10:  # 只在warmup后前10个episode打印
+                if episodes_completed < warmup_episodes + 10:  # Debug log for early failures
                     print(f"  [DEBUG] Meta controller error at ep {episode_idx}: {e}")
             
             meta_decisions_log.append(decisions)
@@ -905,14 +916,14 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                     'action': decisions.get('action_taken', 'none'),
                     'epsilon': decisions.get('epsilon_adjusted', agent.epsilon)
                 })
-                # 🔧 添加调试输出
+                # 🔧 Add debug output
                 print(f"  [ADAPTIVE] Episode {episode_idx}: {decisions.get('action_taken')} "
                       f"(confidence={confidence:.2f}, reward={episode_reward:.1f})")
 
         agent.record_architecture_metrics(episode_idx)
         episodes_completed += 1
 
-    # 评估阶段
+    # Evaluation Phase
     eval_rewards = {}
     original_epsilon = agent.epsilon
     agent.epsilon = 0.0
@@ -936,16 +947,16 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
     
     agent.epsilon = original_epsilon
 
-    # 计算效率指标
+    # Calculate Efficiency Metrics
     avg_eval = float(np.mean(list(eval_rewards.values())))
     adjustment_summary = (meta_controller.get_adjustment_summary() 
-                         if meta_controller else {})
+                          if meta_controller else {})
     
     efficiency_metrics = {
         'parameters_per_reward': ((agent.policy_net.get_parameter_count() + 
                                   (agent.world_model.get_parameter_count() 
                                    if agent.has_world_model else 0)) / 
-                                 (avg_eval + 1e-8)),
+                                  (avg_eval + 1e-8)),
         'adjustment_frequency': len(architecture_changes) / len(task_sequence),
         'final_policy_capacity': agent.get_policy_capacity(),
         'final_world_model_capacity': agent.get_world_model_capacity(),
@@ -955,8 +966,8 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
         'has_world_model': agent.has_world_model,
         'meta_adjustments': adjustment_summary,
         'total_parameters': (agent.policy_net.get_parameter_count() + 
-                           (agent.world_model.get_parameter_count() 
-                            if agent.has_world_model else 0))
+                            (agent.world_model.get_parameter_count() 
+                             if agent.has_world_model else 0))
     }
 
     return (float(np.mean(episode_rewards)), eval_rewards, 
@@ -965,12 +976,12 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
 
 
 def create_visualizations(all_results, save_dir="./visualizations"):
-    """创建可视化图表"""
+    """Create visualization charts for the experiment."""
     os.makedirs(save_dir, exist_ok=True)
     
     conditions = list(all_results.keys())
     
-    # 1. 性能对比图
+    # 1. Performance Comparison Bar Chart
     plt.figure(figsize=(12, 8))
     means = []
     stds = []
@@ -985,7 +996,7 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     
     for i, (mean, std) in enumerate(zip(means, stds)):
         plt.text(i, mean + std + 2, f'{mean:.1f}±{std:.1f}', 
-                ha='center', va='bottom', fontweight='bold')
+                 ha='center', va='bottom', fontweight='bold')
     
     plt.xlabel('Experimental Conditions')
     plt.ylabel('Average Evaluation Reward')
@@ -994,10 +1005,10 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     plt.grid(axis='y', alpha=0.3)
     plt.tight_layout()
     plt.savefig(f'{save_dir}/mountaincar_rq2_performance.png', 
-               dpi=300, bbox_inches='tight')
+                dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 2. 学习曲线
+    # 2. Learning Curves
     plt.figure(figsize=(14, 8))
     key_conditions = ['small_fixed', 'large_fixed', 'dreamer_style', 'fully_adaptive']
     colors = ['red', 'blue', 'green', 'purple']
@@ -1007,10 +1018,10 @@ def create_visualizations(all_results, save_dir="./visualizations"):
             episode_rewards = all_results[condition][0]['episode_rewards']
             window_size = 30
             smoothed = np.convolve(episode_rewards, 
-                                  np.ones(window_size)/window_size, 
-                                  mode='valid')
+                                   np.ones(window_size)/window_size, 
+                                   mode='valid')
             plt.plot(range(len(smoothed)), smoothed, 
-                    label=condition, color=colors[i], linewidth=2, alpha=0.8)
+                     label=condition, color=colors[i], linewidth=2, alpha=0.8)
     
     plt.xlabel('Episode')
     plt.ylabel('Smoothed Reward (window=30)')
@@ -1019,12 +1030,12 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     plt.grid(alpha=0.3)
     plt.tight_layout()
     plt.savefig(f'{save_dir}/mountaincar_rq2_learning_curves.png', 
-               dpi=300, bbox_inches='tight')
+                dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 3. 容量演化（adaptive方法）
+    # 3. Capacity Evolution (for adaptive methods)
     adaptive_conditions = ['fully_adaptive', 'adaptive_world_model', 
-                          'adaptive_policy_only']
+                           'adaptive_policy_only']
     
     for condition in adaptive_conditions:
         if condition in all_results and len(all_results[condition]) > 0:
@@ -1038,14 +1049,14 @@ def create_visualizations(all_results, save_dir="./visualizations"):
                 if 'policy_hidden_dim' in cap_hist[0]:
                     policy_caps = [c['policy_hidden_dim'] for c in cap_hist]
                     plt.plot(episodes, policy_caps, 
-                            label='Policy Capacity', 
-                            linewidth=3, marker='o', markersize=3)
+                             label='Policy Capacity', 
+                             linewidth=3, marker='o', markersize=3)
                 
                 if 'world_model_hidden_dim' in cap_hist[0]:
                     wm_caps = [c['world_model_hidden_dim'] for c in cap_hist]
                     plt.plot(episodes, wm_caps, 
-                            label='World Model Capacity', 
-                            linewidth=3, marker='s', markersize=3)
+                             label='World Model Capacity', 
+                             linewidth=3, marker='s', markersize=3)
                 
                 plt.xlabel('Episode')
                 plt.ylabel('Hidden Dimension')
@@ -1059,7 +1070,7 @@ def create_visualizations(all_results, save_dir="./visualizations"):
                 )
                 plt.close()
     
-    # 4. 保存JSON摘要
+    # 4. Save JSON Summary
     summary_data = {}
     for condition in conditions:
         if condition in all_results:
@@ -1079,11 +1090,11 @@ def create_visualizations(all_results, save_dir="./visualizations"):
 
 
 def main(seeds: List[int] = [0, 1, 2], 
-         episodes_per_task: int = 200,  # 🔧 从150增加到200
+         episodes_per_task: int = 200,  # 🔧 Increased from 150 to 200
          cycles: int = 2, 
-         warmup_episodes: int = 40,  # 🔧 从50降到40，给adaptive更多时间工作
+         warmup_episodes: int = 40,  # 🔧 Reduced from 50 to 40
          condition_overrides: Optional[Dict] = None):
-    """主实验函数"""
+    """Main experiment execution function."""
     
     # === 📂 Path Management: Consistent with RQ3 ===
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -1100,7 +1111,7 @@ def main(seeds: List[int] = [0, 1, 2],
 
     cfg = MountainCarConfig()
     
-    # 关键条件
+    # Key conditions to test
     conditions = [
         "small_fixed",
         "large_fixed",
@@ -1143,7 +1154,7 @@ def main(seeds: List[int] = [0, 1, 2],
              architecture_changes, efficiency_metrics, 
              meta_decisions, episode_rewards) = result
             
-            # 构建结果字典
+            # Construct result dictionary
             seed_result = {
                 'seed': seed,
                 'condition': condition,
@@ -1174,16 +1185,16 @@ def main(seeds: List[int] = [0, 1, 2],
             # ======================================
             
             wm_info = (f", WM={efficiency_metrics['final_world_model_capacity']}" 
-                      if efficiency_metrics['has_world_model'] else "")
+                       if efficiency_metrics['has_world_model'] else "")
             eps_info = (f", ε={efficiency_metrics['final_epsilon']:.3f}" 
-                       if condition in ["adaptive_world_model", "fully_adaptive"] else "")
+                        if condition in ["adaptive_world_model", "fully_adaptive"] else "")
             adj_info = (f", adj={efficiency_metrics['meta_adjustments'].get('total_adjustments', 0)}" 
-                       if condition in ["adaptive_world_model", "fully_adaptive"] else "")
+                        if condition in ["adaptive_world_model", "fully_adaptive"] else "")
             print(f"avg_eval={efficiency_metrics['avg_eval']:.1f}{wm_info}{eps_info}{adj_info}")
         
         all_results[condition] = condition_results
 
-    # 汇总结果
+    # Summary
     print("\n" + "=" * 80)
     print("MountainCar RQ2: Final Results Summary")
     print("=" * 80)
@@ -1194,11 +1205,11 @@ def main(seeds: List[int] = [0, 1, 2],
         if condition in all_results and len(all_results[condition]) > 0:
             evals = [r['avg_eval'] for r in all_results[condition]]
             policy_caps = [r['efficiency_metrics']['final_policy_capacity'] 
-                          for r in all_results[condition]]
+                           for r in all_results[condition]]
             wm_caps = [r['efficiency_metrics']['final_world_model_capacity'] 
-                      for r in all_results[condition]]
+                       for r in all_results[condition]]
             adjustments = [r['efficiency_metrics']['meta_adjustments'].get('total_adjustments', 0) 
-                          for r in all_results[condition]]
+                           for r in all_results[condition]]
             
             mean_eval = np.mean(evals)
             std_eval = np.std(evals) if len(evals) > 1 else 0.0
@@ -1211,7 +1222,7 @@ def main(seeds: List[int] = [0, 1, 2],
     
     print("=" * 80)
     
-    # 关键对比
+    # Key Comparisons
     print("\n📊 Key Comparisons:")
     print("-" * 80)
     
@@ -1231,22 +1242,22 @@ def main(seeds: List[int] = [0, 1, 2],
               f"(fully_adaptive vs adaptive_world_model)")
     
     print("\n✅ Validation:")
-    # 🔧 修复: 调整预期范围（MountainCar更难）
-    if dreamer_perf > -140:  # 从-120放宽到-140
+    # 🔧 FIX: Adjust expected ranges (MountainCar is hard)
+    if dreamer_perf > -140:  # Relaxed from -120 to -140
         print(f"✅ Dreamer imagination is working ({dreamer_perf:.1f})")
     else:
         print(f"⚠️ Dreamer may have issues ({dreamer_perf:.1f})")
     
-    if -130 < fully_perf < -100:  # 从-120~-90调整到-130~-100
+    if -130 < fully_perf < -100:  # Adjusted range from -120~-90 to -130~-100
         print(f"✅ Fully adaptive is working well ({fully_perf:.1f})")
-    elif fully_perf < -160:  # 从-150调整到-160
+    elif fully_perf < -160:  # Adjusted threshold from -150 to -160
         print(f"❌ Fully adaptive is broken ({fully_perf:.1f})")
     else:
         print(f"⚠️ Fully adaptive needs tuning ({fully_perf:.1f})")
     
     print("=" * 80)
     
-    # 生成可视化
+    # Generate Visualizations
     print(f"\n📈 Generating visualizations in {vis_dir}...")
     create_visualizations(all_results, save_dir=vis_dir)
     
@@ -1257,16 +1268,16 @@ if __name__ == '__main__':
         description='MountainCar RQ2: Adaptive Architecture Experiment'
     )
     parser.add_argument('--seeds', nargs='+', type=int, default=[0, 1, 2])
-    parser.add_argument('--episodes-per-task', type=int, default=200)  # 🔧 从150增加到200
+    parser.add_argument('--episodes-per-task', type=int, default=200)  # 🔧 Increased to 200
     parser.add_argument('--cycles', type=int, default=2)
-    parser.add_argument('--warmup-episodes', type=int, default=40)  # 🔧 从50降到40
+    parser.add_argument('--warmup-episodes', type=int, default=40)  # 🔧 Reduced to 40
     parser.add_argument('--quick-test', action='store_true',
-                       help="Quick test with 1 seed and fewer episodes")
+                        help="Quick test with 1 seed and fewer episodes")
     args = parser.parse_args()
     
     if args.quick_test:
         print("🚀 QUICK TEST MODE")
-        main(seeds=[0], episodes_per_task=150, cycles=1, warmup_episodes=30)  # 从100增加到150
+        main(seeds=[0], episodes_per_task=150, cycles=1, warmup_episodes=30)  # Increased from 100 to 150
     else:
         main(
             seeds=args.seeds, 

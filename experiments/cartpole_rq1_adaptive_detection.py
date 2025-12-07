@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
 CartPole RQ1: Change Detection Experiment (Optimized for High Performance)
-修改点：
-1. 引入 Learning Rate Boost (学习率爆发)，加速适应而不只是增加随机性。
-2. 大幅提高检测阈值，消除误报（CartPole 误报代价极大）。
-3. 降低适应期的 Epsilon，防止杆子因随机动作倒塌。
-4. [Update] 使用 RQ1metrics 统一绘图，移除本地冗余绘图代码。
-5. [Update] 修复绘图保存路径，确保保存至 rq1_cartpole 子目录。
+
+Modifications/Key Points:
+1. Introduced Learning Rate Boost: Accelerates adaptation rather than just increasing randomness (exploration).
+2. Significantly increased detection thresholds: Eliminates false positives (False positives are very costly in CartPole).
+3. Reduced Epsilon during adaptation: Prevents the pole from falling due to excessive random actions.
+4. [Update] Uses RQ1metrics for unified plotting, removed redundant local plotting code.
+5. [Update] Fixed plot saving paths to ensure they go into the `rq1_cartpole` subdirectory.
 """
 
 from __future__ import annotations
@@ -25,12 +26,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import shared metrics module
 try:
-    from analysis import RQ1metrics
+    import RQ1metrics
 except ImportError:
-    # If cannot find it, try importing it from the parent level (this may vary depending on the project structure).
+    # If not found, try importing from the parent directory (structure may vary)
     pass
 
 from configs.cartpole_config import CartPoleConfig
+# 
 from detection import (
     LatentSpaceDriftDetector,
     MultiModalDetector,
@@ -42,6 +44,7 @@ from detection.base import DetectionResult
 from environments.cartpole_cl import CartPoleCL
 
 def set_global_seed(seed: int):
+    """Set seeds for reproducibility."""
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -52,6 +55,7 @@ def set_global_seed(seed: int):
 
 @dataclass
 class ExperimentConfig:
+    """Configuration class for a specific detector experiment."""
     name: str
     factory: Callable[[], object]
     detection_window: int = 40 
@@ -61,14 +65,24 @@ def evaluate_detections(
     detections: List[int], 
     detection_window: int
 ) -> Dict[str, float]:
+    """
+    Calculate Precision, Recall, F1, and Delay for change detection.
+    
+    Args:
+        change_points: Actual episodes where the task changed.
+        detections: Episodes where the detector fired.
+        detection_window: Max delay allowed to count a detection as a True Positive.
+    """
     detections = sorted(detections)
     success_count = 0
     delays = []
     det_idx = 0
     
     for cp in change_points:
+        # Skip detections that happened before the current change point
         while det_idx < len(detections) and detections[det_idx] < cp:
             det_idx += 1
+        # Check if the next detection is within the allowed window
         if det_idx < len(detections) and detections[det_idx] - cp <= detection_window:
             delays.append(detections[det_idx] - cp)
             success_count += 1
@@ -93,31 +107,37 @@ def evaluate_detections(
 # [Deleted] plot_training_curve has been removed as requested.
 
 def build_detector_configs(state_dim: int, action_dim: int):
-    # === CartPole 强防误报配置 ===
+    """
+    Define all detector configurations to be tested.
+    Contains specific hyperparameter tuning for the CartPole environment.
+    """
+    # === CartPole Anti-False-Positive Configuration ===
     
-    # 1. Reward Trend: 必须大跌才报警
-    # CartPole 满分 500。如果只跌到 400，说明旧策略还能用，不要报警。
-    # 只有跌到 300 以下（跌幅 > 40% 或 绝对值 > 150）才认为是灾难。
+    # 1. Reward Trend: Must require a significant drop to trigger.
+    # CartPole max score is 500. If it drops to 400, the old policy is still usable.
+    # We only consider it a disaster (change) if it drops below 300 (Drop > 40% or Abs > 150).
     reward_kwargs = dict(
         window_size=10,       
         baseline_window=30,   
-        drop_threshold=0.45,  # [大幅提高] 45% 的跌幅才算数
-        confirm_steps=3,      # [增加] 多确认一步
+        drop_threshold=0.45,  # [Significantly Increased] Requires 45% drop
+        confirm_steps=3,      # [Increased] Require more confirmation steps
         cooldown_episodes=20,
     )
+    # 
     
-    # 2. Latent Space: 
+    # 2. Latent Space: Drift detection using Autoencoder
     latent_kwargs = dict(
-        drift_threshold=2.5,  # [提高] 之前 1.3 太敏感了，改成 2.0
+        drift_threshold=2.5,  # [Increased] Previous 1.3 was too sensitive, raised to 2.5
         window_size=20,       
         baseline_window=40,   
         confirm_steps=3,
         cooldown_episodes=20,
     )
+    # 
     
-    # 3. Prediction Error: 
+    # 3. Prediction Error: Forward Dynamics Model
     prediction_kwargs = dict(
-        ratio_threshold=1.5,  # [大幅提高] 之前 1.6 太敏感，改成 3.0 (误差翻3倍才算)
+        ratio_threshold=1.5,  # [Significantly Increased] Previous 1.6 was too sensitive, raised to 3.0 (Error must triple)
         window_size=15,
         min_samples=10,       
         confirm_steps=2,
@@ -194,6 +214,7 @@ def build_detector_configs(state_dim: int, action_dim: int):
                 vote_threshold=0.66,
             )
         ),
+        # 
         ExperimentConfig(
             name="all_three_WEIGHTED",
             factory=lambda: WeightedMultiModalDetector(
@@ -202,7 +223,7 @@ def build_detector_configs(state_dim: int, action_dim: int):
                     PredictionErrorDetector(state_dim, action_dim, **prediction_kwargs),
                     LatentSpaceDriftDetector(state_dim, **latent_kwargs)
                 ],
-                vote_threshold=0.5, # 稍微提高门槛
+                vote_threshold=0.5, # Slightly increased threshold
                 detector_weights=default_weights,
             )
         ),
@@ -218,6 +239,7 @@ def build_detector_configs(state_dim: int, action_dim: int):
     return configs
 
 class DQNetwork(nn.Module):
+    """Simple Fully Connected Q-Network."""
     def __init__(self, input_dim, output_dim, hidden_dim=64):
         super().__init__()
         self.fc = nn.Sequential(
@@ -231,6 +253,7 @@ class DQNetwork(nn.Module):
         return self.fc(x)
 
 class WeightedReplayBuffer:
+    """Experience Replay Buffer that supports weighted sampling."""
     def __init__(self, max_size=10000):
         self.buffer = []
         self.weights = []
@@ -262,6 +285,10 @@ class WeightedReplayBuffer:
         return len(self.buffer)
 
 class DetectionAwareDQNAgent:
+    """
+    DQN Agent capable of reacting to Change Detection signals.
+    Implements dynamic learning rate and exploration adjustment.
+    """
     def __init__(self, state_dim, action_dim, hidden_dim=64, lr=1e-3, gamma=0.99, batch_size=64):
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -271,18 +298,18 @@ class DetectionAwareDQNAgent:
         self.epsilon = 0.05
         self.base_epsilon = 0.05
         
-        # [关键修改] CartPole 适应策略
-        # 1. 探索率只能微调！一旦乱动(0.2+)杆子必倒。
+        # [Key Modification] CartPole Adaptation Strategy
+        # 1. Epsilon can only be fine-tuned! If raised too high (0.2+), the pole will fall immediately.
         self.adapted_epsilon = 0.10 
         
-        # 2. 适应期要短，利用 LR Boost 快速收敛
+        # 2. Adaptation period should be short, using LR Boost to converge quickly.
         self.adapt_episodes_total = 10
         self.adapt_episodes_remaining = 0
         
-        # 3. [新增] 学习率动态调整
+        # 3. [New] Dynamic Learning Rate Adjustment
         self.base_lr = lr
         self.current_lr = lr
-        self.adapted_lr_scale = 3.0 # 报警时学习率翻 3 倍
+        self.adapted_lr_scale = 3.0 # Triple the learning rate upon alarm/detection
         
         self.weight_for_new_env = 1.3
         self.current_env_weight = 1.0
@@ -310,6 +337,7 @@ class DetectionAwareDQNAgent:
             return int(torch.argmax(qvals).item())
 
     def push_transition(self, state, action, reward, next_state, done, detector_confidence=1.0):
+        # Weight recent experiences higher based on detector confidence
         weight = self.current_env_weight * (0.3 + 0.7 * detector_confidence)
         self.replay_buffer.push((state, action, reward, next_state, done), weight=weight)
 
@@ -342,19 +370,20 @@ class DetectionAwareDQNAgent:
             self.target_net.load_state_dict(self.policy_net.state_dict())
 
     def on_detection(self, detector_name: str, episode: int, metadata: dict):
+        """Trigger adaptation logic when a change is detected."""
         if self.adapt_episodes_remaining <= 0:
             confidence = metadata.get("confidence") if isinstance(metadata, dict) else None
             if confidence is None:
-                # 简化的 fallback
+                # Simplified fallback
                 confidence = 0.8 
             confidence = float(max(0.0, min(1.0, confidence)))
 
-            # 1. 微调 Epsilon (不要太高)
+            # 1. Fine-tune Epsilon (Not too high)
             epsilon_boost = (self.adapted_epsilon - self.base_epsilon) * confidence
             self.epsilon = self.base_epsilon + epsilon_boost
             
-            # 2. [新增] 大幅提升 Learning Rate
-            # CartPole 需要快速调整权重来适应新的物理参数
+            # 2. [New] Significantly Boost Learning Rate
+            # CartPole requires quick weight adjustment to adapt to new physics parameters
             target_lr = self.base_lr * (1.0 + (self.adapted_lr_scale - 1.0) * confidence)
             self.current_lr = target_lr
             for param_group in self.optimizer.param_groups:
@@ -364,17 +393,19 @@ class DetectionAwareDQNAgent:
             self.current_env_weight = 1.0 + (self.weight_for_new_env - 1.0) * confidence
 
     def post_episode(self):
+        """Decrease adaptation counters and restore base parameters if cooldown ends."""
         if self.adapt_episodes_remaining > 0:
             self.adapt_episodes_remaining -= 1
             if self.adapt_episodes_remaining <= 0:
                 self.epsilon = self.base_epsilon
                 self.current_env_weight = 1.0
-                # 恢复 LR
+                # Restore Learning Rate
                 self.current_lr = self.base_lr
                 for param_group in self.optimizer.param_groups:
                     param_group['lr'] = self.base_lr
 
 def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, cycles, warmup_episodes=50):
+    # 
     set_global_seed(seed)
     env = CartPoleCL(cfg.TASKS)
     env.reset(seed=seed)
@@ -431,7 +462,7 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
                 
                 if episodes_completed >= warmup_episodes:
                     if result.detected:
-                        # 简单的冷却机制：防止同一任务内频繁触发
+                        # Simple cooldown mechanism: prevent frequent triggering within same task
                         if not detection_episodes or (episode_idx - detection_episodes[-1] > 20):
                             detection_episodes.append(episode_idx)
                             md = result.metadata if isinstance(result.metadata, dict) else {}
@@ -450,6 +481,7 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
         agent.post_episode()
         episodes_completed += 1
     
+    # Evaluation phase at the end
     eval_rewards = {}
     original_epsilon = agent.epsilon
     agent.epsilon = 0.0
@@ -470,7 +502,7 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
     agent.epsilon = original_epsilon
     
     det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=45) 
-                  if detector else {})
+                   if detector else {})
     
     return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics, episode_rewards, change_points
 
@@ -606,7 +638,7 @@ def main(seeds=[0, 1, 2], episodes_per_task=100, cycles=1, warmup_episodes=50):
     
     # Use shared metrics module if available
     if 'RQ1metrics' in sys.modules:
-        # [Fix] 显式传入 save_dir
+        # [Fix] Explicitly pass save_dir
         RQ1metrics.plot_task_performance_heatmap(summary_data, cfg, save_dir=vis_dir)
         RQ1metrics.plot_detector_comparison(summary_data, save_dir=vis_dir)
         RQ1metrics.plot_learning_curves(summary_data, cfg, save_dir=vis_dir) 

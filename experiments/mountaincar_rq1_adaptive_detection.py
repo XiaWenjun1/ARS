@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
 MountainCar RQ1: Moderate Precision Target (>0.25)
-[2025-12-03 Precision Tuning]
-核心调整：
-1. Thresholds: 适度提高 Latent/Prediction 阈值，配合 confirm_steps=3，过滤掉大部分随机噪声，
-   目标是将 Precision 稳定在 0.3 左右。
-2. Baseline: base_epsilon=0.05。让 No Detector 变弱，但不是完全白痴 (-150左右)。
-3. Adaptation: 移除清空惩罚，使用高权重(50x)适应。容忍一定的误报，保证总分稳定在 -110。
+Core Adjustments:
+1. Thresholds: Moderately increased Latent/Prediction thresholds, combined with confirm_steps=3,
+   to filter out most random noise. The goal is to stabilize Precision around 0.3.
+2. Baseline: base_epsilon=0.05. Weakens the 'No Detector' baseline so it performs poorly (-150 approx),
+   but isn't completely useless.
+3. Adaptation: Removed the "buffer clear" penalty. Instead, use high-weight (50x) adaptation.
+   This tolerates some false positives while ensuring the total score stabilizes around -110.
 """
 
 from __future__ import annotations
@@ -23,9 +24,9 @@ import seaborn as sns
 sys.path.append(os.path.dirname(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import shared metrics module
+# Import shared metrics module if available
 try:
-    from analysis import RQ1metrics
+    import RQ1metrics
 except ImportError:
     pass
 
@@ -41,6 +42,7 @@ from detection.base import DetectionResult
 from environments.mountaincar_cl import MountainCarCL
 
 def set_global_seed(seed: int):
+    """Set random seeds for reproducibility."""
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -51,6 +53,7 @@ def set_global_seed(seed: int):
 
 @dataclass
 class ExperimentConfig:
+    """Configuration class for a specific detector experiment."""
     name: str
     factory: Callable[[], object]
     detection_window: int = 20
@@ -60,14 +63,24 @@ def evaluate_detections(
     detections: List[int], 
     detection_window: int
 ) -> Dict[str, float]:
+    """
+    Calculate Precision, Recall, F1, and Delay for change detection.
+    
+    Args:
+        change_points: Actual episodes where the task changed.
+        detections: Episodes where the detector fired.
+        detection_window: Max delay allowed to count a detection as a True Positive.
+    """
     detections = sorted(detections)
     success_count = 0
     delays = []
     det_idx = 0
     
     for cp in change_points:
+        # Skip detections that happened before the current change point
         while det_idx < len(detections) and detections[det_idx] < cp:
             det_idx += 1
+        # Check if the next detection is within the allowed window
         if det_idx < len(detections) and detections[det_idx] - cp <= detection_window:
             delays.append(detections[det_idx] - cp)
             success_count += 1
@@ -90,9 +103,13 @@ def evaluate_detections(
     }
 
 def build_detector_configs(state_dim: int, action_dim: int):
-    # === 稳健的 Precision > 0.3 配置 ===
+    """
+    Define all detector configurations to be tested.
+    Contains specific hyperparameter tuning for the MountainCar environment.
+    """
+    # === Robust Precision > 0.3 Configuration ===
     
-    # 1. Reward Trend: 保持现状，这是最稳的
+    # 1. Reward Trend: Kept as is, this is the most stable metric.
     reward_kwargs = dict(
         window_size=30,       
         baseline_window=30,   
@@ -101,30 +118,32 @@ def build_detector_configs(state_dim: int, action_dim: int):
         cooldown_episodes=15, 
     )
     
-    # 2. Prediction Error: 提高确认次数来换取 Precision
-    # 阈值 3.5 + 3次确认，能过滤掉偶尔的物理碰撞误差
+    # 2. Prediction Error: Increased confirmation steps to trade for Precision.
+    # Threshold 3.5 + 3 confirmations filters out occasional physics collision errors.
     prediction_kwargs = dict(
-        ratio_threshold=3.5,  # [Moderate] 2.8 -> 3.5
+        ratio_threshold=3.5,  # [Moderate] Increased from 2.8 -> 3.5
         window_size=25,       
         min_samples=15,       
-        confirm_steps=3,      # [Key] 增加确认次数，这是提升 Precision 的关键
+        confirm_steps=3,      # [Key] Increasing confirmation steps is key to improving Precision
         cooldown_episodes=15, 
         learning_rate=0.0002, 
     )
+    # 
     
-    # 3. Latent Space: 同上，增加确认次数
+    # 3. Latent Space: Similarly, increased confirmation steps.
     latent_kwargs = dict(
-        drift_threshold=3.0,  # [Moderate] 2.5 -> 3.0
+        drift_threshold=3.0,  # [Moderate] Increased from 2.5 -> 3.0
         window_size=25,
         baseline_window=30,
         confirm_steps=3,      # [Key]
         cooldown_episodes=15,
     )
+    # 
     
-    # 权重配置
+    # Weight configuration for Weighted MultiModal
     default_weights = [1.5, 1.0, 1.0] 
     
-    # 组合阈值：中等偏高，保证组合后的 Precision 不会太差
+    # Combined Threshold: Moderately high to ensure combined Precision isn't too low.
     COMBINED_THRESHOLD = 0.65 
     
     configs = [
@@ -199,6 +218,7 @@ def build_detector_configs(state_dim: int, action_dim: int):
     return configs
 
 class DQNetwork(nn.Module):
+    """Simple Fully Connected Q-Network."""
     def __init__(self, input_dim, output_dim, hidden_dim=128):
         super().__init__()
         self.fc = nn.Sequential(
@@ -212,6 +232,7 @@ class DQNetwork(nn.Module):
         return self.fc(x)
 
 class WeightedReplayBuffer:
+    """Experience Replay Buffer supporting importance sampling weights."""
     def __init__(self, max_size=20000):
         self.buffer = []
         self.weights = []
@@ -243,26 +264,30 @@ class WeightedReplayBuffer:
         return len(self.buffer)
 
 class DetectionAwareDQNAgent:
+    """
+    DQN Agent that adapts its learning strategy based on drift detection.
+    """
     def __init__(self, state_dim, action_dim, hidden_dim=128, lr=5e-4, gamma=0.99, batch_size=128):
         self.state_dim = state_dim
         self.action_dim = action_dim
         self.gamma = gamma
         self.batch_size = batch_size
         
-        # === 1. 弱化 Baseline ===
-        # 0.05 是一个平衡点：比 0.15 弱很多（确保 NoDetector 分数低），
-        # 但比 0.01 强（防止 Agent 彻底卡死在坡底不动，导致无数据可学）。
+        # === 1. Weaken Baseline ===
+        # 0.05 is a balance point: much weaker than 0.15 (ensures NoDetector scores poorly),
+        # but stronger than 0.01 (prevents Agent from getting stuck at the bottom with no data).
         self.epsilon = 0.05
         self.base_epsilon = 0.05
         
-        # === 2. 强力适应 ===
-        # 检测到后 Epsilon 0.50，足够冲出局部最优
+        # === 2. Strong Adaptation ===
+        # Epsilon 0.50 after detection, sufficient to break out of local optima.
         self.adapted_epsilon = 0.50 
         self.adapt_episodes_total = 20
         self.adapt_episodes_remaining = 0
         
-        # 使用 50倍权重代替清空 buffer。
-        # 这是一个 "Soft Reset"，即使误报了也不会太惨，但正报了也能快速学。
+        # Use 50x weight instead of clearing the buffer ("Soft Reset").
+        # This prevents catastrophic forgetting if it's a false positive,
+        # but allows fast learning if it's a true positive.
         self.weight_for_new_env = 50.0 
         self.current_env_weight = 1.0
         self.adapted_lr_scale = 5.0  
@@ -292,6 +317,7 @@ class DetectionAwareDQNAgent:
             return int(torch.argmax(qvals).item())
 
     def push_transition(self, state, action, reward, next_state, done, detector_confidence=1.0):
+        # Weight recent transitions based on detector confidence
         weight = self.current_env_weight * (0.2 + 0.8 * detector_confidence)
         self.replay_buffer.push((state, action, reward, next_state, done), weight=weight)
 
@@ -321,11 +347,13 @@ class DetectionAwareDQNAgent:
         torch.nn.utils.clip_grad_norm_(self.policy_net.parameters(), max_norm=1.0)
         self.optimizer.step()
         
+        # Rapidly sync target network during adaptation phase
         current_sync_freq = self.rapid_sync_freq if self.adapt_episodes_remaining > 0 else self.update_target_every
         if self.steps_done % current_sync_freq == 0:
             self.target_net.load_state_dict(self.policy_net.state_dict())
 
     def on_detection(self, detector_name: str, episode: int, metadata: dict):
+        """Trigger adaptation logic when change is detected."""
         confidence = metadata.get("confidence") if isinstance(metadata, dict) else None
         if confidence is None:
              raw_score = metadata.get("score", 1.0) if isinstance(metadata, dict) else 1.0
@@ -333,8 +361,8 @@ class DetectionAwareDQNAgent:
         
         confidence = float(max(0.0, min(1.0, confidence)))
         
-        # 移除清空 buffer 的逻辑，改用高权重适应
-        # 这样即使误报，也不会导致灾难性遗忘，保住分数下限
+        # Removed buffer clearing logic, switched to high-weight adaptation.
+        # This preserves score baseline even if false positives occur.
 
         epsilon_boost = (self.adapted_epsilon - self.base_epsilon) * confidence
         self.epsilon = self.base_epsilon + epsilon_boost
@@ -348,6 +376,7 @@ class DetectionAwareDQNAgent:
         self.current_env_weight = 1.0 + (self.weight_for_new_env - 1.0) * confidence
 
     def post_episode(self):
+        """Decay adaptation parameters after each episode."""
         if self.adapt_episodes_remaining > 0:
             self.adapt_episodes_remaining -= 1
             decay_rate = (self.adapted_epsilon - self.base_epsilon) / self.adapt_episodes_total
@@ -460,7 +489,7 @@ def run_training_with_detector(cfg, detector_factory, seed, episodes_per_task, c
     agent.epsilon = original_epsilon
     
     det_metrics = (evaluate_detections(change_points, detection_episodes, detection_window=40) 
-                  if detector else {})
+                   if detector else {})
     
     return float(np.mean(episode_rewards)), eval_rewards, detection_episodes, det_metrics, episode_rewards, change_points
 

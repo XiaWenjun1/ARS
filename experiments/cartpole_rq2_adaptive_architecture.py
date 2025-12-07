@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-RQ2实验完整修复版：平衡的imagination策略
-关键修复：
-1. Dreamer imagination阈值更合理（0.3而非0.12）
-2. Fully adaptive更保守的扩容策略
-3. 更长的warmup和cooldown
+RQ2 Experiment Complete Fix: Balanced Imagination Strategy
+
+Key Fixes:
+1. More reasonable Dreamer imagination threshold (0.3 instead of 0.12).
+2. More conservative expansion strategy for Fully Adaptive mode.
+3. Longer warmup and cooldown periods to stabilize training.
 """
 
 from __future__ import annotations
@@ -30,11 +31,11 @@ from detection import (
 )
 from detection.base import DetectionResult
 from environments.cartpole_cl import CartPoleCL
-from ars_components.AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
-from ars_components.AdaptiveExplorationController import AdaptiveExplorationController
-
+from AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
+from AdaptiveExplorationController import AdaptiveExplorationController
 
 def set_global_seed(seed: int):
+    """Set random seeds for reproducibility."""
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
@@ -45,6 +46,10 @@ def set_global_seed(seed: int):
 
 
 class FixedDQNetwork(nn.Module):
+    """
+    Standard fixed-size Deep Q-Network.
+    Used for baselines and non-adaptive components.
+    """
     def __init__(self, input_dim: int, output_dim: int, hidden_dim: int = 64):
         super().__init__()
         self.input_dim = input_dim
@@ -66,6 +71,7 @@ class FixedDQNetwork(nn.Module):
         return sum(p.numel() for p in self.parameters())
 
     def reset_weights(self, init_print: bool = True):
+        """Re-initialize network weights using Kaiming Uniform initialization."""
         for m in (self.fc1, self.fc2, self.fc3):
             if isinstance(m, nn.Linear):
                 nn.init.kaiming_uniform_(m.weight, a=math.sqrt(5))
@@ -78,6 +84,14 @@ class FixedDQNetwork(nn.Module):
 
 
 class RQ2WorldModelAgent:
+    """
+    The core agent class for RQ2 experiments.
+    Supports various modes:
+    - Fixed Baselines (Small/Large)
+    - Dreamer-style (Model-Based RL with Imagination)
+    - Adaptive Architectures (Policy-only, WM-only, Fully Adaptive)
+    """
+    # 
     def __init__(self, state_dim: int, action_dim: int,
                  policy_hidden: int = 64, world_hidden: int = 64,
                  condition: str = "adaptive",
@@ -86,6 +100,8 @@ class RQ2WorldModelAgent:
         self.action_dim = action_dim
         self.condition = condition
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+        # Default configuration
         self.config = {
             'policy_lr': 1e-3,
             'world_model_lr': 1e-3,
@@ -97,6 +113,8 @@ class RQ2WorldModelAgent:
         }
         if agent_overrides:
             self.config.update(agent_overrides)
+        
+        # Initialize networks based on condition
         self._setup_networks(condition, state_dim, action_dim, policy_hidden, world_hidden)
 
         self.policy_optimizer = torch.optim.Adam(self.policy_net.parameters(), lr=self.config['policy_lr'])
@@ -118,6 +136,7 @@ class RQ2WorldModelAgent:
         self.last_policy_expansion_episode = -999
 
     def _setup_networks(self, condition, state_dim, action_dim, policy_hidden, world_hidden):
+        """Initialize the specific network architecture based on the experimental condition."""
         if condition == "small_fixed":
             self.policy_net = FixedDQNetwork(state_dim, action_dim, 64).to(self.device)
             self.has_world_model = False
@@ -160,6 +179,7 @@ class RQ2WorldModelAgent:
         self.target_net.eval()
 
     def update_world_model(self, state, action, next_state, reward):
+        """Train the World Model to predict next state and reward."""
         if not self.has_world_model:
             return 0.0
         if self.config.get('skip_world_model_training', False):
@@ -184,6 +204,7 @@ class RQ2WorldModelAgent:
         return err
 
     def should_expand_world_model(self, window_size: int = 50) -> bool:
+        """Heuristic: Check if World Model error has spiked significantly compared to baseline."""
         if not self.has_world_model or not self.world_model_adaptive:
             return False
         if len(self.world_model_errors) < window_size:
@@ -198,11 +219,13 @@ class RQ2WorldModelAgent:
         return ratio > 2.0
 
     def expand_world_model_capacity(self, delta: int = 8):
+        """Increase the hidden dimension of the World Model."""
         if self.has_world_model and self.world_model_adaptive:
             self.world_model.expand_capacity(delta)
             self.world_optimizer = torch.optim.Adam(self.world_model.parameters(), lr=self.config['world_model_lr'])
 
     def expand_policy_capacity(self, delta: int = 8, episode: int = -1):
+        """Increase the hidden dimension of the Policy Network (DQN)."""
         if self.policy_adaptive and hasattr(self.policy_net, 'expand_capacity'):
             self.policy_net.expand_capacity(delta)
             if hasattr(self.target_net, 'expand_capacity'):
@@ -225,6 +248,7 @@ class RQ2WorldModelAgent:
             return int(torch.argmax(qvals).item())
 
     def push_transition(self, state, action, reward, next_state, done):
+        """Store transition in replay buffer."""
         self.replay_buffer.append((np.array(state, dtype=np.float32),
                                    int(action), float(reward),
                                    np.array(next_state, dtype=np.float32),
@@ -233,6 +257,7 @@ class RQ2WorldModelAgent:
             self.replay_buffer.pop(0)
 
     def update(self):
+        """Standard DQN update step."""
         if len(self.replay_buffer) < self.batch_size:
             return
         batch = random.sample(self.replay_buffer, self.batch_size)
@@ -259,27 +284,31 @@ class RQ2WorldModelAgent:
         return float(loss.item())
 
     def imagine_and_push(self, n_rollouts: Optional[int] = None, rollout_length: Optional[int] = None, policy_noise_eps: float = 0.05):
-        """平衡版imagination：适度保守但仍有效"""
+        """
+        Balanced Imagination: Conservatively effective.
+        Generates synthetic trajectories using the World Model and adds them to the replay buffer.
+        """
+        # 
         if not self.has_world_model:
             return
         
-        # 关键修复1: 降低最小样本要求（从500降到200）
+        # Key Fix 1: Lower minimum sample requirement (from 500 down to 200)
         min_real_samples = self.config.get('min_real_samples_for_imagination', 200)
         if len(self.replay_buffer) < min_real_samples:
             return
         
-        # 关键修复2: 放宽WM质量检查（从0.15提高到0.3）
+        # Key Fix 2: Relax WM quality check (threshold increased from 0.15 to 0.3)
         if len(self.world_model_errors) >= 20:
             recent_wm_error = np.mean(self.world_model_errors[-20:])
             error_threshold = self.config.get('imagination_error_threshold', 0.3)
             if recent_wm_error > error_threshold:
                 return
         
-        # 使用平衡的默认值
+        # Use balanced defaults
         n_rollouts = n_rollouts if n_rollouts is not None else self.config.get('imagination_n_rollouts', 4)
         rollout_length = rollout_length if rollout_length is not None else self.config.get('imagination_rollout_length', 3)
         
-        # 限制合成数据比例（20%而非15%）
+        # Limit synthetic data ratio (20% instead of 15%)
         current_buffer_size = len(self.replay_buffer)
         max_synthetic_ratio = self.config.get('max_synthetic_ratio', 0.20)
         max_synthetic = int(current_buffer_size * max_synthetic_ratio)
@@ -289,6 +318,7 @@ class RQ2WorldModelAgent:
             if synthetic_added >= max_synthetic:
                 break
             
+            # Start imagination from a real state sampled from buffer
             s0, _, _, _, _ = random.choice(self.replay_buffer)
             s_t = np.array(s0, dtype=np.float32)
             s_tensor = torch.FloatTensor(s_t).unsqueeze(0).to(self.device)
@@ -298,6 +328,7 @@ class RQ2WorldModelAgent:
                     break
                 
                 with torch.no_grad():
+                    # Select action using current policy
                     q = self.policy_net(s_tensor).cpu().numpy()[0]
                     
                     if random.random() < policy_noise_eps:
@@ -305,6 +336,7 @@ class RQ2WorldModelAgent:
                     else:
                         a = int(np.argmax(q))
                     
+                    # Predict next state and reward using World Model
                     a_t = torch.LongTensor([a]).to(self.device)
                     ns_pred, r_pred = self.world_model(s_tensor, a_t)
                     
@@ -329,6 +361,7 @@ class RQ2WorldModelAgent:
         return 0
 
     def record_architecture_metrics(self, episode: int):
+        """Log the current capacity and parameter count."""
         policy_capacity = self.get_policy_capacity()
         world_capacity = self.get_world_model_capacity()
         policy_params = self.policy_net.get_parameter_count()
@@ -343,6 +376,9 @@ class RQ2WorldModelAgent:
 
 
 class SmartMetaController:
+    """
+    Decides when to trigger architecture expansion based on detection signals and performance.
+    """
     def __init__(self, agent, min_capacity: int = 64, max_capacity: int = 128):
         self.agent = agent
         self.min_capacity = min_capacity
@@ -360,12 +396,12 @@ class SmartMetaController:
         self.adjustment_log = []
 
     def should_expand_policy(self, detector_confidence: float, current_reward: float, world_model_error: float) -> bool:
-        """更保守：减少扩容次数"""
+        """Conservative logic: reduce the frequency of expansion."""
         if self.capacity_cooldown > 0:
             return False
-        if len(self.performance_window) < 20:  # 需要更多观察
+        if len(self.performance_window) < 20:  # Need more observations
             return False
-        if self.expansion_count >= 2:  # 最多2次扩容（从3降到2）
+        if self.expansion_count >= 2:  # Limit to max 2 expansions (reduced from 3)
             return False
         
         recent_perf = np.mean(self.performance_window[-10:])
@@ -373,7 +409,7 @@ class SmartMetaController:
         
         perf_drop_ratio = (baseline_perf - recent_perf) / (baseline_perf + 1e-8)
         
-        # 更严格的扩容条件：需要更强的信号
+        # Stricter expansion condition: requires stronger signal
         strong_signal = (detector_confidence > 0.8 and perf_drop_ratio > 0.20)
         
         return strong_signal and self.agent.get_policy_capacity() < self.max_capacity
@@ -403,6 +439,7 @@ class SmartMetaController:
             self.performance_window.pop(0)
 
         try:
+            # Update exploration rate using the controller
             new_epsilon = self.exploration_controller.update(
                 episode_reward=current_reward,
                 world_model_error=world_model_error,
@@ -421,10 +458,10 @@ class SmartMetaController:
             'action_taken': 'none'
         }
 
-        # 先尝试扩容WM（优先级更高）
+        # Try to expand WM first (Higher priority)
         if self.should_expand_world_model(world_model_error):
             if world_model_uncertainty is not None and world_model_uncertainty > 0.45:
-                pass  # postpone
+                pass  # postpone if uncertain
             else:
                 self.agent.expand_world_model_capacity(delta=8)
                 decisions['world_model_capacity_changed'] = True
@@ -435,6 +472,7 @@ class SmartMetaController:
                     'type': 'world_model_expansion',
                     'new_capacity': self.agent.get_world_model_capacity(),
                 })
+        # Then check Policy expansion
         elif self.should_expand_policy(detector_confidence, current_reward, world_model_error):
             if hasattr(self.agent.policy_net, 'expand_capacity'):
                 delta = min(8, self.max_capacity - self.agent.get_policy_capacity())
@@ -444,7 +482,7 @@ class SmartMetaController:
                     new = self.agent.get_policy_capacity()
                     decisions['policy_capacity_changed'] = True
                     decisions['action_taken'] = 'expand_policy'
-                    self.capacity_cooldown = 150  # 更长的cooldown（从120增加到150）
+                    self.capacity_cooldown = 150  # Longer cooldown (increased from 120 to 150)
                     self.expansion_count += 1
                     self.adjustment_log.append({
                         'episode': episode,
@@ -472,7 +510,7 @@ class SmartMetaController:
 
 
 def get_dreamer_config(condition: str) -> Dict:
-    """平衡的Dreamer配置：适度保守但仍有效"""
+    """Balanced Dreamer configuration: Conservatively effective."""
     
     config = {
         'skip_world_model_training': False,
@@ -480,33 +518,34 @@ def get_dreamer_config(condition: str) -> Dict:
         'world_model_lr': 1e-3,
         'world_model_train_frequency': 1,
         
-        # 关键平衡点：从0.12提高到0.3（允许更多imagination）
-        'imagination_threshold': 0.3,  # uncertainty阈值
-        'imagination_error_threshold': 0.3,  # error阈值
-        'imagination_n_rollouts': 4,  # 适中
-        'imagination_rollout_length': 3,  # 适中
+        # Key Balance Point: Increased from 0.12 to 0.3 (allows more imagination)
+        'imagination_threshold': 0.3,  # Uncertainty threshold
+        'imagination_error_threshold': 0.3,  # Error threshold
+        'imagination_n_rollouts': 4,  # Moderate
+        'imagination_rollout_length': 3,  # Moderate
         
-        # warmup适中（从100降到60）
+        # Moderate Warmup (Reduced from 100 to 60)
         'wm_warmup_episodes': 60,
         
-        # 降低最小样本要求（从500降到200）
+        # Lower minimum sample requirement (Reduced from 500 to 200)
         'min_real_samples_for_imagination': 200,
-        'max_synthetic_ratio': 0.20,  # 20%合成数据
+        'max_synthetic_ratio': 0.20,  # 20% synthetic data
     }
     
     if condition == "dreamer_style":
-        pass  # 使用默认平衡配置
+        pass  # Use default balanced config
     elif condition == "dreamer_no_imagination":
         config['skip_imagination'] = True
     elif condition == "dreamer_no_wm_training":
         config['skip_world_model_training'] = True
         config['skip_imagination'] = True
-    # ... 其他变体保持原样
     
     return config
 
 
 def build_detector_for_rq2_smart(state_dim: int, action_dim: int):
+    """Builds the ensemble drift detector."""
+    # 
     reward_kwargs = dict(window_size=6, baseline_window=25, drop_threshold=0.35, confirm_steps=3, cooldown_episodes=20)
     latent_kwargs = dict(drift_threshold=1.8, window_size=25, baseline_window=60, confirm_steps=3, cooldown_episodes=25)
     prediction_kwargs = dict(ratio_threshold=2.6, window_size=25, confirm_steps=3, cooldown_episodes=25)
@@ -519,6 +558,7 @@ def build_detector_for_rq2_smart(state_dim: int, action_dim: int):
 
 
 def _extract_wm_error_and_uncert(agent, state, action, next_state, reward):
+    """Helper to extract World Model error and uncertainty metrics."""
     wm_err = 0.0
     wm_unc = None
     try:
@@ -575,18 +615,18 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             'world_model_train_frequency': 1,
             'world_model_lr': 1e-3,
             
-            # 关键修复：更宽松的imagination（从0.10提高到0.25）
+            # Key Fix: Relaxed imagination (threshold raised from 0.10 to 0.25)
             'imagination_threshold': 0.25,
             'imagination_error_threshold': 0.28,
             'imagination_n_rollouts': 3,
             'imagination_rollout_length': 3,
             'wm_warmup_episodes': 60,
             
-            # 关键修复：超长cooldown防止过度扩容
-            'policy_expansion_cooldown_episodes': 100,  # 从60增加到100
+            # Key Fix: Ultra-long cooldown to prevent over-expansion
+            'policy_expansion_cooldown_episodes': 100,  # Increased from 60 to 100
             
             'min_real_samples_for_imagination': 200,
-            'max_synthetic_ratio': 0.18,  # 比dreamer更保守（18% vs 20%）
+            'max_synthetic_ratio': 0.18,  # More conservative than dreamer (18% vs 20%)
         }
     
     agent_override_cfg = condition_overrides.get(condition, {}) if condition_overrides else None
@@ -609,6 +649,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
     env.change_task(current_task)
     episodes_completed = 0
 
+    # Main Training Loop
     for episode_idx in range(len(task_sequence)):
         desired_task = task_sequence[episode_idx]
         if desired_task != env.current_task:
@@ -627,7 +668,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             next_state, reward, terminated, truncated, info = env.step(action)
             done = bool(terminated or truncated)
 
-            # World model训练
+            # World model training
             cooldown_episodes = agent.config.get('policy_expansion_cooldown_episodes', 0)
             in_policy_cooldown = (episodes_completed - agent.last_policy_expansion_episode) < cooldown_episodes
             
@@ -642,7 +683,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
                 except Exception:
                     world_model_error = 0.0
 
-            # 提取WM error和uncertainty
+            # Extract WM error and uncertainty
             try:
                 wm_err, wm_unc = _extract_wm_error_and_uncert(agent, state, action, next_state, reward)
                 if wm_err is not None:
@@ -677,7 +718,7 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
             episode_reward += float(reward)
             state = next_state
 
-        # Imagination gating
+        # Imagination gating: Decide whether to generate synthetic data
         if agent.has_world_model and (condition.startswith("dreamer_") or condition == "fully_adaptive"):
             warmup_ep = agent.config.get('wm_warmup_episodes', 0)
             in_warmup = episodes_completed < warmup_ep
@@ -705,11 +746,12 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
 
         episode_rewards.append(episode_reward)
 
+        # Meta Controller Step (Update epsilon/Capacity)
         if meta_controller is not None and episodes_completed >= warmup_episodes:
             try:
                 decisions = meta_controller.step(confidence, episode_reward, world_model_error, 
-                                                task_change_detected, episode_idx, 
-                                                world_model_uncertainty=world_model_uncert)
+                                                 task_change_detected, episode_idx, 
+                                                 world_model_uncertainty=world_model_uncert)
             except Exception:
                 decisions = {}
             meta_decisions_log.append(decisions)
@@ -763,17 +805,16 @@ def run_rq2_experiment(cfg, condition: str, seed: int,
 
 
 def create_visualizations(all_results, save_dir="./visualizations"):
-    """创建RQ2实验结果的可视化图表"""
+    """Generate visualization plots for RQ2 experiment results."""
     
-    # 确保保存目录存在
+    # Ensure save directory exists
     os.makedirs(save_dir, exist_ok=True)
     
     conditions = list(all_results.keys())
     
-    # 1. 主要性能对比图
+    # 1. Performance Comparison Plot
     plt.figure(figsize=(12, 8))
     
-    # 计算每个条件的平均性能
     means = []
     stds = []
     for condition in conditions:
@@ -784,7 +825,6 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     x_pos = np.arange(len(conditions))
     bars = plt.bar(x_pos, means, yerr=stds, capsize=5, alpha=0.7, color='steelblue')
     
-    # 添加数值标签
     for i, (mean, std) in enumerate(zip(means, stds)):
         plt.text(i, mean + std + 2, f'{mean:.1f}±{std:.1f}', 
                 ha='center', va='bottom', fontweight='bold')
@@ -798,19 +838,16 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     plt.savefig(f'{save_dir}/rq2_performance_comparison.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 2. 学习曲线对比
+    # 2. Learning Curves Comparison
     plt.figure(figsize=(14, 8))
-    
-    # 选择几个关键条件进行学习曲线绘制
     key_conditions = ['small_fixed', 'large_fixed', 'dreamer_style', 'fully_adaptive']
     colors = ['red', 'blue', 'green', 'purple']
     
     for i, condition in enumerate(key_conditions):
         if condition in all_results:
-            # 使用第一个种子的学习曲线
             if len(all_results[condition]) > 0:
                 episode_rewards = all_results[condition][0]['episode_rewards']
-                # 平滑处理
+                # Smoothing
                 window_size = 20
                 smoothed = np.convolve(episode_rewards, np.ones(window_size)/window_size, mode='valid')
                 plt.plot(range(len(smoothed)), smoothed, 
@@ -825,25 +862,24 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     plt.savefig(f'{save_dir}/rq2_learning_curves.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 3. 容量调整历史（针对自适应方法）
+    # 3. Capacity Evolution (For adaptive methods)
     adaptive_conditions = ['fully_adaptive', 'adaptive_world_model', 'adaptive_policy_only']
     
     for condition in adaptive_conditions:
         if condition in all_results and len(all_results[condition]) > 0:
             plt.figure(figsize=(12, 6))
             
-            # 使用第一个种子的数据
             run_data = all_results[condition][0]
             if 'capacity_history' in run_data and run_data['capacity_history']:
                 cap_hist = run_data['capacity_history']
                 episodes = [c['episode'] for c in cap_hist]
                 
-                # 绘制策略容量
+                # Plot Policy Capacity
                 if 'policy_hidden_dim' in cap_hist[0]:
                     policy_caps = [c['policy_hidden_dim'] for c in cap_hist]
                     plt.plot(episodes, policy_caps, label='Policy Capacity', linewidth=3, marker='o', markersize=3)
                 
-                # 绘制世界模型容量
+                # Plot WM Capacity
                 if 'world_model_hidden_dim' in cap_hist[0]:
                     wm_caps = [c['world_model_hidden_dim'] for c in cap_hist]
                     plt.plot(episodes, wm_caps, label='World Model Capacity', linewidth=3, marker='s', markersize=3)
@@ -857,22 +893,20 @@ def create_visualizations(all_results, save_dir="./visualizations"):
                 plt.savefig(f'{save_dir}/rq2_capacity_evolution_{condition}.png', dpi=300, bbox_inches='tight')
                 plt.close()
     
-    # 4. 参数效率对比
+    # 4. Parameter Efficiency
     plt.figure(figsize=(10, 6))
-    
     efficiency_data = {}
     for condition in conditions:
         if condition in all_results:
             evals = [r['avg_eval'] for r in all_results[condition]]
-            # 估算参数数量
+            # Estimate parameter counts
             if condition == 'small_fixed':
-                params = 64 * 64 * 3  # 近似值
+                params = 64 * 64 * 3 
             elif condition == 'large_fixed':
                 params = 128 * 128 * 3
             elif condition == 'dreamer_style':
-                params = 64 * 64 * 3 + 64 * 64 * 3  # policy + world model
+                params = 64 * 64 * 3 + 64 * 64 * 3
             elif 'adaptive' in condition:
-                # 使用实际记录的参数
                 if len(all_results[condition]) > 0:
                     params = all_results[condition][0]['efficiency_metrics'].get('total_parameters', 10000)
                 else:
@@ -894,7 +928,7 @@ def create_visualizations(all_results, save_dir="./visualizations"):
     plt.savefig(f'{save_dir}/rq2_parameter_efficiency.png', dpi=300, bbox_inches='tight')
     plt.close()
     
-    # 5. 架构调整统计
+    # 5. Architecture Adjustment Stats
     adaptive_with_meta = ['fully_adaptive', 'adaptive_world_model']
     adjustments_data = {}
     
@@ -922,7 +956,7 @@ def create_visualizations(all_results, save_dir="./visualizations"):
         plt.savefig(f'{save_dir}/rq2_adjustment_frequency.png', dpi=300, bbox_inches='tight')
         plt.close()
     
-    # 6. 保存详细数据为JSON
+    # 6. Save Detailed Summary to JSON
     summary_data = {}
     for condition in conditions:
         if condition in all_results:
@@ -964,15 +998,15 @@ def main(seeds: List[int] = [0, 1, 2], episodes_per_task: int = 100, cycles: int
 
     cfg = CartPoleConfig()
     
-    # 精简到关键条件
+    # Simplified list of critical conditions
     conditions = [
         "small_fixed",              # Baseline 1
         "large_fixed",              # Baseline 2
-        "dreamer_style",            # Dreamer (修复后)
-        "dreamer_no_imagination",   # Ablation: 无imagination
+        "dreamer_style",            # Dreamer (Fixed)
+        "dreamer_no_imagination",   # Ablation: No imagination
         "adaptive_policy_only",     # Adaptive policy
         "adaptive_world_model",     # Adaptive WM
-        "fully_adaptive",           # Full system (修复后)
+        "fully_adaptive",           # Full system (Fixed)
     ]
     
     print("=" * 80)
@@ -994,11 +1028,11 @@ def main(seeds: List[int] = [0, 1, 2], episodes_per_task: int = 100, cycles: int
             print(f"  Seed {seed}...", end=" ")
             
             result = run_rq2_experiment(cfg, condition, seed, episodes_per_task, 
-                                       cycles, warmup_episodes, condition_overrides)
+                                        cycles, warmup_episodes, condition_overrides)
             
             avg_train, eval_rewards, capacity_history, architecture_changes, efficiency_metrics, meta_decisions, episode_rewards = result
             
-            # 构建单个 seed 的结果字典
+            # Construct result dictionary for single seed
             seed_result = {
                 'seed': seed,
                 'condition': condition,
@@ -1014,11 +1048,11 @@ def main(seeds: List[int] = [0, 1, 2], episodes_per_task: int = 100, cycles: int
             }
             condition_results.append(seed_result)
             
-            # === 💾 修正1: 保存单个运行结果到 JSON ===
+            # === 💾 Fix 1: Save individual run results to JSON ===
             json_filename = f'temp_results_{condition}_seed{seed}.json'
             json_path = os.path.join(results_dir, json_filename)
             
-            # 辅助函数：处理 Numpy 数据类型，防止 json 报错
+            # Helper: Handle Numpy types for JSON
             def convert_numpy(obj):
                 if isinstance(obj, np.integer): return int(obj)
                 elif isinstance(obj, np.floating): return float(obj)
@@ -1060,7 +1094,7 @@ def main(seeds: List[int] = [0, 1, 2], episodes_per_task: int = 100, cycles: int
     
     print("=" * 80)
     
-    # 关键对比
+    # Key Comparisons
     print("\n📊 Key Comparisons:")
     print("-" * 80)
     
@@ -1092,9 +1126,9 @@ def main(seeds: List[int] = [0, 1, 2], episodes_per_task: int = 100, cycles: int
     
     print("=" * 80)
     
-    # === 📊 修正2: 生成可视化到新路径 ===
+    # === 📊 Fix 2: Generate visualizations to new path ===
     print(f"\n📈 Generating visualizations in {vis_dir}...")
-    create_visualizations(all_results, save_dir=vis_dir)  # 👈 这里传入了 save_dir
+    create_visualizations(all_results, save_dir=vis_dir)  # 👈 Passed save_dir here
     # ========================================
     
     return all_results
