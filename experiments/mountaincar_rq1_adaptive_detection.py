@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import shared metrics module
 try:
-    import RQ1metrics
+    from analysis import RQ1metrics
 except ImportError:
     pass
 

@@ -21,9 +21,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from configs.cartpole_config import CartPoleConfig
 from environments.cartpole_cl import CartPoleCL
-from LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
+from ars_components.LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
 # Import the new visualization module
-from RQ3metrics import create_comprehensive_analysis
+from analysis.RQ3metrics import create_comprehensive_analysis
 
 
 def set_global_seed(seed: int):

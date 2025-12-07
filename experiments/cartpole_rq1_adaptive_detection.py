@@ -25,9 +25,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import shared metrics module
 try:
-    import RQ1metrics
+    from analysis import RQ1metrics
 except ImportError:
-    # 如果找不到，尝试从上一级导入（根据项目结构可能不同）
+    # If cannot find it, try importing it from the parent level (this may vary depending on the project structure).
     pass
 
 from configs.cartpole_config import CartPoleConfig

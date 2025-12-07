@@ -29,8 +29,8 @@ from detection import (
 )
 from detection.base import DetectionResult
 from environments.mountaincar_cl import MountainCarCL
-from AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
-from AdaptiveExplorationController import AdaptiveExplorationController
+from ars_components.AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
+from ars_components.AdaptiveExplorationController import AdaptiveExplorationController
 
 
 def set_global_seed(seed: int):
