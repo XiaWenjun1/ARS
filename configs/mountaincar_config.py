@@ -1,43 +1,50 @@
-from .base_config import BaseConfig
-
 class MountainCarConfig(BaseConfig):
-    """Specific configuration for MountainCar environment"""
+    """
+    Specific configuration for the MountainCar environment, extending the BaseConfig.
+    Defines environment-specific parameters, curriculum learning tasks, and
+    hyperparameters tailored for MountainCar experiments.
+    """
     
     ENV_NAME = "MountainCar-v0"
+    # Disable Epsilon auto-decay within the agent; Trainer will handle epsilon decay.
     AUTO_DECAY_EPSILON = False 
     
-    # [修改] 稍微增加步数限制，给 Agent 更多机会
+    # [Modification] Slightly increased step limit to give the Agent more opportunities.
     EPISODES_PER_TASK = 150 
+    # Score threshold for considering a task "converged" or "solved".
     CONVERGENCE_THRESHOLD = -110
+    # Maximum number of steps an agent can take within a single episode.
     MAX_STEPS_PER_EPISODE = 200
     
-    # [关键修改] 任务难度阶梯化降级
+    # [Key Modification] Task difficulty tiered degradation.
     TASKS = [
-        # T0: 简单模式 (基准) - 重力小，推力大，很容易冲上去 (-90 ~ -110)
+        # T0: Easy Mode (Benchmark) - Low gravity, high force, very easy to climb (-90 to -110).
         {
-            'gravity': 0.0015,  # 默认是 0.0025
-            'force': 0.0015,    # 默认是 0.0010
+            'gravity': 0.0015,  # Default is 0.0025
+            'force': 0.0015,    # Default is 0.0010
             'task_name': 'easy_start'
         },
-        # T1: 标准模式 (变难一点) - 回归默认设置，分数会下降到 -120 ~ -150
+        # T1: Standard Mode (Slightly harder) - Reverts to default settings, score drops to -120 to -150.
         {
             'gravity': 0.0025,
             'force': 0.0010,
             'task_name': 'normal'
         },
-        # T2: 弱推力模式 - 需要更多摆动，分数 -140 ~ -170
+        # T2: Weak Force Mode - Requires more swinging, score -140 to -170.
         {
             'gravity': 0.0025,
-            'force': 0.0008,    # 不要减到 0.0006 那么狠
+            'force': 0.0008,    # Avoid reducing it too much to 0.0006
             'task_name': 'weak_force'
         },
-        # T3: 重重力模式 - 最难，但仍可解
+        # T3: Heavy Gravity Mode - Most difficult, but still solvable.
         {
-            'gravity': 0.0020,  # 不要加到 0.0045
+            'gravity': 0.0020,  # Avoid increasing it to 0.0045
             'force': 0.0012,
             'task_name': 'heavy_gravity'
         }
     ]
 
+    # Warm-up episodes for specific research questions (RQ1).
     RQ1_WARMUP_EPISODES = 50
+    # Warm-up episodes for the World Model in research question (RQ2).
     RQ2_WM_WARMUP_EPISODES = 80

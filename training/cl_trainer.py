@@ -5,39 +5,66 @@ import torch
 from .metrics import TrainingMetrics
 
 class CLTrainer:
-    """Continual Learning Trainer (with safe state management for evaluations)"""
+    """
+    Orchestrates the Continual Learning (CL) training process.
+    Manages agent training on sequential tasks, evaluates performance,
+    and handles agent state saving/loading for robust experimentation.
+    """
     
     def __init__(self, agent, env, config):
+        """
+        Initializes the CLTrainer.
+
+        Args:
+            agent (BaseAgent): The reinforcement learning agent to be trained.
+            env (ContinualLearningWrapper): The wrapped environment supporting task changes.
+            config (BaseConfig): Configuration object containing hyperparameters and settings.
+        """
         self.agent = agent
         self.env = env
         self.config = config
-        self.metrics = TrainingMetrics()
+        self.metrics = TrainingMetrics() # Utility to record and process training metrics.
         
-        # Training state
+        # Training state trackers.
         self.current_task = 0
         self.episode_count = 0
         self.global_step = 0
         
-        # Store final evaluation reward (average episode reward during evaluation, no exploration)
+        # Performance storage dictionaries.
+        # Stores the final average evaluation reward for each task after it has been trained.
         self.task_final_performances = {}
-        # Store average training reward (average episode reward during training, with exploration)
+        # Stores the average training reward (with exploration) achieved during training of each task.
         self.task_training_rewards = {}
-        # Store evaluation reward of previous tasks before training new task (no exploration)
+        # Stores the evaluation reward of previously learned tasks *before* starting training on a new task.
+        # Used to measure forgetting.
         self.pre_train_performances = {}
-        # Store initial baseline evaluation reward for all tasks (no exploration)
+        # Stores the initial baseline evaluation reward for all tasks, measured before any training.
         self.initial_performances = {}
-        # Store agent states after training each task (in-memory)
+        # Stores deep copies of agent states (weights, optimizer state, etc.) after training each task, in memory.
         self.task_agent_states = {}
         
-        # Environment type for file naming and reward sign handling
+        # Environment type for file naming and specific reward handling (e.g., MountainCar).
         self.env_type = type(env).__name__.lower()
+        # Flag to negate forgetting calculations for environments where higher negative reward is better (e.g., MountainCar).
         self.negate_forgetting = 'mountaincar' in self.env_type  # MountainCar needs sign flip
         
-        # ensure models dir exists
+        # Ensure the directory for saving models exists.
         os.makedirs("models", exist_ok=True)
         
     def train_single_task(self, task_id, episodes=None):
-        """Train on a single task, with adaptive epsilon initialization for sparse-reward environments like MountainCar"""
+        """
+        Trains the agent on a single specified task for a given number of episodes.
+        Includes adaptive epsilon initialization and decay, especially for sparse-reward
+        environments like MountainCar.
+
+        Args:
+            task_id (int): The ID of the task to train on.
+            episodes (int, optional): The number of episodes to train for.
+                                      Defaults to `self.config.EPISODES_PER_TASK`.
+
+        Returns:
+            float: The mean reward achieved over all episodes trained for this task.
+        """
         if episodes is None:
             episodes = self.config.EPISODES_PER_TASK
 
@@ -45,14 +72,15 @@ class CLTrainer:
         self.env.change_task(task_id)
 
         # === Adaptive epsilon initialization ===
+        # For sparse-reward environments (e.g., MountainCar), start with full exploration
+        # and use a specific decay schedule to maintain exploration longer.
         if "mountaincar" in self.env_type.lower():
-            # MountainCar is sparse-reward: start with full exploration
             self.agent.epsilon = self.config.EPSILON_START
             epsilon_decay = getattr(self.config, "EPSILON_DECAY_RATE", 0.998)  # Use decay rate from config
             epsilon_min = self.config.EPSILON_END
             print(f"Detected MountainCar environment → starting epsilon = {self.agent.epsilon:.2f}, decay rate = {epsilon_decay:.3f}")
         else:
-            # Normal environments use config defaults
+            # For other environments, use standard configuration defaults.
             self.agent.epsilon = self.config.EPSILON_START
             epsilon_decay = getattr(self.config, "EPSILON_DECAY_RATE", getattr(self.config, "EPSILON_DECAY", 0.995))
             epsilon_min = getattr(self.config, "EPSILON_END", 0.01)
@@ -67,17 +95,17 @@ class CLTrainer:
             update_count = 0
 
             for _ in range(self.config.MAX_STEPS_PER_EPISODE):
-                # Select action
+                # Select an action using the agent's policy (epsilon-greedy).
                 action = self.agent.select_action(state)
 
-                # Execute action
+                # Execute the action in the environment.
                 next_state, reward, terminated, truncated, _ = self.env.step(action)
                 done = terminated or truncated
 
-                # Store experience
+                # Store the experience (s, a, r, s', done) in the agent's replay buffer.
                 self.agent.push_memory(state, action, reward, next_state, done)
 
-                # Update network
+                # Update the agent's network (e.g., DQN update).
                 loss = self.agent.update()
                 if loss is not None and loss > 0:
                     episode_loss += loss
@@ -91,10 +119,10 @@ class CLTrainer:
                 if done:
                     break
 
-            # Calculate average loss
+            # Calculate average loss for the episode.
             avg_loss = episode_loss / max(update_count, 1)
 
-            # Record metrics
+            # Record episode metrics for later analysis.
             self.metrics.record_episode(
                 episode_reward, episode_length, avg_loss,
                 getattr(self.agent, 'epsilon', 0.0), task_id
@@ -104,30 +132,26 @@ class CLTrainer:
             self.episode_count += 1
 
             # === Adaptive epsilon decay ===
-            # gradually reduce exploration rate
-            # For MountainCar, keep high exploration longer (sparse reward problem)
+            # Gradually reduce the exploration rate.
             if "mountaincar" in self.env_type.lower():
-                # Three-stage decay to balance exploration vs exploitation
-                # Stage 1: Keep high exploration for 200 episodes (episode < 200)
-                # Stage 2: Medium exploration for 200 episodes (200 <= episode < 400)
-                # Stage 3: Low exploration for final 100 episodes (episode >= 400)
+                # MountainCar uses a three-stage decay to balance exploration vs. exploitation
+                # due to its sparse reward nature.
                 if episode < 200:
-                    decay_rate = 0.9995  # Very slow: keep ~90% exploration
+                    decay_rate = 0.9995  # Very slow decay: maintains high exploration.
                 elif episode < 400:
-                    decay_rate = 0.995  # Medium: gradual decrease
+                    decay_rate = 0.995  # Medium decay: gradual decrease in exploration.
                 else:
-                    decay_rate = 0.98  # Fast: exploit learned policy
+                    decay_rate = 0.98  # Faster decay: encourages exploitation of learned policy.
             else:
-                decay_rate = epsilon_decay
+                decay_rate = epsilon_decay # Use config-defined decay rate for other environments.
             
             self.agent.epsilon = max(epsilon_min, self.agent.epsilon * decay_rate)
 
-            # Optional: Monitor performance but don't reverse epsilon decay
+            # Optional: Monitor performance (e.g., for MountainCar) but do not reverse epsilon decay.
             if "mountaincar" in self.env_type.lower() and np.mean(task_rewards[-10:]) < -180:
-                # Just log, but don't increase epsilon
-                pass  # Would log if needed
+                pass  # Placeholder for potential logging if needed, without altering epsilon.
 
-            # Print progress
+            # Print training progress at specified intervals.
             if (episode + 1) % self.config.LOG_INTERVAL == 0:
                 recent_rewards = task_rewards[-self.config.LOG_INTERVAL:]
                 avg_reward = np.mean(recent_rewards)
@@ -135,18 +159,25 @@ class CLTrainer:
                     f"Avg Reward: {avg_reward:.2f} | "
                     f"ε: {self.agent.epsilon:.3f}")
 
-        # Calculate average reward for all episodes
+        # Calculate and print the mean reward over all episodes for the completed task.
         mean_task_reward = np.mean(task_rewards) if len(task_rewards) > 0 else 0.0
         print(f"Task {task_id} completed - {episodes}-episode average reward: {mean_task_reward:.2f}")
 
         return mean_task_reward
     
     def save_task_model(self, task_id):
-        """Save model to disk for a specific task and also save in-memory state"""
-        # Use environment type to distinguish between different environments
-        env_prefix = self.env_type.replace('cl', '')  # Remove 'cl' suffix
+        """
+        Saves the agent's current model state (network weights, optimizer, epsilon, etc.)
+        to disk and also stores a deep copy in memory for quick retrieval.
+
+        Args:
+            task_id (int): The ID of the task for which the model is being saved.
+        """
+        # Use environment type to create a distinct file path (e.g., "cartpole_task_0_model.pth").
+        env_prefix = self.env_type.replace('cl', '')  # Remove 'cl' suffix from environment name.
         model_path = f"models/{env_prefix}_task_{task_id}_model.pth"
         
+        # Create a checkpoint dictionary containing essential agent components.
         checkpoint = {
             'policy_net_state_dict': self.agent.policy_net.state_dict(),
             'target_net_state_dict': self.agent.target_net.state_dict(),
@@ -159,34 +190,48 @@ class CLTrainer:
         torch.save(checkpoint, model_path)
         print(f"Task {task_id} model saved to: {model_path}")
         
-        # Also save in-memory state for fast restore (deepcopy to avoid mutation)
+        # Also save an in-memory state for fast restoration during evaluation phases.
         self.save_agent_state(task_id)
     
     def load_task_model(self, task_id):
-        """Load model for a specific task from disk and place into agent"""
-        # Use environment type to distinguish between different environments
-        env_prefix = self.env_type.replace('cl', '')  # Remove 'cl' suffix
+        """
+        Loads an agent's model state for a specific task from disk and restores it
+        to the current agent instance. It also stores this loaded state in memory.
+
+        Args:
+            task_id (int): The ID of the task whose model should be loaded.
+        """
+        # Construct the model file path.
+        env_prefix = self.env_type.replace('cl', '')
         model_path = f"models/{env_prefix}_task_{task_id}_model.pth"
         
         if os.path.exists(model_path):
+            # Load the checkpoint, mapping to CPU to avoid device issues if saved on GPU.
             checkpoint = torch.load(model_path, map_location='cpu')
             self.agent.policy_net.load_state_dict(checkpoint['policy_net_state_dict'])
-            self.agent.target_net.load_state_dict(checkpoint['target_net_state_dict'])
+            self.agent.target_net.load_state_dict(checkpoint['target_net_state_dict']) # Corrected line
             try:
+                # Attempt to load optimizer state, but handle potential incompatibility.
                 self.agent.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             except Exception:
-                # optimizer load might fail if different device / or optimizer state incompatible; ignore but warn
                 print("Warning: could not fully restore optimizer state.")
+            # Restore epsilon and steps_done, providing defaults if not present in checkpoint.
             self.agent.epsilon = checkpoint.get('epsilon', getattr(self.agent, 'epsilon', 0.0))
             self.agent.steps_done = checkpoint.get('steps_done', getattr(self.agent, 'steps_done', 0))
-            # also store to in-memory for quicker later use
+            # Also store to in-memory for quicker later use.
             self.save_agent_state(task_id)
             print(f"Task {task_id} model loaded from: {model_path}")
         else:
             print(f"Warning: Model file not found: {model_path}")
     
     def _capture_agent_state(self):
-        """Unified method: capture current agent state (return state dictionary)"""
+        """
+        Captures the current state of the agent (network weights, optimizer state, etc.)
+        Returns a dictionary containing deep copies of these components.
+
+        Returns:
+            dict: A dictionary representing the agent's current state, or None if an error occurs.
+        """
         try:
             return {
                 'policy_net_state': copy.deepcopy(self.agent.policy_net.state_dict()),
@@ -200,7 +245,13 @@ class CLTrainer:
             return None
     
     def _restore_agent_state(self, state, context="memory"):
-        """Unified method: restore agent state"""
+        """
+        Restores the agent's state from a provided state dictionary.
+
+        Args:
+            state (dict): The state dictionary to restore.
+            context (str): A string indicating the source of the state (for logging purposes).
+        """
         if state is None:
             print(f"Warning: No state to restore from {context}")
             return
@@ -218,28 +269,67 @@ class CLTrainer:
             print(f"Warning: failed to restore agent state from {context}: {e}")
     
     def save_agent_state(self, task_id):
-        """Save current agent state to memory dictionary (deep copy to prevent subsequent changes from affecting)"""
+        """
+        Captures the current agent's state and stores a deep copy of it in an in-memory dictionary,
+        associated with the given task_id. This is useful for quickly restoring agent states
+        without disk I/O.
+
+        Args:
+            task_id (int): The ID of the task for which the current agent state is being saved.
+        """
         state = self._capture_agent_state()
         if state is not None:
             self.task_agent_states[task_id] = state
     
     def load_agent_state(self, task_id):
-        """Load specified task's agent state (from memory)"""
+        """
+        Loads a previously saved agent state from the in-memory dictionary and restores it
+        to the current agent instance.
+
+        Args:
+            task_id (int): The ID of the task whose saved agent state should be loaded.
+        """
         if task_id in self.task_agent_states:
             self._restore_agent_state(self.task_agent_states[task_id], "memory")
         else:
             print(f"Warning: No saved in-memory state found for task {task_id}")
     
     def _snapshot_current_agent_state(self):
-        """Internal use: return deep copy snapshot of current agent state (for temporary save/restore)"""
+        """
+        Internal utility to create a temporary deep copy snapshot of the current agent's state.
+        This is useful when needing to temporarily switch the agent's state (e.g., for evaluation)
+        and then revert to the original state.
+
+        Returns:
+            dict: A deep copy of the agent's current state.
+        """
         return self._capture_agent_state()
     
     def _restore_agent_state_snapshot(self, snapshot):
-        """Internal use: restore agent state from snapshot"""
+        """
+        Internal utility to restore the agent's state from a previously captured snapshot.
+
+        Args:
+            snapshot (dict): The agent state snapshot to restore.
+        """
         self._restore_agent_state(snapshot, "snapshot")
     
     def evaluate_task(self, task_id, episodes=50, verbose=True, num_evaluations=3):
-        """Evaluate performance on a specific task with multiple evaluations for stability"""
+        """
+        Evaluates the agent's performance on a specific task.
+        The evaluation runs over multiple episodes and multiple evaluation rounds
+        to provide a more stable and reliable performance metric. Exploration is disabled
+        during evaluation (agent acts greedily).
+
+        Args:
+            task_id (int): The ID of the task to evaluate.
+            episodes (int): The number of episodes to run for each evaluation round.
+            verbose (bool): If True, prints detailed evaluation results.
+            num_evaluations (int): The number of times to repeat the evaluation process.
+
+        Returns:
+            float: The mean reward across all evaluation episodes and rounds.
+        """
         self.env.change_task(task_id)
         all_rewards = []
         
@@ -278,7 +368,17 @@ class CLTrainer:
         return final_mean
     
     def run_continual_learning(self):
-        """Run complete continual learning training with robust state management"""
+        """
+        Executes the complete continual learning training loop across all defined tasks.
+        This includes:
+        1. Initial baseline performance evaluation on all tasks.
+        2. Sequential training on each task.
+        3. Evaluating previous tasks' retention before and after training a new task to measure forgetting.
+        4. Robust agent state management using in-memory and disk storage.
+
+        Returns:
+            dict: A dictionary containing the final performance of the agent on each task.
+        """
         task_performances = {}
         
         print(f"\n{'='*50}")
@@ -384,7 +484,12 @@ class CLTrainer:
         return task_performances
     
     def get_training_summary(self):
-        """Get training summary"""
+        """
+        Generates a summary of the entire continual learning training run.
+
+        Returns:
+            dict: A dictionary containing overall training statistics and recorded metrics.
+        """
         return {
             'total_episodes': self.episode_count,
             'total_steps': self.global_step,

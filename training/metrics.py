@@ -3,24 +3,46 @@ import pandas as pd
 from collections import defaultdict
 
 class TrainingMetrics:
-    """Training Metrics Tracker"""
+    """
+    A comprehensive tracker for various training and continual learning metrics.
+    It records episode-level data (rewards, lengths, losses, epsilon) and
+    calculates task-specific performance, convergence speed, and catastrophic forgetting.
+    """
     
     def __init__(self):
+        """
+        Initializes the TrainingMetrics tracker, resetting all internal data structures.
+        """
         self.reset()
     
     def reset(self):
-        """Reset all metrics"""
+        """
+        Resets all stored metrics and data. This is typically called at the start
+        of a new training run or experiment.
+        """
         self.episode_rewards = []
         self.episode_lengths = []
         self.losses = []
         self.epsilons = []
         
         # Continual learning specific metrics
+        # Stores episode rewards per task, used for calculating convergence speed and task performance.
         self.task_performance = defaultdict(list)
+        # Stores detailed information about catastrophic forgetting for each task pair.
         self.catastrophic_forgetting = {}
     
     def record_episode(self, episode_reward, episode_length, loss, epsilon, task_id=None):
-        """Record metrics for one episode"""
+        """
+        Records the metrics for a single training episode.
+
+        Args:
+            episode_reward (float): The total reward received during the episode.
+            episode_length (int): The number of steps taken in the episode.
+            loss (float): The average loss incurred during the episode's training updates.
+            epsilon (float): The epsilon value used for exploration during the episode.
+            task_id (int, optional): The ID of the task this episode belongs to. If provided,
+                                     the episode reward is also recorded under task_performance.
+        """
         self.episode_rewards.append(episode_reward)
         self.episode_lengths.append(episode_length)
         self.losses.append(loss)
@@ -29,14 +51,24 @@ class TrainingMetrics:
         if task_id is not None:
             self.task_performance[task_id].append(episode_reward)
     
-    def record_task_performance(self, task_key, performance_before, performance_after):
-        """Record task performance change (for calculating catastrophic forgetting)
-        
-        Args:
-            task_key: Task identifier, format "prev_task_after_new_task" or using tuple (prev_task, new_task)
-            performance_before: Performance before training new task
-            performance_after: Performance after training new task
+    def record_task_performance(self, task_key, performance_before, performance_after, negate_values=False):
         """
+        Records the change in performance for a specific task to calculate catastrophic forgetting.
+
+        Args:
+            task_key (str): A unique identifier for this forgetting measurement,
+                            typically formatted as "prev_task_after_new_task".
+            performance_before (float): The agent's performance on `prev_task` before training `new_task`.
+            performance_after (float): The agent's performance on `prev_task` after training `new_task`.
+            negate_values (bool): If True, negates the performance values before calculating
+                                  forgetting. Useful for environments where lower scores are better
+                                  (e.g., MountainCar, where -100 is better than -200), ensuring
+                                  that a performance 'drop' is correctly interpreted as positive forgetting.
+        """
+        if negate_values:
+            performance_before = -performance_before
+            performance_after = -performance_after
+
         self.catastrophic_forgetting[task_key] = {
             'before': performance_before,
             'after': performance_after,
@@ -44,7 +76,17 @@ class TrainingMetrics:
         }
     
     def get_current_stats(self, window=100):
-        """Get current statistics (sliding window)"""
+        """
+        Calculates and returns current training statistics based on a sliding window of episodes.
+
+        Args:
+            window (int): The number of most recent episodes to consider for statistics calculation.
+
+        Returns:
+            dict: A dictionary containing mean reward, standard deviation of reward,
+                  mean episode length, and total number of episodes. Returns an empty
+                  dictionary if no episodes have been recorded.
+        """
         if len(self.episode_rewards) == 0:
             return {}
             
@@ -58,14 +100,19 @@ class TrainingMetrics:
             'total_episodes': len(self.episode_rewards)
         }
     
-    # New: Core metric calculation methods required for the assignment
-    
     def calculate_convergence_speed(self, threshold, window=10):
-        """Calculate convergence speed - number of episodes required to reach stable performance
-        
+        """
+        Calculates the convergence speed for each task, defined as the number of episodes
+        required to reach and maintain a performance above a specified threshold.
+
         Args:
-            threshold: Convergence threshold (must be provided, typically from config.CONVERGENCE_THRESHOLD)
-            window: Window size for checking convergence (default: 10)
+            threshold (float): The performance threshold that indicates convergence.
+            window (int): The number of consecutive episodes whose average reward must
+                          exceed the threshold for convergence to be declared.
+
+        Returns:
+            dict: A dictionary where keys are task IDs and values are the number of episodes
+                  to convergence, or the total episodes if convergence was not met.
         """
         convergence_data = {}
         
@@ -86,7 +133,21 @@ class TrainingMetrics:
         return convergence_data
     
     def calculate_forgetting_matrix(self, total_tasks):
-        """Calculate catastrophic forgetting matrix (allows negative values)"""
+        """
+        Calculates the catastrophic forgetting matrix. Each element (i, j) in the matrix
+        represents the forgetting experienced on task 'i' after training on task 'j'.
+        Forgetting is defined as `performance_before_task_j - performance_after_task_j_trained`.
+        Negative values indicate performance improvement.
+
+        Args:
+            total_tasks (int): The total number of tasks in the continual learning sequence.
+
+        Returns:
+            tuple: A tuple containing:
+                   - cf_matrix (np.ndarray): A 2D NumPy array representing the forgetting matrix.
+                                            `cf_matrix[i, j]` is forgetting for task `i` after task `j`.
+                   - avg_forgetting (float): The average positive forgetting observed across all tasks.
+        """
         cf_matrix = np.zeros((total_tasks, total_tasks))
         total_forgetting = 0
         forgetting_count = 0
@@ -102,17 +163,16 @@ class TrainingMetrics:
                         parts = key.split('_after_')
                         if len(parts) == 2:
                             # Handle possible "T0" format or direct numbers
-                            prev_task_str = parts[0].replace('T', '')  # Remove possible 'T'
-                            current_task_str = parts[1].replace('T', '')  # Remove possible 'T'
+                            prev_task_str = parts[0].replace('T', '')  # Remove possible 'T' prefix
+                            current_task_str = parts[1].replace('T', '')  # Remove possible 'T' prefix
                             
                             prev_task = int(prev_task_str)
                             current_task = int(current_task_str)
                             
                             if prev_task < total_tasks and current_task < total_tasks:
-                                # Allow negative values (performance improvement)
                                 cf_matrix[prev_task, current_task] = forgetting
                                 
-                                if forgetting > 0:  # Only calculate positive forgetting values
+                                if forgetting > 0:  # Only sum positive forgetting values for average.
                                     total_forgetting += forgetting
                                     forgetting_count += 1
                     
@@ -122,25 +182,34 @@ class TrainingMetrics:
                         if prev_task < total_tasks and current_task < total_tasks:
                             cf_matrix[prev_task, current_task] = forgetting
                             
-                            if forgetting > 0:
+                            if forgetting > 0: # Only sum positive forgetting values for average.
                                 total_forgetting += forgetting
                                 forgetting_count += 1
                                 
                 except (ValueError, IndexError) as e:
-                    print(f"Warning: Could not parse key '{key}': {e}")
+                    print(f"Warning: Could not parse forgetting key '{key}': {e}")
                     continue
         
-        # Calculate average forgetting degree (only consider positive forgetting values)
+        # Calculate average forgetting degree (only consider positive forgetting values).
         avg_forgetting = total_forgetting / forgetting_count if forgetting_count > 0 else 0
         
         return cf_matrix, avg_forgetting
     
     def get_core_metrics_summary(self, total_tasks, convergence_threshold):
-        """Get core metrics summary required for the assignment
-        
+        """
+        Compiles a summary of core continual learning metrics, including
+        convergence speed and catastrophic forgetting.
+
         Args:
-            total_tasks: Total number of tasks
-            convergence_threshold: Convergence threshold (must be provided from config.CONVERGENCE_THRESHOLD)
+            total_tasks (int): The total number of tasks in the continual learning sequence.
+            convergence_threshold (float): The performance threshold used to determine task convergence.
+
+        Returns:
+            dict: A dictionary containing:
+                  - 'convergence_data': Dictionary of episodes to convergence per task.
+                  - 'cf_matrix': The catastrophic forgetting matrix.
+                  - 'avg_convergence': The average convergence speed across all tasks.
+                  - 'avg_forgetting': The average positive catastrophic forgetting.
         """
         # Calculate convergence speed and forgetting matrix
         convergence_data = self.calculate_convergence_speed(convergence_threshold)
@@ -157,7 +226,14 @@ class TrainingMetrics:
         }
     
     def get_task_performance_summary(self):
-        """Get performance summary for each task"""
+        """
+        Generates a summary of the agent's performance on each individual task.
+
+        Returns:
+            dict: A dictionary where keys are task IDs and values are dictionaries
+                  containing mean, standard deviation, max, min reward, and total episodes
+                  for that task.
+        """
         summary = {}
         for task_id, rewards in self.task_performance.items():
             if rewards:
@@ -171,7 +247,13 @@ class TrainingMetrics:
         return summary
     
     def save_to_csv(self, filename):
-        """Save metrics to CSV file"""
+        """
+        Saves the episode-level training metrics (rewards, lengths, losses, epsilon)
+        to a CSV file.
+
+        Args:
+            filename (str): The path and name of the CSV file to save.
+        """
         df = pd.DataFrame({
             'episode': range(len(self.episode_rewards)),
             'reward': self.episode_rewards,
