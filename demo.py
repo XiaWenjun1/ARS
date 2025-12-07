@@ -8,10 +8,8 @@ import os
 import time
 import numpy as np
 
-# Add project root to python search path for module imports
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-if project_root not in sys.path:
-    sys.path.insert(0, project_root)
+project_root = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, project_root)
 
 def demo_cartpole():
     """CartPole model demonstration - shows all task models"""
