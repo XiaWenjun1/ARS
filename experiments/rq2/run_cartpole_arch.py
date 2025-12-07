@@ -31,8 +31,8 @@ from detection import (
 )
 from detection.base import DetectionResult
 from environments.cartpole_cl import CartPoleCL
-from AdaptiveWorldModel import AdaptiveWorldModel, SmartDynamicDQNetwork
-from AdaptiveExplorationController import AdaptiveExplorationController
+from modules.adaptive_world_model import AdaptiveWorldModel, SmartDynamicDQNetwork
+from modules.exploration import AdaptiveExplorationController
 
 def set_global_seed(seed: int):
     """Set random seeds for reproducibility."""

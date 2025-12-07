@@ -20,9 +20,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from configs.mountaincar_config import MountainCarConfig
 from environments.mountaincar_cl import MountainCarCL
-from LatentReplayBuffer import LatentReplayBuffer, KnowledgeDistillationLoss
+from modules.latent_replay_buffer import LatentReplayBuffer, KnowledgeDistillationLoss
 # Import the new visualization module
-from RQ3metrics import create_comprehensive_analysis
+from experiments.rq3.metrics import create_comprehensive_analysis
 
 
 def set_global_seed(seed: int):

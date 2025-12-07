@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import shared metrics module
 try:
-    import RQ1metrics
+    import experiments.rq1.metrics as RQ1metrics
 except ImportError:
     # If not found, try importing from the parent directory (structure may vary)
     pass
